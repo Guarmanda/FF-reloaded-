@@ -3,12 +3,18 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 #include "menu_principal.h"
+#include "map.h"
+#include "level_editor.h"
 #include "fonctions_sdl.h"
 
 int main(int argc, char** argv)
 {
 	SDL_Window* pWindow = showWindow();
-	showMenu(pWindow);
+	SDL_Renderer *renderer=SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
+	//showMenu(renderer, pWindow);
+	//setRandomMap();
+	loadMap("Map.txt");
+	showMenu(renderer, pWindow);
 	printf("hey");
     return 0;
 }

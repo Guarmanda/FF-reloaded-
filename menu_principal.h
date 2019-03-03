@@ -5,4 +5,4 @@
 
 
 
-void showMenu(SDL_Window* pWindow);
+void showMenu(SDL_Renderer *, SDL_Window*);
