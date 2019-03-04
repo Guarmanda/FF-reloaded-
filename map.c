@@ -11,23 +11,33 @@
 
 void showMap(SDL_Renderer * renderer, float x, float y){
   //le nombre de sprites à afficher, tout comme la position du joueur, dépend de la taille de l'écran
-  int nbSpriteX = SCREEN_WIDTH/125;
-  int nbSpriteY = SCREEN_HEIGHT/125;
+  float nbSpriteX = SCREEN_WIDTH/125;
+  float nbSpriteY = SCREEN_HEIGHT/125;
 
   //il faut empêcher tout débordement de la map
-  int x_player=x;
-  int y_player=y;
+  float x_player=x;
+  float y_player=y;
+  if(y_player>=nbSpriteY/2) y_player = nbSpriteY/2;
+  if(x_player>=nbSpriteX/2) x_player = nbSpriteX/2;
+
   if(y-nbSpriteY/2<0) y=nbSpriteY/2;
   if(x-nbSpriteX/2<0) x=nbSpriteX/2;
-  if(y+nbSpriteY/2+1>1000) y=999-(nbSpriteY/2+1);
-  if(x+nbSpriteX/2+1>1000) x=999-(nbSpriteX/2+1);
-  for(int i=y-nbSpriteY/2; i<y+(nbSpriteY/2)+1;i++){
-    for(int j=x-nbSpriteX/2; j<x+(nbSpriteX/2)+1; j++){
-        int x2 = j-(x-nbSpriteX/2);
-        int y2 = i-(y-nbSpriteY/2);
+  if(y+nbSpriteY/2+2>1000) y=999-(nbSpriteY/2+2);
+  if(x+nbSpriteX/2+2>1000) x=999-(nbSpriteX/2+2);
+
+  //puis afficher la portion de la map ou le joueur est présent
+  for(int i=y-nbSpriteY/2; i<y+(nbSpriteY/2)+2;i++){
+    for(int j=x-nbSpriteX/2; j<x+(nbSpriteX/2)+2; j++){
+        float x2 = j-(x-nbSpriteX/2);
+        float y2 = i-(y-nbSpriteY/2);
       //chaque nombre dans la matrice corresponds à une sprite
       switch(map[i][j]){
-        case 5: drawImage(renderer, x2*125, y2*125, "map_grass.png"); break;
+        //avant d'afficher le joueur, on gère tout ce qui passe sous ses pieds
+        case 5:
+        case 1:
+        case 3:
+        case 6:
+                drawImage(renderer, x2*125, y2*125, "map_grass.png"); break;
         case 2: drawImage(renderer, x2*125, y2*125, "map_water.png");
                 drawImage(renderer, x2*125, y2*125, "map_grass_water.png"); break;
         //gestion des routes et virages
@@ -55,19 +65,24 @@ void showMap(SDL_Renderer * renderer, float x, float y){
                 else if(map[i][j-1] == 4 && map[i+1][j]==4){
                   drawImage(renderer, x2*125, y2*125, "map_grass_path8.png");}
                 break;
-        case 1: drawImage(renderer, x2*125, y2*125, "map_grass.png");
-                drawImage(renderer, x2*125, y2*125, "map_tree1.png"); break;
-        case 3: drawImage(renderer, x2*125, y2*125, "map_grass.png");
-                drawImage(renderer, x2*125, y2*125, "map_tree2.png"); break;
-        case 6: drawImage(renderer, x2*125, y2*125, "map_grass.png");
-                drawImage(renderer, x2*125, y2*125, "map_house.png"); break;
+      }
+    }
+  }
+  //puis on affiche le joueur si il est aux mêmes coordonnées
+  drawImage(renderer, x_player*125+(x-(int)x), y_player*125+(y-(int)y), "player1.png");
+  for(int i=y-nbSpriteY/2; i<y+(nbSpriteY/2)+2;i++){
+    for(int j=x-nbSpriteX/2; j<x+(nbSpriteX/2)+2; j++){
+      float x2 = j-(x-nbSpriteX/2);
+      float y2 = i-(y-nbSpriteY/2);
+      //puis ce qui passe au dessus de lui.
+      switch(map[i][j]){
+        case 1: drawImage(renderer, x2*125, y2*125, "map_tree1.png"); break;
+        case 3: drawImage(renderer, x2*125, y2*125, "map_tree2.png"); break;
+        case 6: drawImage(renderer, x2*125, y2*125, "map_house.png"); break;
 
       }
     }
   }
-  if(y_player>=nbSpriteY/2) y_player = nbSpriteY/2;
-  if(x_player>=nbSpriteX/2) x_player = nbSpriteX/2;
-  drawImage(renderer, x_player*125+125/4, y_player*125+125/4, "player1.png");
 }
 
 

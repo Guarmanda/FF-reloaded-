@@ -7,4 +7,4 @@
 #include "fonctions_sdl.h"
 #include "map.h"
 
-void showEditor(SDL_Renderer *, SDL_Window*, int, int);
+void showEditor(SDL_Renderer *, SDL_Window*, float, float);

@@ -10,4 +10,6 @@ void drawText (SDL_Renderer *, int , int , char *);
 
 void drawImage (SDL_Renderer *, int , int , char * );
 
+void loadImages(SDL_Renderer *);
+
 SDL_Window* showWindow();

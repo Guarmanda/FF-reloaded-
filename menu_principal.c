@@ -25,7 +25,7 @@ void showMenu(SDL_Renderer *renderer, SDL_Window* pWindow){
 	/* On fait le rendu ! */
 	SDL_RenderPresent(renderer);
 		int running = 1;
-		while(running) {
+		while(running==1) {
 			SDL_Event e;
 			while(SDL_PollEvent(&e)) {
 				switch(e.type) {
@@ -37,15 +37,12 @@ void showMenu(SDL_Renderer *renderer, SDL_Window* pWindow){
 	          SDL_GetMouseState(&mouse_x, &mouse_y);
 						//si on est dans la largeur du menu
 	          if(mouse_x>500 && mouse_x<975){
-							printf("ok1\n");
 	            //si on est à la hauteur d'une case du sélecteur
 	              int pos = mouse_y-100;
 								int i=1;
 	              for(int j=0; j<pos+150 ;i++, j+=150){
-									printf("i=%d\n", i);
 	                if(pos >= j && pos <= j+150) break;
 	              }
-								printf("ok2 (%d)\n", i);
 								switch(i){
 									case 1:
 										printf("Nouvelle partie\n");
@@ -57,17 +54,12 @@ void showMenu(SDL_Renderer *renderer, SDL_Window* pWindow){
 										break;
 									case 3:
 										printf("Lancement editeur\n");
-										showEditor(renderer, pWindow, 2, 2);
+										running = 4;
 										break;
 									case 4:
-										running=0;
-										SDL_DestroyWindow(pWindow);
-										TTF_Quit();
-										SDL_Quit();
-										return;
+										running=5;
 										break;
 								}
-								printf("ok\n");
 	            }
 
 	          }
@@ -75,11 +67,20 @@ void showMenu(SDL_Renderer *renderer, SDL_Window* pWindow){
 				}
 			}
 		}
+		if(running==2){
 
-	//Destruction de la fenetre
-	SDL_DestroyWindow(pWindow);
+		}
+		if(running==3){
 
-
-	TTF_Quit();
-		SDL_Quit();
+		}
+		if(running==4){
+			showEditor(renderer, pWindow, 2, 2);
+		}
+		if(running==5){
+			SDL_DestroyWindow(pWindow);
+			SDL_DestroyRenderer(renderer);
+			TTF_Quit();
+			IMG_Quit();
+			SDL_Quit();
+		}
 }

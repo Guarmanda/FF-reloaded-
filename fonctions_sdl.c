@@ -5,7 +5,19 @@
 #include "fonctions_sdl.h"
 
 
+int nb_images=20;
 
+//initialisation des images -> on les charge une seule fois pour économiser la ram
+SDL_Texture * images[20];
+char noms[20][50]= {"button.png", "item_selector.png", "map_grass.png", "map_grass_path1.png", "map_grass_path2.png", "map_grass_path3.png", "map_grass_path4.png", "map_grass_path5.png", "map_grass_path6.png", "map_grass_path7.png", "map_grass_path8.png", "map_grass_path9.png", "map_grass_path10.png", "map_grass_water.png", "map_house.png", "map_path.png", "map_water.png", "map_tree1.png", "map_tree2.png", "player1.png"};
+
+void loadImages(SDL_Renderer * renderer){
+	for(int i=0; i<nb_images; i++){
+		char nom[50] = "./IMG/";
+		strcat(nom, noms[i]);
+		images[i] = IMG_LoadTexture(renderer, nom);
+	}
+}
 
 
 void drawText (SDL_Renderer * renderer, int x, int y, char * string){
@@ -20,35 +32,39 @@ void drawText (SDL_Renderer * renderer, int x, int y, char * string){
 	SDL_Rect txtDestRect;
 	txtDestRect.x = x;
 	txtDestRect.y = y;
-	SDL_QueryTexture(texte_tex, NULL, NULL, &(txtDestRect.w), &(txtDestRect.h));
+	txtDestRect.h = 25;
+	txtDestRect.w = 12*strlen(string);
 	SDL_RenderCopy(renderer, texte_tex, NULL, &txtDestRect);
+	SDL_DestroyTexture(texte_tex);
 }
 
-void drawImage (SDL_Renderer * renderer, int x, int y, char * string){
+void drawImage (SDL_Renderer * renderer, int x, int y, char * nom){
 	// x et y les coordonnées,
 	SDL_Rect imgDestRect;
 	imgDestRect.x = x;
 	imgDestRect.y = y;
-	if(strstr(string, "map")){
+	if(strstr(nom, "map")){
 		imgDestRect.w = 125;
 		imgDestRect.h = 125;
 	}
-	if(strstr(string, "selector")){
+	if(strstr(nom, "selector")){
 		imgDestRect.w = 1200;
 		imgDestRect.h = 150;
 	}
-	if(strstr(string, "button")){
+	if(strstr(nom, "button")){
 		imgDestRect.w = 475;
 		imgDestRect.h = 130;
 	}
-	if(strstr(string, "player")){
+	if(strstr(nom, "player")){
 		imgDestRect.w = 60;
 		imgDestRect.h = 60;
 	}
-	char nom[50] = "./IMG/";
-	strcat(nom, string);
-	SDL_Texture* image_tex = IMG_LoadTexture(renderer, nom);
-	SDL_RenderCopy(renderer, image_tex, NULL, &imgDestRect);
+	int i;
+	//ici on recherche quel est l'indice de l'image qu'on veux afficher
+	for(i=0; strcmp(noms[i], nom)!=0 && i<nb_images; i++);
+	//on l'affiche ensuite
+	SDL_RenderCopy(renderer, images[i], NULL, &imgDestRect);
+	//SDL_DestroyTexture(image_tex);
 }
 
 
