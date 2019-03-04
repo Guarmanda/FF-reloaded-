@@ -48,7 +48,6 @@ void drawImage (SDL_Renderer * renderer, int x, int y, char * string){
 	char nom[50] = "./IMG/";
 	strcat(nom, string);
 	SDL_Texture* image_tex = IMG_LoadTexture(renderer, nom);
-	SDL_QueryTexture(image_tex, NULL, NULL, &(imgDestRect.w), &(imgDestRect.h));
 	SDL_RenderCopy(renderer, image_tex, NULL, &imgDestRect);
 }
 
