@@ -10,18 +10,21 @@
 
 
 void showMap(SDL_Renderer * renderer, float x, float y){
+  //le nombre de sprites à afficher, tout comme la position du joueur, dépend de la taille de l'écran
+  int nbSpriteX = SCREEN_WIDTH/125;
+  int nbSpriteY = SCREEN_HEIGHT/125;
 
   //il faut empêcher tout débordement de la map
   int x_player=x;
   int y_player=y;
-  if(y-3<0) y=3;
-  if(x-5<0) x=5;
-  if(y+3>1000) y=996;
-  if(x+6>1000) x=993;
-  for(int i=y-3; i<y+3;i++){
-    for(int j=x-5; j<x+6; j++){
-        int x2 = j-(x-5);
-        int y2 = i-(y-3);
+  if(y-nbSpriteY/2<0) y=nbSpriteY/2;
+  if(x-nbSpriteX/2<0) x=nbSpriteX/2;
+  if(y+nbSpriteY/2+1>1000) y=999-(nbSpriteY/2+1);
+  if(x+nbSpriteX/2+1>1000) x=999-(nbSpriteX/2+1);
+  for(int i=y-nbSpriteY/2; i<y+(nbSpriteY/2)+1;i++){
+    for(int j=x-nbSpriteX/2; j<x+(nbSpriteX/2)+1; j++){
+        int x2 = j-(x-nbSpriteX/2);
+        int y2 = i-(y-nbSpriteY/2);
       //chaque nombre dans la matrice corresponds à une sprite
       switch(map[i][j]){
         case 5: drawImage(renderer, x2*125, y2*125, "map_grass.png"); break;
@@ -62,8 +65,8 @@ void showMap(SDL_Renderer * renderer, float x, float y){
       }
     }
   }
-  if(y_player>=3) y_player = 3;
-  if(x_player>=5) x_player = 5;
+  if(y_player>=nbSpriteY/2) y_player = nbSpriteY/2;
+  if(x_player>=nbSpriteX/2) x_player = nbSpriteX/2;
   drawImage(renderer, x_player*125+125/4, y_player*125+125/4, "player1.png");
 }
 
