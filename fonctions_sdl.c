@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
+#include <string.h>
 #include "fonctions_sdl.h"
 
 
@@ -27,8 +28,14 @@ void drawText (SDL_Renderer * renderer, int x, int y, char * string){
 void drawImage (SDL_Renderer * renderer, int x, int y, char * string){
 	// x et y les coordonnées,
 	SDL_Rect imgDestRect;
+
 	imgDestRect.x = x;
 	imgDestRect.y = y;
+	//l'optimisation de l'affichage de l'image a ses défauts:
+	//on est obligé de dire quelle largeur/hauteur fera l'image.
+	//Mais cette version est bien plus optimisée que celle en exemple sur umtice,
+	//et ne fait pas planter la sdl au bout de 7 affichages de la map
+	//alors le choix est vite fait
 	if(strstr(string, "map")){
 		imgDestRect.w = 125;
 		imgDestRect.h = 125;
@@ -45,11 +52,10 @@ void drawImage (SDL_Renderer * renderer, int x, int y, char * string){
 		imgDestRect.w = 60;
 		imgDestRect.h = 60;
 	}
-	char nom[50] = "./IMG/";
-	strcat(nom, string);
-	SDL_Texture* image_tex = IMG_LoadTexture(renderer, nom);
+	SDL_Texture *image_tex = IMG_LoadTexture(renderer, string);
 	SDL_RenderCopy(renderer, image_tex, NULL, &imgDestRect);
 }
+
 
 
 SDL_Window* showWindow(){

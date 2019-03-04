@@ -2,8 +2,72 @@
 #include <stdlib.h>
 #include "perso.h"
 
-int affect_value(int val, object_t object){ /*va vérifier la valeur de l objet */
-   return val;
+object_t* create_object(character_t monster){ /*va vérifier la valeur de l objet */
+   // state sera donnee par un rand dans une range celon la difficulte du mob
+   object_t *new_item = malloc(sizeof(object_t));
+   new_item->type_object = loot_type(monster);
+   new_item->state_object = loot_state(new_item->type_object,monster);
+   new_item->value_object = loot_value(new_item->type_object,new_item->state_object);
+   return new_item;
+}
+
+void delete_object(object_t **item){
+  free(*item);
+  *item = NULL;
+}
+
+int loot_type(character_t monster){
+  monster.level; //a voir plus tard
+  int value = rand() % 100;
+  if(value > 70){
+    return 2;
+  }
+  else if(value > 15){
+    return 1;
+  }
+  else{
+    return 0;
+  }
+}
+
+int loot_state(int type, character_t monster){
+  switch(type){
+    case 0 : {
+              if(monster.level < 3)
+                  return 0;
+              else if(monster.level < 8){
+                int value = (rand() % 3) + 1;
+                return value;
+              }
+              else{
+                return 4;
+              }
+              }; break;
+    case 1 : return rand() % 5 ;break;
+    case 2 : {
+              if(monster.level < 3){
+                return rand() % 2;
+              }
+              else if(monster.level < 8){
+                return rand() % 9;
+              }
+              else{
+                return (rand() % 12) + 2;
+              }
+            }break;
+  }
+}
+
+int loot_value(int type, int state){
+  int tab_armor[4] = {10,20,30,40};
+  int tab_weapon[5] = {3,5,7,7,10};
+  int tab_potion[14] = {30,30,1,2,3,4,5,6,30,70,70,70,7,8};
+
+  switch(type){
+    case 0: return tab_armor[state];break;
+    case 1: return tab_weapon[state];break;
+    case 2: return tab_potion[state];break;
+  }
 }
 
 character_t* creation_char(){
@@ -62,9 +126,9 @@ inventory_t create_or_delete_inventory(){
    return inventory;
 }
 
-int fill_up_inventory(inventory_t array_inventory,void* object) {
+int fill_up_inventory(inventory_t array_inventory,object_t* object) {
 
-   if(array_inventory.nb_objects >= 30){
+   if(array_inventory.nb_objects >= 30){ //si c est plein, on renvoie 0  car on peut pas faire un overbook
          return 0;
    }
    else{
@@ -99,17 +163,17 @@ char* display_object(object_t object){
       }else{
             switch (object.state_object) {
                case 0: etat ="mana potion"; break;
-               case 1: etat ="super mana potion"; break;
-               case 2: etat ="health potion"; break;
-               case 3: etat ="super health potion"; break;
-               case 4: etat ="phoenix potion"; break;
-               case 5: etat ="super phoenix potion"; break;
-               case 6: etat ="anti poison potion"; break;
-               case 7: etat ="anti silence potion"; break;
-               case 8: etat ="anti blind potion"; break;
-               case 9: etat ="anti silence potion"; break;
-               case 10: etat ="anti stunt potion"; break;
-               case 11: etat ="anti bleeding potion"; break;
+               case 1: etat ="health potion"; break;
+               case 2: etat ="anti poison potion"; break;
+               case 3: etat ="anti silence potion"; break;
+               case 4: etat ="anti blind potion"; break;
+               case 5: etat ="anti silence potion"; break;
+               case 6: etat ="anti stunt potion"; break;
+               case 7: etat ="anti bleeding potion"; break;
+               case 8: etat ="phoenix potion"; break;
+               case 9: etat ="super mana potion"; break;
+               case 10: etat ="super health potion"; break;
+               case 11: etat ="super phoenix potion"; break;
                case 12: etat ="speed potion"; break;
                case 13: etat ="lucidity potion"; break;
             }

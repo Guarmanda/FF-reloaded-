@@ -10,17 +10,10 @@
 #include "menu_principal.h"
 
 void showEditor(SDL_Renderer * renderer, SDL_Window*pWindow, int x, int y){
-  //si on est à des coordonnées trop petites pour l'écran, on adapte
-  int nbSpriteX = SCREEN_WIDTH/125;
-  int nbSpriteY = SCREEN_HEIGHT/125;
-  if(y-nbSpriteY/2<0) y=nbSpriteY/2;
-  if(x-nbSpriteX/2<0) x=nbSpriteX/2;
-  if(y+nbSpriteY/2+2>1000) y=999-(nbSpriteY/2+2);
-  if(x+nbSpriteX/2+2>1000) x=999-(nbSpriteX/2+2);
   showMap(renderer, x, y);
   //x_select: les coordonées du seleteur de façon à le centrer sur l'écran
   int x_select = (SCREEN_WIDTH-1200)/2;
-  drawImage(renderer, x_select, SCREEN_HEIGHT-300, "item_selector.png");
+  drawImage(renderer, x_select, SCREEN_HEIGHT-200, "item_selector.png");
   SDL_RenderPresent(renderer);
 
   int running = 1;
@@ -43,7 +36,7 @@ void showEditor(SDL_Renderer * renderer, SDL_Window*pWindow, int x, int y){
           if(y>1000) y=999;
           SDL_RenderClear(renderer);
           showMap(renderer, x, y);
-          drawImage(renderer, x_select, SCREEN_HEIGHT-300, "item_selector.png");
+          drawImage(renderer, x_select, SCREEN_HEIGHT-200, "item_selector.png");
           SDL_RenderPresent(renderer);
           break;
         }
@@ -54,10 +47,10 @@ void showEditor(SDL_Renderer * renderer, SDL_Window*pWindow, int x, int y){
           int mouse_x, mouse_y;
           SDL_GetMouseState(&mouse_x, &mouse_y);
           //si on est dans le sélecteur
-          if(mouse_y>SCREEN_HEIGHT-265){
+          if(mouse_y>SCREEN_HEIGHT-165){
             printf("%d, %d\n", mouse_x, mouse_y);
             //si on est à la hauteur d'une case du sélecteur
-            if(mouse_y>SCREEN_HEIGHT-250 && mouse_y<SCREEN_HEIGHT){
+            if(mouse_y>SCREEN_HEIGHT-150 && mouse_y<SCREEN_HEIGHT){
               //la position de x sur l'image
               int pos = mouse_x-(x_select+245);
               for(int j=0,i = 1; j<pos+85 ;i++, j+=100){
@@ -89,18 +82,16 @@ void showEditor(SDL_Renderer * renderer, SDL_Window*pWindow, int x, int y){
           }
           //sinon on détecte la bonne position du sprite pour l'afficher sur l'écran, et on l'enregistre
           else{
-            int h=y-SCREEN_HEIGHT/125/2;
-            printf("position h = %d-%d\n", y, SCREEN_HEIGHT/125/2);
+            int h=y-3;
             for(int j=0; j+125<mouse_y;j+=125, h++);
-            int w=x-SCREEN_WIDTH/125/2;
-            printf("position w = %d-%d\n", x, SCREEN_WIDTH/125/2);
+            int w=x-5;
             for(int j=0; j+125<mouse_x;j+=125, w++);
 
             //une fois qu'on a trouvé les bonnes coordonées on modifie la map pour l'afficher en direct
             map[h][w]= selected;
             SDL_RenderClear(renderer);
             showMap(renderer, x, y);
-            drawImage(renderer, x_select, SCREEN_HEIGHT-300, "item_selector.png");
+            drawImage(renderer, x_select, SCREEN_HEIGHT-200, "item_selector.png");
             SDL_RenderPresent(renderer);
           }
         break;

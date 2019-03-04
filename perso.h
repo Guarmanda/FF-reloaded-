@@ -3,9 +3,10 @@ enum accessories_e{green_amulet=0,ruby_ring,crystal_ring};
 
 typedef struct object_s{
   int type_object; /* 0= armure, 1=weapon, 2= potion*/
-  int state_object; /* exemple : armure de cuir, potion de mana [0- ]*/
-  int value; /*affectation d une valeur diff selon le type de l objet pour
-  ex: potion et son pourcentage*/
+  int state_object; /* exemple : armure de cuir, potion de mana [0- ] */
+  int value_object; /*affectation d une valeur diff selon le type de l objet pour
+  ex: potion et son pourcentage
+  */
 }object_t;
 
 
@@ -45,14 +46,18 @@ typedef struct potion_s {
 
 typedef struct inventory_s{
     int nb_objects;
-    void * object[30];
+    object_t * object[30];
 }inventory_t;
 
 inventory_t create_or_delete_inventory();
 character_t* creation_char();
-int fill_up_inventory(inventory_t array_inventory,void* object);
+int fill_up_inventory(inventory_t array_inventory,object_t* object);
 void delete_player(character_t* player);
 void levelling(character_t* player, character_t monster);
 char* display_object(object_t object);
 void affich(character_t* perso);
-int affect_value(int val, object_t object);
+object_t* create_object(character_t monster);
+void delete_object(object_t **item);
+int loot_type(character_t monster);
+int loot_state(int type, character_t monster);
+int loot_value(int type, int state);
