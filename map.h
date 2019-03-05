@@ -7,6 +7,7 @@
 #include "fonctions_sdl.h"
 
 int map[1000][1000];
+int X, int Y;
 
 void showMap(SDL_Renderer *, float, float);
 void setRandomMap();
