@@ -8,6 +8,7 @@
 #include "map.h"
 #include "level_editor.h"
 #include "menu_principal.h"
+#include "menu_inventaire.h"
 
 void showEditor(SDL_Renderer * renderer, SDL_Window*pWindow, float x, float y){
   //si on est à des coordonnées trop petites pour l'écran, on adapte
@@ -32,19 +33,30 @@ void showEditor(SDL_Renderer * renderer, SDL_Window*pWindow, float x, float y){
         //et là, on peut bouger sur la map. \o/
         case SDL_KEYDOWN:
         {
+          //l'état du clavier à l'instant actuel
           const Uint8 *state = SDL_GetKeyboardState(NULL);
-          if (state[SDL_SCANCODE_RIGHT]) x+=0.2;
-          else if (state[SDL_SCANCODE_UP]) y-=0.2;
-          else if (state[SDL_SCANCODE_DOWN]) y+=0.2;
-          else if (state[SDL_SCANCODE_LEFT]) x-=0.2;
-          if(x<0) x=0;
-          if(y<0) y=0;
-          if(x>1000) x=999;
-          if(y>1000) y=999;
-          SDL_RenderClear(renderer);
-          showMap(renderer, x, y);
-          drawImage(renderer, x_select, SCREEN_HEIGHT-250, "item_selector.png");
-          SDL_RenderPresent(renderer);
+
+          //si c'est une touche de mouvement
+          if(state[SDL_SCANCODE_RIGHT] || state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_DOWN]){
+            if (state[SDL_SCANCODE_RIGHT]) x+=0.05;
+            else if (state[SDL_SCANCODE_UP]) y-=0.05;
+            else if (state[SDL_SCANCODE_DOWN]) y+=0.05;
+            else if (state[SDL_SCANCODE_LEFT]) x-=0.05;
+            if(x<0) x=0;
+            if(y<0) y=0;
+            if(x>1000) x=999;
+            if(y>1000) y=999;
+            SDL_RenderClear(renderer);
+            showMap(renderer, x, y);
+            drawImage(renderer, x_select, SCREEN_HEIGHT-250, "item_selector.png");
+            SDL_RenderPresent(renderer);
+          }
+
+          //si c'est la touche d'inventaire
+          if(state[SDL_SCANCODE_I]){
+            showInventory(renderer);
+          }
+
           break;
         }
         case SDL_MOUSEBUTTONDOWN:
@@ -106,5 +118,6 @@ void showEditor(SDL_Renderer * renderer, SDL_Window*pWindow, float x, float y){
       }
     }
   }
+  SDL_RenderClear(renderer);
   showMenu(renderer, pWindow);
 }

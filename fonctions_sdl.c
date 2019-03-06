@@ -5,11 +5,14 @@
 #include "fonctions_sdl.h"
 
 
-int nb_images=20;
+
+int nb_images=21;
 
 //initialisation des images -> on les charge une seule fois pour économiser la ram
-SDL_Texture * images[20];
-char noms[20][50]= {"button.png", "item_selector.png", "map_grass.png", "map_grass_path1.png", "map_grass_path2.png", "map_grass_path3.png", "map_grass_path4.png", "map_grass_path5.png", "map_grass_path6.png", "map_grass_path7.png", "map_grass_path8.png", "map_grass_path9.png", "map_grass_path10.png", "map_grass_water.png", "map_house.png", "map_path.png", "map_water.png", "map_tree1.png", "map_tree2.png", "player1.png"};
+SDL_Texture * images[21];
+char noms[21][50]= {"button.png", "item_selector.png", "map_grass.png", "map_grass_path1.png", "map_grass_path2.png", "map_grass_path3.png", "map_grass_path4.png",
+ "map_grass_path5.png", "map_grass_path6.png", "map_grass_path7.png", "map_grass_path8.png", "map_grass_path9.png", "map_grass_path10.png", "map_grass_water.png",
+  "map_house.png", "map_path.png", "map_water.png", "map_tree1.png", "map_tree2.png", "player1.png", "inventory.png"};
 
 void loadImages(SDL_Renderer * renderer){
 	for(int i=0; i<nb_images; i++){
@@ -59,6 +62,10 @@ void drawImage (SDL_Renderer * renderer, int x, int y, char * nom){
 		imgDestRect.w = 60;
 		imgDestRect.h = 60;
 	}
+  if(strstr(nom, "inventory")){
+    imgDestRect.w = SCREEN_WIDTH-100;
+    imgDestRect.h = SCREEN_HEIGHT-100;
+  }
 	int i;
 	//ici on recherche quel est l'indice de l'image qu'on veux afficher
 	for(i=0; strcmp(noms[i], nom)!=0 && i<nb_images; i++);

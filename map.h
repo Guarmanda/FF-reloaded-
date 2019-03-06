@@ -7,7 +7,10 @@
 #include "fonctions_sdl.h"
 
 int map[1000][1000];
-float X, float Y;
+
+//les coordonnees du joueur, accessibles de n'importe
+float X;
+float Y;
 
 void showMap(SDL_Renderer *, float, float);
 void setRandomMap();

@@ -10,13 +10,13 @@
 
 
 void showMap(SDL_Renderer * renderer, float x, float y){
-  X = x;
-  Y = y;
   //le nombre de sprites à afficher, tout comme la position du joueur, dépend de la taille de l'écran
   float nbSpriteX = SCREEN_WIDTH/125;
   float nbSpriteY = SCREEN_HEIGHT/125;
 
   //il faut empêcher tout débordement de la map
+  X=x;
+  Y=y;
   float x_player=x;
   float y_player=y;
   if(y_player>=nbSpriteY/2) y_player = nbSpriteY/2;

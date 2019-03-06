@@ -12,8 +12,8 @@ PROG=programme
 
 all: sdl_text
 
-sdl_text: fonctions_sdl.o menu_principal.o map.o level_editor.o main.o
-	${CC} -o ${PROG} fonctions_sdl.o menu_principal.o map.o level_editor.o main.o ${LIBS} ${INCLUDES}
+sdl_text: fonctions_sdl.o menu_principal.o map.o menu_inventaire.o level_editor.o main.o
+	${CC} -o ${PROG} fonctions_sdl.o menu_principal.o map.o menu_inventaire.o level_editor.o main.o ${LIBS} ${INCLUDES}
 
 fonctions_sdl.o: fonctions_sdl.c
 	${CC} -o fonctions_sdl.o -c fonctions_sdl.c ${LIBS} ${INCLUDES}
@@ -24,10 +24,13 @@ menu_principal.o: menu_principal.c fonctions_sdl.h
 map.o: map.c fonctions_sdl.h
 	${CC} -o map.o -c map.c ${LIBS} ${INCLUDES}
 
-level_editor.o: level_editor.c fonctions_sdl.h map.h
+menu_inventaire.o: menu_inventaire.c fonctions_sdl.h map.h
+	${CC} -o menu_inventaire.o -c menu_inventaire.c ${LIBS} ${INCLUDES}
+
+level_editor.o: level_editor.c fonctions_sdl.h map.h menu_inventaire.h
 	${CC} -o level_editor.o -c level_editor.c ${LIBS} ${INCLUDES}
 
-main.o: main.c menu_principal.h map.h level_editor.h
+main.o: main.c menu_principal.h map.h level_editor.h menu_inventaire.h
 	${CC} -o main.o -c main.c ${LIBS} ${INCLUDES}
 
 
