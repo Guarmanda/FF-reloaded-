@@ -1,11 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "perso.h"
+#include "combat.h"
 
 #define map_size_x 1000
 #define map_size_y 1000
 
 typedef enum {true,false}booleen;
+
+void casting_spell(character_t wizard,character_t **target, spell_t spell){
+  if(spell.type == 0){ // offensif
+    (*target)->health -= wizard->stat_intel * spell.spell_value;
+  }
+  else if(spell.type == 1){ // soin
+    (*target)->health += wizard->stat_intel * spell.spell_value;
+  }
+  else{ // state modifier
+    apply_state_modifier(target,spell.spell_value,true);
+  }
+}
 
 /* fight_chance = pourcentage contenu dans une matrice (niveau de menace)*/
 
@@ -15,40 +28,6 @@ void fight_rand(int fight_chance,character_t **player){
   }
 }
 
-character_t* monster_creation(int level){
-  character_t* monster= malloc(sizeof(character_t));
-  monster->level=level;
-  monster->health=20*level;
-  monster->mana=20*level;
-
-  for(int i = 0;i<7;i++){
-    monster->state[i] = 0;
-  }
-  monster->stat_intel = 3*level;
-  monster->stat_stamina = 3*level;
-  monster->stat_strength = 3*level;
-
-  return monster;
-}
-/*appelle la fonc de creation de monstre et genere le niveau
-dans un intervalle basé sur la position du joueur
-*/
-character_t* mob_generation(float X,float Y){
-  character_t *monster = NULL;
-
-  if(X > (map_size_x / 2) && Y > (map_size_y / 2)){
-     /* monster=monster_creation(); with a rand 4-6 level paramater*/
-  }
-  else if(X < (map_size_x / 2) && Y > (map_size_y / 2)){
-    /* monster=monster_creation(); with a rand 1-4 level paramater*/
-  }
-  else if(X > (map_size_x / 2) && Y < (map_size_y / 2)){
-    /* monster=monster_creation(); with a rand 9-10 level paramater*/
-  }
-  else{
-    /* monster=monster_creation(); with a rand 6-8 level paramater*/
-  }
-}
 
 void attack(character_t attacker,character_t **target){
   (*target)->health -= attacker->stat_strength * attacker.char_weapon.value;
@@ -105,7 +84,7 @@ void update_tab_monster(character_t *monster_array[monster_number],int index){ /
 }
 
 int running_away(character_t player,character_t monster){ // true => successful
-  /* 15% chance to feel */
+  /* 15% chance to flee */
   if((rand() % 100) / 100) < 0.15){
     return true;
   }
