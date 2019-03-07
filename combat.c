@@ -9,11 +9,11 @@
 typedef enum {true,false}booleen;
 
 void casting_spell(character_t wizard,character_t **target, spell_t spell){
-  if(spell.type == 0){ // offensif
-    (*target)->health -= wizard->stat_intel * spell.spell_value;
+  if(spell.spell_type == 0){ // offensif
+    (*target)->health -= wizard.stat_intel * spell.spell_value;
   }
-  else if(spell.type == 1){ // soin
-    (*target)->health += wizard->stat_intel * spell.spell_value;
+  else if(spell.spell_type == 1){ // soin
+    (*target)->health += wizard.stat_intel * spell.spell_value;
   }
   else{ // state modifier
     apply_state_modifier(target,spell.spell_value,true);
@@ -44,22 +44,22 @@ void apply_state_modifier(character_t **target, int value, int off_or_on){
 
 int taking_potion(character_t **player,object_t potion){ /*true if it works, otherwise false*/
   if(potion.type == 2){
-      if(potion.value <= 1){ // mana potion
+      if(potion.state <= 1){ // mana potion
         (*player)->mana += (*player)->mana_max * (potion.value / 100);
         // making sure we don't give the player too much health
         if((*player)->mana > (*player)->mana_max){
           (*player)->mana = (*player)->mana_max;
         }
       }
-      else if(potion.value <= 3){ // health potion
+      else if(potion.state <= 3){ // health potion
         (*player)->health += (*player)->health_max * (potion.value / 100);
         // making sure we don't give the player too much health
         if((*player)->health > (*player)->health_max){
           (*player)->health = (*player)->health_max;
         }
       }
-      else if(potion.value <= 3) // pheonix potion, not implemented yet
-      else if(potion.value <= 4){
+      else if(potion.state <= 3) // pheonix potion, not implemented yet
+      else if(potion.state <= 4){
         apply_state_modifier(player,potion.value,true);
       }
       else{
@@ -77,7 +77,7 @@ int is_dead(character_t *target){ /* rip :(, return true if dead else false*/
   return 0;
 }
 
-void update_tab_monster(character_t *monster_array[monster_number],int index){ /* swap monster place in an array*/
+void update_tab_monster(character_t *monster_array[],int index){ /* swap monster place in an array*/
   for(int i = index;i<monster_number-1;i++){
     monster_array[i] = monster_array[i+1];
   }
@@ -85,7 +85,7 @@ void update_tab_monster(character_t *monster_array[monster_number],int index){ /
 
 int running_away(character_t player,character_t monster){ // true => successful
   /* 15% chance to flee */
-  if((rand() % 100) / 100) < 0.15){
+  if(((rand() % 100) / 100) < 0.15){
     return true;
   }
   else{
@@ -98,7 +98,7 @@ void player_action(character_t **player,character_t * monster, inventory_t *inve
     switch(player_choice){
       case 1 : attack(player,monster);break;
       case 2 : taking_potion(player,inventory->object[selection]);break; /*not done*/
-      case 3 :
+      case 3 : break; /*not done*/
       case 4 : break;
     }
 }
