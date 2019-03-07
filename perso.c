@@ -1,10 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "perso.h"
 
-int affect_value(int val, object_t object){ /*va vérifier la valeur de l objet */
-   return val;
-}
+#include <perso.h>
 
 character_t* creation_char(){
     character_t* player=NULL;
@@ -18,9 +15,12 @@ character_t* creation_char(){
     player->level=1;
     player->health=100;
     player->mana=100;
+    player->max_health=100;       /*vie maximum que peut avoir le joueur selon son niveau*/
+    player->max_mana = 100;        /*valeur par default */
 
-    for(int i = 0;i<7;i++){
+    for(int i = 0; i<7 ;i++){
       player->state[i] = 0;
+      player->spell[i] = 0;   
     }
     player->stat_intel = 10;
     player->stat_stamina = 10;
@@ -52,70 +52,6 @@ void delete_player(character_t* player){
 
 }
 
-inventory_t create_or_delete_inventory(){
-   inventory_t inventory;
-   inventory.nb_objects =0;
-   for(int i = 0;i<30;i++){
-      inventory.object[i] = NULL;
-   }
-
-   return inventory;
-}
-
-int fill_up_inventory(inventory_t array_inventory,void* object) {
-
-   if(array_inventory.nb_objects >= 30){
-         return 0;
-   }
-   else{
-      array_inventory.object[array_inventory.nb_objects] = object;
-      array_inventory.nb_objects++;
-   }
-   return 1;
-}
-
-char* display_object(object_t object){
-
-      char* etat;
-
-      if(object.type_object ==0){      /*armure*/
-         printf("objet armure = %d\n", object.state_object);
-         switch (object.state_object) {
-
-            case 0: etat = "cloth armor"; break;
-            case 1: etat ="leather armor";  break;
-            case 2: etat ="silver armor"; break;
-            case 3: etat ="golden armor"; break;
-         }
-      }
-      else if(object.type_object ==1){ /*weapon */
-         switch (object.state_object) {
-            case 0: etat ="dagger"; break;
-            case 1: etat ="staff"; break;
-            case 2: etat ="axe"; break;
-            case 3: etat ="bow"; break;
-            case 4: etat ="sword"; break;
-         }
-      }else{
-            switch (object.state_object) {
-               case 0: etat ="mana potion"; break;
-               case 1: etat ="super mana potion"; break;
-               case 2: etat ="health potion"; break;
-               case 3: etat ="super health potion"; break;
-               case 4: etat ="phoenix potion"; break;
-               case 5: etat ="super phoenix potion"; break;
-               case 6: etat ="anti poison potion"; break;
-               case 7: etat ="anti silence potion"; break;
-               case 8: etat ="anti blind potion"; break;
-               case 9: etat ="anti silence potion"; break;
-               case 10: etat ="anti stunt potion"; break;
-               case 11: etat ="anti bleeding potion"; break;
-               case 12: etat ="speed potion"; break;
-               case 13: etat ="lucidity potion"; break;
-            }
-      }
-      return etat;
-}
 void affich(character_t* perso){
    printf("nom perso %s\n", perso->name);
    printf("xp = %d\n", perso->xp);
