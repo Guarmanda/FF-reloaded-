@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <perso.h>
+#include <objet_inventaire.h>
 
 
 int main(){

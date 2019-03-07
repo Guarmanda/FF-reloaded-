@@ -1,0 +1,74 @@
+include Makefile.compilation
+#voir si LIBMATH est necessaire plus tard
+#tests de chaque module
+#
+#test inventaire
+fichier_inventaire_test= test_inventaire.o inventaire.o
+#test_perso include perso.h qui include inventaire.h
+fichier_perso_test= test_perso.o perso.o inventaire.o
+#!!!!!!a faire plus tard !!!!!! verifier l include commun.h
+#fichier_combat_test= test_combat.o combat.o perso.o inventaire.o
+#
+#fichier principal qui englobe tous les modules
+#ajouter les autres modules au fur et à mesure
+fichier_projet_final= projet_FF.o perso.o inventaire.o
+
+#
+#	TESTS des executables
+# projet_FF à la fin
+BIN = test_inventaire test_perso projet_FF
+#on commence par l inventaire
+test_inventaire: $(fichier_inventaire_test)
+	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fichier_inventaire_test) -o test_inventaire
+test_inventaire.o : test_inventaire.c inventaire.h
+	$(CCLNK) $(CFLAGS) $(LIBMATH) test_inventaire.c -o test_inventaire.o -I./
+
+test_perso: $(fichier_perso_test)
+	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fichier_perso_test) -o test_perso
+test_perso.o : test_perso.c inventaire.h #on met inventaire car test_perso include deja perso.h
+	$(CCLNK) $(CFLAGS) $(LIBMATH) test_perso.c -o test_perso.o -I./
+#projet final
+projet_FF : $(fichier_projet_final)
+	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fichier_projet_final) -o projet_FF
+projet_FF.o : projet_FF.c inventaire.h #!!check si il faut bien celui-ci tester
+	$(CCOBJ) $(CFLAGS) $(LIBMATH) projet_FF.c -o projet_FF.o -I./
+
+#
+# Modules(objets et perso)
+#
+
+OBJ = inventaire.o perso.o
+
+inventaire.o : inventaire.c inventaire.h
+	$(CCOBJ) $(CFLAGS) $(LIBMATH) inventaire.c -o inventaire.o -I./
+
+perso.o : perso.c perso.h
+	$(CCOBJ) $(CFLAGS) $(LIBMATH) perso.c -o perso.o -I./
+
+#
+# Headers
+#
+#commun.h: outils.h
+#	touch commun.h
+
+inventaire.h : commun.h
+	touch inventaire.h
+
+perso.h : inventaire.h
+	touch perso.h
+
+#
+#
+#
+
+all : $(BIN) $(OBJ)
+
+clean :
+	- rm  *.o
+	- rm test_perso
+	- rm test_inventaire
+	- rm projet_FF
+
+tests :
+	./test_perso
+	./test_inventaire

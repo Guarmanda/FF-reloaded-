@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <perso.h>
+#include <inventaire.h>
 
 
 int main(){
-    character_t* perso = creation_char();
-    affich(perso);
-    delete_player(perso);
+   printf("hi hi\n" );
     /* inventory_t inventaire = create_or_delete_inventory();
     character_t* monster= creation_char();
     monster->level=8;
