@@ -17,6 +17,7 @@ typedef struct character_s{
   int stat_intel;
   int stat_stamina;
   enum accessories_e accessory;
+  char sex[5];
   char class_char[15];
   object_t char_armor;  /*type = 0*/
   object_t char_weapon;  /*type = 1*/
