@@ -6,9 +6,16 @@
 #include "map.h"
 #include "level_editor.h"
 #include "fonctions_sdl.h"
+#include "perso.h"
+
+
+
 
 int main(int argc, char** argv)
 {
+	//on créer le joueur, il choisira certaines de se statistiques au début de la partie
+
+	PLAYER = creation_char();
 	SDL_Window* pWindow = showWindow();
 	SDL_Renderer *renderer=SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
 	loadImages(renderer);

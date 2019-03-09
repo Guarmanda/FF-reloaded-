@@ -39,48 +39,48 @@ void showMap(SDL_Renderer * renderer, float x, float y){
         case 1:
         case 3:
         case 6:
-                drawImage(renderer, x2*125, y2*125, "map_grass.png"); break;
-        case 2: drawImage(renderer, x2*125, y2*125, "map_water.png");
-                drawImage(renderer, x2*125, y2*125, "map_grass_water.png"); break;
+                drawImage(renderer, x2*125, y2*125, "map_grass.png", 125, 125); break;
+        case 2: drawImage(renderer, x2*125, y2*125, "map_water.png", 125, 125);
+                drawImage(renderer, x2*125, y2*125, "map_grass_water.png", 125, 125); break;
         //gestion des routes et virages
-        case 4: drawImage(renderer, x2*125, y2*125, "map_path.png");
+        case 4: drawImage(renderer, x2*125, y2*125, "map_path.png", 125, 125);
                 if(map[i-1][j] == 4 && map[i+1][j]==4 && map[i][j+1]==4 && map[i][j-1]==4){
                   break;}
                 if(map[i-1][j] == 4 && map[i+1][j]==4 && map[i][j+1]==4){
-                  drawImage(renderer, x2*125, y2*125, "map_grass_path6.png");}
+                  drawImage(renderer, x2*125, y2*125, "map_grass_path6.png", 125, 125);}
                 else if(map[i-1][j] == 4 && map[i+1][j]==4 && map[i][j-1]==4){
-                  drawImage(renderer, x2*125, y2*125, "map_grass_path4.png");}
+                  drawImage(renderer, x2*125, y2*125, "map_grass_path4.png", 125, 125);}
                 else if(map[i][j-1] == 4 && map[i][j+1]==4 && map[i-1][j]==4){
-                  drawImage(renderer, x2*125, y2*125, "map_grass_path5.png");}
+                  drawImage(renderer, x2*125, y2*125, "map_grass_path5.png", 125, 125);}
                 else if(map[i][j-1] == 4 && map[i][j+1] ==4 && map[i+1][j]==4){
-                  drawImage(renderer, x2*125, y2*125, "map_grass_path3.png");}
+                  drawImage(renderer, x2*125, y2*125, "map_grass_path3.png", 125, 125);}
                 else if(map[i][j-1] == 4 && map[i][j+1]==4){
-                  drawImage(renderer, x2*125, y2*125, "map_grass_path2.png");}
+                  drawImage(renderer, x2*125, y2*125, "map_grass_path2.png", 125, 125);}
                 else if(map[i-1][j] == 4 && map[i+1][j]==4){
-                  drawImage(renderer, x2*125, y2*125, "map_grass_path1.png");}
+                  drawImage(renderer, x2*125, y2*125, "map_grass_path1.png", 125, 125);}
                 else if(map[i][j+1] == 4 && map[i+1][j]==4){
-                  drawImage(renderer, x2*125, y2*125, "map_grass_path7.png");}
+                  drawImage(renderer, x2*125, y2*125, "map_grass_path7.png", 125, 125);}
                 else if(map[i][j-1] == 4 && map[i-1][j]==4){
-                  drawImage(renderer, x2*125, y2*125, "map_grass_path9.png");}
+                  drawImage(renderer, x2*125, y2*125, "map_grass_path9.png", 125, 125);}
                 else if(map[i-1][j] == 4 && map[i][j+1]==4){
-                  drawImage(renderer, x2*125, y2*125, "map_grass_path10.png");}
+                  drawImage(renderer, x2*125, y2*125, "map_grass_path10.png", 125, 125);}
                 else if(map[i][j-1] == 4 && map[i+1][j]==4){
-                  drawImage(renderer, x2*125, y2*125, "map_grass_path8.png");}
+                  drawImage(renderer, x2*125, y2*125, "map_grass_path8.png", 125, 125);}
                 break;
       }
     }
   }
   //puis on affiche le joueur si il est aux mêmes coordonnées
-  drawImage(renderer, x_player*125+(x-(int)x), y_player*125+(y-(int)y), "player1.png");
+  drawImage(renderer, x_player*125+(x-(int)x), y_player*125+(y-(int)y), "player1.png", 60,60);
   for(int i=y-nbSpriteY/2; i<y+(nbSpriteY/2)+2;i++){
     for(int j=x-nbSpriteX/2; j<x+(nbSpriteX/2)+2; j++){
       float x2 = j-(x-nbSpriteX/2);
       float y2 = i-(y-nbSpriteY/2);
       //puis ce qui passe au dessus de lui.
       switch(map[i][j]){
-        case 1: drawImage(renderer, x2*125, y2*125, "map_tree1.png"); break;
-        case 3: drawImage(renderer, x2*125, y2*125, "map_tree2.png"); break;
-        case 6: drawImage(renderer, x2*125, y2*125, "map_house.png"); break;
+        case 1: drawImage(renderer, x2*125, y2*125, "map_tree1.png", 125, 125); break;
+        case 3: drawImage(renderer, x2*125, y2*125, "map_tree2.png", 125, 125); break;
+        case 6: drawImage(renderer, x2*125, y2*125, "map_house.png", 125, 125); break;
 
       }
     }

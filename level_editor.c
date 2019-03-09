@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <time.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
@@ -21,42 +22,44 @@ void showEditor(SDL_Renderer * renderer, SDL_Window*pWindow, float x, float y){
   showMap(renderer, x, y);
   //x_select: les coordonées du seleteur de façon à le centrer sur l'écran
   int x_select = (SCREEN_WIDTH-1200)/2;
-  drawImage(renderer, x_select, SCREEN_HEIGHT-250, "item_selector.png");
+  drawImage(renderer, x_select, SCREEN_HEIGHT-250, "item_selector.png", 1200, 150);
   SDL_RenderPresent(renderer);
-
   int running = 1;
   int selected = 1;
   while(running) {
+    //Au départ la gestion du clavier se faisait avec un event qui détectait l'appuis d'une touche
+    //mais dès que j'ai mis cette partie du code ici sans utiliser l'event, les déplacements sont devenus bien
+    //plus fluides, rapides, et surtout la latence au moment de l'appuis sur une touche a disparue
+    //(quand on restait appuyé sur une touche, le permonnage restait une seconde immobile, comme quand on écrit
+    //un caractère en continu)
+    //l'état du clavier à l'instant actuel
+    const Uint8 *state = SDL_GetKeyboardState(NULL);
+
+    //si c'est une touche de mouvement
+    if(state[SDL_SCANCODE_RIGHT] || state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_DOWN]){
+      if (state[SDL_SCANCODE_RIGHT]) x+=0.002;
+      else if (state[SDL_SCANCODE_UP]) y-=0.002;
+      else if (state[SDL_SCANCODE_DOWN]) y+=0.002;
+      else if (state[SDL_SCANCODE_LEFT]) x-=0.002;
+      if(x<0) x=0;
+      if(y<0) y=0;
+      if(x>1000) x=999;
+      if(y>1000) y=999;
+      showMap(renderer, x, y);
+      drawImage(renderer, x_select, SCREEN_HEIGHT-250, "item_selector.png", 1200, 150);
+      SDL_RenderPresent(renderer);
+    }
+
   	SDL_Event e;
   	while(SDL_PollEvent(&e)) {
   		switch(e.type) {
-        //et là, on peut bouger sur la map. \o/
+        //la gestion du clavier hors déplacements se fait ici
         case SDL_KEYDOWN:
         {
-          //l'état du clavier à l'instant actuel
-          const Uint8 *state = SDL_GetKeyboardState(NULL);
-
-          //si c'est une touche de mouvement
-          if(state[SDL_SCANCODE_RIGHT] || state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_DOWN]){
-            if (state[SDL_SCANCODE_RIGHT]) x+=0.05;
-            else if (state[SDL_SCANCODE_UP]) y-=0.05;
-            else if (state[SDL_SCANCODE_DOWN]) y+=0.05;
-            else if (state[SDL_SCANCODE_LEFT]) x-=0.05;
-            if(x<0) x=0;
-            if(y<0) y=0;
-            if(x>1000) x=999;
-            if(y>1000) y=999;
-            SDL_RenderClear(renderer);
-            showMap(renderer, x, y);
-            drawImage(renderer, x_select, SCREEN_HEIGHT-250, "item_selector.png");
-            SDL_RenderPresent(renderer);
-          }
-
           //si c'est la touche d'inventaire
           if(state[SDL_SCANCODE_I]){
             showInventory(renderer);
           }
-
           break;
         }
         case SDL_MOUSEBUTTONDOWN:
@@ -108,9 +111,8 @@ void showEditor(SDL_Renderer * renderer, SDL_Window*pWindow, float x, float y){
 
             //une fois qu'on a trouvé les bonnes coordonées on modifie la map pour l'afficher en direct
             map[h][w]= selected;
-            SDL_RenderClear(renderer);
             showMap(renderer, x, y);
-            drawImage(renderer, x_select, SCREEN_HEIGHT-250, "item_selector.png");
+            drawImage(renderer, x_select, SCREEN_HEIGHT-250, "item_selector.png", 1200, 150);
             SDL_RenderPresent(renderer);
           }
         break;

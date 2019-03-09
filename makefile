@@ -12,17 +12,23 @@ PROG=programme
 
 all: sdl_text
 
-sdl_text: fonctions_sdl.o menu_principal.o map.o menu_inventaire.o level_editor.o main.o
-	${CC} -o ${PROG} fonctions_sdl.o menu_principal.o map.o menu_inventaire.o level_editor.o main.o ${LIBS} ${INCLUDES}
+sdl_text: fonctions_sdl.o creationPerso.o menu_principal.o map.o perso.o menu_inventaire.o level_editor.o main.o
+	${CC} -o ${PROG} fonctions_sdl.o creationPerso.o menu_principal.o map.o perso.o menu_inventaire.o level_editor.o main.o ${LIBS} ${INCLUDES}
 
 fonctions_sdl.o: fonctions_sdl.c
 	${CC} -o fonctions_sdl.o -c fonctions_sdl.c ${LIBS} ${INCLUDES}
 
-menu_principal.o: menu_principal.c fonctions_sdl.h
+creationPerso.o: creationPerso.c fonctions_sdl.h
+	${CC} -o creationPerso.o -c creationPerso.c ${LIBS} ${INCLUDES}
+
+menu_principal.o: menu_principal.c fonctions_sdl.h creationPerso.h
 	${CC} -o menu_principal.o -c menu_principal.c ${LIBS} ${INCLUDES}
 
 map.o: map.c fonctions_sdl.h
 	${CC} -o map.o -c map.c ${LIBS} ${INCLUDES}
+
+perso.o: perso.c
+	${CC} -o perso.o -c perso.c ${LIBS} ${INCLUDES}
 
 menu_inventaire.o: menu_inventaire.c fonctions_sdl.h map.h
 	${CC} -o menu_inventaire.o -c menu_inventaire.c ${LIBS} ${INCLUDES}
@@ -30,7 +36,7 @@ menu_inventaire.o: menu_inventaire.c fonctions_sdl.h map.h
 level_editor.o: level_editor.c fonctions_sdl.h map.h menu_inventaire.h
 	${CC} -o level_editor.o -c level_editor.c ${LIBS} ${INCLUDES}
 
-main.o: main.c menu_principal.h map.h level_editor.h menu_inventaire.h
+main.o: main.c menu_principal.h map.h level_editor.h perso.h menu_inventaire.h
 	${CC} -o main.o -c main.c ${LIBS} ${INCLUDES}
 
 

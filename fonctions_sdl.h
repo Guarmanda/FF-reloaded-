@@ -6,10 +6,12 @@
 int SCREEN_HEIGHT;
 int SCREEN_WIDTH;
 
-void drawText (SDL_Renderer *, int , int , char *);
+void drawText (SDL_Renderer *, int , int , char *, int, int);
 
-void drawImage (SDL_Renderer *, int , int , char * );
+void drawImage (SDL_Renderer *, int , int , char *, int, int );
 
 void loadImages(SDL_Renderer *);
+
+void unloadImages();
 
 SDL_Window* showWindow();
