@@ -1,16 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <perso.h>
 
 character_t* creation_char(){
     character_t* player=NULL;
     player = malloc(sizeof(character_t));
-    printf("Insert your name : ");
-    scanf("%s", player->name);
-    printf("Choose a class for your character : \n");
-    printf("warrior, wizard, hunter, priest \n");
-    scanf("%s", player->class_char);
+    strcat(player->name , "jack");
+    strcat(player->class_char, "warrior");
+    strcat(player->sex, "man");
     player->xp=0;
     player->level=1;
     player->health=100;
