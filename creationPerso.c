@@ -4,7 +4,7 @@
 #include <string.h>
 #include "fonctions_sdl.h"
 #include "menu_principal.h"
-#include "perso.h"
+#include "creationPerso.h"
 
 #define true 1
 #define false 0

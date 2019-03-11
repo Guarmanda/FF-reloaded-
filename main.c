@@ -2,11 +2,10 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
-#include "menu_principal.h"
-#include "map.h"
-#include "level_editor.h"
-#include "fonctions_sdl.h"
-#include "perso.h"
+#include <menu_principal.h>
+#include <map.h>
+#include <fonctions_sdl.h>
+#include <creationPerso.h>
 
 
 

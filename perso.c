@@ -16,10 +16,10 @@ character_t* creation_char(){
     player->mana=100;
     player->max_health=100;       /*vie maximum que peut avoir le joueur selon son niveau*/
     player->max_mana = 100;        /*valeur par default */
-
-    for(int i = 0; i<7 ;i++){
+    int i ;
+    for(i= 0; i<7 ;i++){
       player->state[i] = 0;
-      player->spell[i] = 0;   
+      player->spell[i] = 0;
     }
     player->stat_intel = 10;
     player->stat_stamina = 10;

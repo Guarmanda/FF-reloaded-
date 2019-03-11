@@ -6,37 +6,43 @@ SDLLIB_DIR=${SDL_DIR}/lib
 SDLINC_DIR=${SDL_DIR}/include
 
 LIBS=-L${SDLLIB_DIR} -lSDL2 -lSDL2_ttf -lSDL2_image
-INCLUDES=-I${SDLINC_DIR}
+INCLUDES=-I${SDLINC_DIR} -I./
 
 PROG=programme
 
 all: sdl_text
 
-sdl_text: fonctions_sdl.o creationPerso.o menu_principal.o map.o perso.o menu_inventaire.o level_editor.o main.o
-	${CC} -o ${PROG} fonctions_sdl.o creationPerso.o menu_principal.o map.o perso.o menu_inventaire.o level_editor.o main.o ${LIBS} ${INCLUDES}
+sdl_text: fonctions_sdl.o creationPerso.o menu_principal.o map.o perso.o inventaire.o menu_inventaire.o level_editor.o main.o outils.o
+	${CC} -o ${PROG} fonctions_sdl.o creationPerso.o menu_principal.o map.o perso.o inventaire.o menu_inventaire.o level_editor.o outils.o main.o ${LIBS} ${INCLUDES}
 
-fonctions_sdl.o: fonctions_sdl.c
+fonctions_sdl.o:
 	${CC} -o fonctions_sdl.o -c fonctions_sdl.c ${LIBS} ${INCLUDES}
 
-creationPerso.o: creationPerso.c fonctions_sdl.h
-	${CC} -o creationPerso.o -c creationPerso.c ${LIBS} ${INCLUDES}
-
-menu_principal.o: menu_principal.c fonctions_sdl.h creationPerso.h
-	${CC} -o menu_principal.o -c menu_principal.c ${LIBS} ${INCLUDES}
-
-map.o: map.c fonctions_sdl.h
-	${CC} -o map.o -c map.c ${LIBS} ${INCLUDES}
-
-perso.o: perso.c
+perso.o:
 	${CC} -o perso.o -c perso.c ${LIBS} ${INCLUDES}
 
-menu_inventaire.o: menu_inventaire.c fonctions_sdl.h map.h
+creationPerso.o:
+	${CC} -o creationPerso.o -c creationPerso.c ${LIBS} ${INCLUDES}
+
+menu_principal.o:
+	${CC} -o menu_principal.o -c menu_principal.c ${LIBS} ${INCLUDES}
+
+map.o:
+	${CC} -o map.o -c map.c ${LIBS} ${INCLUDES}
+
+inventaire.o:
+	${CC} -o inventaire.o -c inventaire.c ${LIBS} ${INCLUDES}
+
+outils.o:
+	${CC} -o outils.o -c outils.c ${LIBS} ${INCLUDES}
+
+menu_inventaire.o:
 	${CC} -o menu_inventaire.o -c menu_inventaire.c ${LIBS} ${INCLUDES}
 
-level_editor.o: level_editor.c fonctions_sdl.h map.h menu_inventaire.h
+level_editor.o:
 	${CC} -o level_editor.o -c level_editor.c ${LIBS} ${INCLUDES}
 
-main.o: main.c menu_principal.h map.h level_editor.h perso.h menu_inventaire.h
+main.o: 
 	${CC} -o main.o -c main.c ${LIBS} ${INCLUDES}
 
 

@@ -4,10 +4,11 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
-#include "map.h"
-#include "fonctions_sdl.h"
-#include "menu_inventaire.h"
-#include "perso.h"
+#include <map.h>
+#include <fonctions_sdl.h>
+#include <creationPerso.h>
+#include <inventaire.h>
+
 //http://jerom-bd.blogspot.com/2013/08/tileset-fantasy-16x16.html
 
 
