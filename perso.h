@@ -3,24 +3,31 @@
 
 #include <inventaire.h>
 
+/**
+ *
+
+ \brief Structure personnage, contient le sexe, les statistiques, l'arme et armure équipé.
+
+ */
+
 typedef struct character_s{
-  char name[15];
-  int xp;
-  int level;
-  int health;
-  int mana;
-  int max_health;       /*vie maximum que peut avoir le joueur selon son niveau*/
-  int max_mana;
-  int spell[7];            /* */
-  int state[7];         /*voir possibilité de pouvoir etre sous diff states avec un tableau: blind,stunt,slow,poison,berserk,silence,bleeding*/
-  int stat_strength;
-  int stat_intel;
-  int stat_stamina;
-  enum accessories_e accessory;
-  char sex[6];
-  char class_char[15];
-  object_t char_armor;  /*type = 0*/
-  object_t char_weapon;  /*type = 1*/
+  char name[15]; /*!< Tableau de 15 caractère pour stocker le nom du joueur */
+  int xp; /*!< Représente la quantité d'experience gagné */
+  int level; /*!< Niveau du joueur */
+  int health; /*!< Vie du joueur */
+  int mana; /*!< Mana du joueur */
+  int max_health; /*!< Vie maximum du joueur */
+  int max_mana; /*!< Mana max du joueur */
+  int spell[7]; /*!< Tableau de 7 entiers represente les sorts, si 1 le sort est connu du joueur, sinon 0 */
+  int state[7]; /*!< Tableau de 7 entiers represente les etats du joueur (etourdit,empoisonne etc...), l'etat est a 1 si le joueur le subit. */
+  int stat_strength; /*!< Force du joueur */
+  int stat_intel; /*!< Intelligence du joueur */
+  int stat_stamina; /*!< Endurance du joueur */
+  enum accessories_e accessory; /*!< Represente l'accesoire du joueur */
+  char gender[6]; /*!< Tableau de caracteres, donne le genre homme ou femme */
+  char class_char[15]; /*!< Tableau de caracteres, represente la classe */
+  object_t char_armor;  /*!< Piece d'armure equipee par le joueur */
+  object_t char_weapon;  /*!< Arme equipee par le joueur */
 }character_t;
 
 character_t* creation_char();
