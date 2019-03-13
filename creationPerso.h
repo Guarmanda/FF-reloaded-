@@ -1,4 +1,4 @@
 #include <perso.h>
 
-int creerPerso(SDL_Renderer *, SDL_Window*);
+void creerPerso();
 character_t* PLAYER;

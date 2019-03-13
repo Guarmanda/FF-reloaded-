@@ -1,17 +1,31 @@
+/**
+ * \file level_editor.c
+ * \brief Editeur de carte
+ * \author Girod Valentin
+ * \date 12 mars 2019
+ *
+ * Contient l'éditeur de carte'
+ *
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_image.h>
-#include "fonctions_sdl.h"
-#include "map.h"
-#include "level_editor.h"
-#include "menu_principal.h"
-#include "menu_inventaire.h"
+#include <fonctions_sdl.h>
+#include <map.h>
+#include <menu_principal.h>
+#include <math.h>
 
-void showEditor(SDL_Renderer * renderer, SDL_Window*pWindow, float x, float y){
+static float VITESSE_PERSO = 0.05; /*!< Vitesse du personnage (plus le jeu est optimisé en mémoire vive, moins il va vite, et plus il faut augmenter cette valeur) */
+
+/**
+ * \fn void showEditor(float x, float y)
+ * \brief Gère l'édition de la map
+ * \param[in] Abscisse du début de l'édition
+ * \param[in] Ordonnée du début de l'édition
+ */
+void showEditor(float x, float y){
   //si on est à des coordonnées trop petites pour l'écran, on adapte
   int nbSpriteX = SCREEN_WIDTH/125;
   int nbSpriteY = SCREEN_HEIGHT/125;
@@ -19,10 +33,10 @@ void showEditor(SDL_Renderer * renderer, SDL_Window*pWindow, float x, float y){
   if(x-nbSpriteX/2<0) x=nbSpriteX/2;
   if(y+nbSpriteY/2+2>1000) y=999-(nbSpriteY/2+2);
   if(x+nbSpriteX/2+2>1000) x=999-(nbSpriteX/2+2);
-  showMap(renderer, x, y);
+  showMap( x, y);
   //x_select: les coordonées du seleteur de façon à le centrer sur l'écran
   int x_select = (SCREEN_WIDTH-1200)/2;
-  drawImage(renderer, x_select, SCREEN_HEIGHT-250, "item_selector.png", 1200, 150);
+  drawImage( x_select, SCREEN_HEIGHT-250, "item_selector.png", 1200, 150);
   SDL_RenderPresent(renderer);
   int running = 1;
   int selected = 1;
@@ -37,16 +51,18 @@ void showEditor(SDL_Renderer * renderer, SDL_Window*pWindow, float x, float y){
 
     //si c'est une touche de mouvement
     if(state[SDL_SCANCODE_RIGHT] || state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_DOWN]){
-      if (state[SDL_SCANCODE_RIGHT]) x+=0.002;
-      else if (state[SDL_SCANCODE_UP]) y-=0.002;
-      else if (state[SDL_SCANCODE_DOWN]) y+=0.002;
-      else if (state[SDL_SCANCODE_LEFT]) x-=0.002;
+      //on gère les colisions et la vitesse du perso
+      //on a besoin de regarder à quel endroit de la map on est et ce qu'il y a après
+      if (state[SDL_SCANCODE_RIGHT] ) x+=VITESSE_PERSO;
+      else if (state[SDL_SCANCODE_UP] ) y-=VITESSE_PERSO;
+      else if (state[SDL_SCANCODE_DOWN] ) y+=VITESSE_PERSO;
+      else if (state[SDL_SCANCODE_LEFT]) x-=VITESSE_PERSO;
       if(x<0) x=0;
       if(y<0) y=0;
       if(x>1000) x=999;
       if(y>1000) y=999;
-      showMap(renderer, x, y);
-      drawImage(renderer, x_select, SCREEN_HEIGHT-250, "item_selector.png", 1200, 150);
+      showMap( x, y);
+      drawImage( x_select, SCREEN_HEIGHT-250, "item_selector.png", 1200, 150);
       SDL_RenderPresent(renderer);
     }
 
@@ -54,14 +70,6 @@ void showEditor(SDL_Renderer * renderer, SDL_Window*pWindow, float x, float y){
   	while(SDL_PollEvent(&e)) {
   		switch(e.type) {
         //la gestion du clavier hors déplacements se fait ici
-        case SDL_KEYDOWN:
-        {
-          //si c'est la touche d'inventaire
-          if(state[SDL_SCANCODE_I]){
-            showInventory(renderer);
-          }
-          break;
-        }
         case SDL_MOUSEBUTTONDOWN:
         //quand on clique, si on clique au dessus du sélecteur, on va placer une case.
         //Sinon, on regarde si on a cliqué dans une case du sélecteur.
@@ -111,15 +119,16 @@ void showEditor(SDL_Renderer * renderer, SDL_Window*pWindow, float x, float y){
 
             //une fois qu'on a trouvé les bonnes coordonées on modifie la map pour l'afficher en direct
             map[h][w]= selected;
-            showMap(renderer, x, y);
-            drawImage(renderer, x_select, SCREEN_HEIGHT-250, "item_selector.png", 1200, 150);
+            showMap( x, y);
+            drawImage( x_select, SCREEN_HEIGHT-250, "item_selector.png", 1200, 150);
             SDL_RenderPresent(renderer);
           }
         break;
       }
       }
     }
+    SDL_Delay(5);
   }
   SDL_RenderClear(renderer);
-  showMenu(renderer, pWindow);
+  showMenu();
 }

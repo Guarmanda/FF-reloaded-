@@ -1,17 +1,26 @@
+/**
+ * \file fonctions_sdl.c
+ * \brief Fonctions de gestion SDL
+ * \author Girod Valentin
+ * \date 12 mars 2019
+ *
+ * Contient les fonctions d'affichage et de gestion de fenêtres SDL, ainsi que le chargement/déchargement des images
+ *
+ */
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
-#include "fonctions_sdl.h"
+#include <fonctions_sdl.h>
 
 
 
-int nb_images=81;
+int nb_images=82; /*!< Nombre d'images du jeu */
 
 
 //initialisation des images -> on les charge une seule fois pour économiser la ram
-SDL_Texture * images[81];
-char noms[81][50]= {
+SDL_Texture * images[82]; /*!< Tableau de texturess des images */
+char noms[82][50]= {
 //map et menu principal
 "button.png", "item_selector.png", "map_grass.png", "map_grass_path1.png", "map_grass_path2.png", "map_grass_path3.png", "map_grass_path4.png",
 "map_grass_path5.png", "map_grass_path6.png", "map_grass_path7.png", "map_grass_path8.png", "map_grass_path9.png", "map_grass_path10.png", "map_grass_water.png",
@@ -35,9 +44,14 @@ char noms[81][50]= {
 "wizard_woman_back.png", "wizard_woman_right.png", "wizard_woman_left.png", "wizard_woman_forward.png",
 "priest_man_back.png", "priest_man_right.png", "priest_man_left.png", "priest_man_forward.png",
 "priest_woman_back.png", "priest_woman_right.png", "priest_woman_left.png", "priest_woman_forward.png",
-};
+"pnj.png"
+}; /*!< Tableau des noms d'images */
 
-void loadImages(SDL_Renderer * renderer){
+/**
+ * \fn void loadImages()
+ * \brief Chargement de toutes les textures du jeu dans la mémoire
+ */
+void loadImages(){
 	for(int i=0; i<nb_images; i++){
 		char nom[50] = "./IMG/";
 		strcat(nom, noms[i]);
@@ -45,14 +59,26 @@ void loadImages(SDL_Renderer * renderer){
 	}
 }
 
+/**
+ * \fn void unloadImages()
+ * \brief Déchargement de toutes les textures du jeu
+ */
 void unloadImages(){
 	for(int i=0; i<nb_images; i++){
 		SDL_DestroyTexture(images[i]);
 	}
 }
 
-
-void drawText (SDL_Renderer * renderer, int x, int y, char * string, int h, int w){
+/**
+ * \fn void drawText(int x, int y, char * string, int h, int w)
+ * \brief Affiche du texte d'une certaine taille à des coordonnées données
+ * \param[in] Abscisse du texte
+ * \param[in] Ordonnée du texte
+ * \param[in] Contenu du texte
+ * \param[in] Hauteur du texte
+ * \param[in] Largeur du texte
+ */
+void drawText (int x, int y, char * string, int h, int w){
 	TTF_Font *police = TTF_OpenFont("editundo.ttf", 20);
 	SDL_Color couleurDoree = {204, 154, 0};
 	SDL_Surface *texte = TTF_RenderUTF8_Blended(police, string, couleurDoree);
@@ -70,7 +96,16 @@ void drawText (SDL_Renderer * renderer, int x, int y, char * string, int h, int 
 	SDL_DestroyTexture(texte_tex);
 }
 
-void drawImage (SDL_Renderer * renderer, int x, int y, char * nom, int w, int h){
+/**
+ * \fn void drawImage(int x, int y, char * nom, int w, int h)
+ * \brief Affiche une image d'une certaine taille à des coordonnées données
+ * \param[in] Abscisse de l'image
+ * \param[in] Ordonnée de l'image
+ * \param[in] Nom de l'image
+ * \param[in] Hauteur de l'image
+ * \param[in] Largeur de l'image
+ */
+void drawImage (int x, int y, char * nom, int w, int h){
 	// x et y les coordonnées,
 	SDL_Rect imgDestRect;
 	imgDestRect.x = x;
@@ -90,8 +125,11 @@ void drawImage (SDL_Renderer * renderer, int x, int y, char * nom, int w, int h)
 	//SDL_DestroyTexture(image_tex);
 }
 
-
-SDL_Window* showWindow(){
+/**
+ * \fn void showWindow()
+ * \brief Affiche la fenêtre du jeu en fonction de la tailel de l'écran, création du renderer; les dimensions de l'écran, le renderer et la fenêtre sont des variables globales
+ */
+void showWindow(){
 
 		/* Initialisation simple */
 	SDL_Init(SDL_INIT_VIDEO);
@@ -105,9 +143,10 @@ SDL_Window* showWindow(){
 	SCREEN_HEIGHT = dm.h;
 	SCREEN_WIDTH = dm.w;
 	/* Création de la fenêtre */
-	return SDL_CreateWindow("Final Fantasy: the great shity C project",SDL_WINDOWPOS_UNDEFINED,
+	pWindow = SDL_CreateWindow("Final Fantasy: the great shity C project, but not so shity finally",SDL_WINDOWPOS_UNDEFINED,
 													SDL_WINDOWPOS_UNDEFINED,
 													SCREEN_WIDTH,
 													SCREEN_HEIGHT,
 													SDL_WINDOW_SHOWN);
+	renderer=SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
 }

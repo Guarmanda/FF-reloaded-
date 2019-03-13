@@ -1,3 +1,12 @@
+/**
+ * \file menu_inventaire.c
+ * \brief Affichage de l'inventaire du joueur
+ * \author Girod Valentin
+ * \date 12 mars 2019
+ *
+ * Affichage de l'inventaire du joueur
+ *
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -9,10 +18,12 @@
 #include <creationPerso.h>
 #include <inventaire.h>
 
-//http://jerom-bd.blogspot.com/2013/08/tileset-fantasy-16x16.html
 
-
-void showInventory(SDL_Renderer * renderer){
+/**
+ * \fn void showInventory()
+ * \brief Affichage ... regardez au dessus :/
+ */
+void showInventory(){
   //la longueur des barres de vie/mana/xp est de 8.54% de l'image, suivie d'une autre barre de 8.54% de l'image d'une autre couleur pour la barre vide
   //Il faut (pour l'instant) 100xp par niveau, 100hp en tout,
   //8.54%/100 = le nombre de pixels pour 1xp
@@ -26,10 +37,10 @@ void showInventory(SDL_Renderer * renderer){
   //affichage des barres
   int W = SCREEN_WIDTH-5*SCREEN_WIDTH/100;
   int H = SCREEN_HEIGHT-5*SCREEN_HEIGHT/100;
-  drawImage(renderer, (PLAYER->health*pixels/100)-pixels+2.5*SCREEN_WIDTH/100, 0, "life_bar.png", W, H);
-  drawImage(renderer, actual_xp*pixels/100-pixels+2.5*SCREEN_WIDTH/100, 0, "xp_bar.png", W, H);
-  drawImage(renderer, PLAYER->mana*pixels/100-pixels+2.5*SCREEN_WIDTH/100, 0, "mana_bar.png", W, H);
-  drawImage(renderer, 2.5*SCREEN_WIDTH/100, 0, "inventory.png", W, H);
+  drawImage( (PLAYER->health*pixels/100)-pixels+2.5*SCREEN_WIDTH/100, 0, "life_bar.png", W, H);
+  drawImage( actual_xp*pixels/100-pixels+2.5*SCREEN_WIDTH/100, 0, "xp_bar.png", W, H);
+  drawImage( PLAYER->mana*pixels/100-pixels+2.5*SCREEN_WIDTH/100, 0, "mana_bar.png", W, H);
+  drawImage( 2.5*SCREEN_WIDTH/100, 0, "inventory.png", W, H);
 
   //le calcul du nombre de pixels pour afficher le texte suis la même logique que les pixels
 
@@ -42,7 +53,7 @@ void showInventory(SDL_Renderer * renderer){
   float PxTextXlevel = ((SCREEN_WIDTH/100)*47);
   float PxTextYlevel = ((SCREEN_WIDTH/100)*2.8);
   sprintf(num,"%d",PLAYER->level);
-  drawText(renderer, PxTextXlevel, PxTextYlevel, num, textH, textW);
+  drawText( PxTextXlevel, PxTextYlevel, num, textH, textW);
 
 
   float PxTextXActuel = ((SCREEN_WIDTH/100)*35.1); //X ne change pas pour les 3 premier nombres
@@ -52,31 +63,31 @@ void showInventory(SDL_Renderer * renderer){
 
   //affichage des valeurs des barres
   sprintf(num,"%d",PLAYER->health);
-  drawText(renderer, PxTextXActuel, PxTextYVie, num, textH, textW);
+  drawText( PxTextXActuel, PxTextYVie, num, textH, textW);
   sprintf(num,"%d",actual_xp);
-  drawText(renderer, PxTextXActuel, PxTextYXP, num, textH, textW);
+  drawText( PxTextXActuel, PxTextYXP, num, textH, textW);
   sprintf(num,"%d",PLAYER->mana);
-  drawText(renderer, PxTextXActuel, PxTextYMana, num, textH, textW);
+  drawText( PxTextXActuel, PxTextYMana, num, textH, textW);
 
   PxTextXActuel = ((SCREEN_WIDTH/100)*47); //on redéfinit X pour les 3 autres nombres, y ne change pas
 
   //affichage des valeurs max des barres
-  drawText(renderer, PxTextXActuel, PxTextYVie, "100", textH, textW);
-  drawText(renderer, PxTextXActuel, PxTextYXP, "100", textH, textW);
-  drawText(renderer, PxTextXActuel, PxTextYMana, "100", textH, textW);
+  drawText( PxTextXActuel, PxTextYVie, "100", textH, textW);
+  drawText( PxTextXActuel, PxTextYXP, "100", textH, textW);
+  drawText( PxTextXActuel, PxTextYMana, "100", textH, textW);
 
   //affichage des items équipés
   //Les images des items ont les mêmes noms que les items eux-même, cela facilite leur affichage graçe à la fonction
   //display_object dans perso.c
-  drawImage(renderer, (SCREEN_WIDTH/100)*75.75, (SCREEN_HEIGHT/100)*37, display_object(PLAYER->char_armor), 110, 110);
-  drawImage(renderer, (SCREEN_WIDTH/100)*60.75, (SCREEN_HEIGHT/100)*37, display_object(PLAYER->char_weapon), 110, 110);
+  drawImage( (SCREEN_WIDTH/100)*75.75, (SCREEN_HEIGHT/100)*37, display_object(PLAYER->char_armor), 110, 110);
+  drawImage( (SCREEN_WIDTH/100)*60.75, (SCREEN_HEIGHT/100)*37, display_object(PLAYER->char_weapon), 110, 110);
 
   //affichage de l'accessoire
   char accessory[20];
   if(PLAYER->accessory==green_amulet) sprintf(accessory, "%s", "green amulet");
   if(PLAYER->accessory==ruby_ring) sprintf(accessory, "%s", "ruby ring");
   if(PLAYER->accessory==crystal_ring) sprintf(accessory, "%s", "crystal ring");
-  drawImage(renderer, (SCREEN_WIDTH/100)*60.75, (SCREEN_HEIGHT/100)*9, accessory, 110, 110);
+  drawImage( (SCREEN_WIDTH/100)*60.75, (SCREEN_HEIGHT/100)*9, accessory, 110, 110);
 
   SDL_RenderPresent(renderer);
 
@@ -112,7 +123,7 @@ void showInventory(SDL_Renderer * renderer){
     }
   }
   SDL_RenderClear(renderer);
-  showMap(renderer, X, Y);
+  showMap( X, Y);
   SDL_RenderPresent(renderer);
 
 }

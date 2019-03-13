@@ -1,11 +1,20 @@
+/**
+ * \file main.c
+ * \brief Main
+ * \author Papot Alexandre, Girod Valentin
+ * \date 12 mars 2019
+ *
+ * Démmarre le jeu
+ *
+ */
 #include <stdio.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_image.h>
 #include <menu_principal.h>
 #include <map.h>
 #include <fonctions_sdl.h>
 #include <creationPerso.h>
+#include <quete.h>
+
+
 
 /**
  * \fn int main(int argc, char** argv)
@@ -15,17 +24,16 @@
  * \param[in] Arguments du main
  * \return 0
  */
-
-int main(int argc, char** argv){
-	//on créer le joueur, il choisira certaines de se statistiques au début de la partie
+int main(int argc, char** argv)
+{
+	//on créer le joueur, il choisira certaines de ses statistiques au début de la partie
 
 	PLAYER = creation_char();
-	SDL_Window* pWindow = showWindow();
-	SDL_Renderer *renderer=SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
-	loadImages(renderer);
+	showWindow();
+	loadImages();
+	charger_quetes();
 	//showMenu(renderer, pWindow);
-	//setRandomMap();
 	loadMap("Map.txt");
-	showMenu(renderer, pWindow);
+	showMenu();
     return 0;
 }

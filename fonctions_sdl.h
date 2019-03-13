@@ -1,17 +1,12 @@
-#include <stdio.h>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_image.h>
 
-int SCREEN_HEIGHT;
-int SCREEN_WIDTH;
+int SCREEN_HEIGHT; /*!< Hauteur de l'écran en pixels */
+int SCREEN_WIDTH; /*!< Largeur de l'écran en pixels */
+SDL_Window*pWindow; /*!< Poiteur sur la fenêtre de jeu */
+SDL_Renderer*renderer; /*!< Pointeur sur l'état du rendu */
 
-void drawText (SDL_Renderer *, int , int , char *, int, int);
-
-void drawImage (SDL_Renderer *, int , int , char *, int, int );
-
-void loadImages(SDL_Renderer *);
-
+void drawText (int , int , char *, int, int);
+void drawImage (int , int , char *, int, int );
+void loadImages();
 void unloadImages();
-
-SDL_Window* showWindow();
+void showWindow();
