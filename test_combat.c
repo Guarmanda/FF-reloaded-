@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <perso.h>
+#include <combat.h>
 
 int main(){
     character_t* perso = creation_char();

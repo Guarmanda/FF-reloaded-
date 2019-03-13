@@ -7,9 +7,13 @@
 character_t* creation_char(){
     character_t* player=NULL;
     player = malloc(sizeof(character_t));
-    strcat(player->name , "jack");
-    strcat(player->class_char, "warrior");
-    strcat(player->sex, "man");
+
+    printf("Insert your name : ");
+    scanf("%s", player->name);
+    printf("Choose a class for your character : \n");
+    printf("warrior, wizard, hunter, priest \n");
+    scanf("%s", player->class_char);
+
     player->xp=0;
     player->level=1;
     player->health=100;
@@ -17,6 +21,7 @@ character_t* creation_char(){
     player->max_health=100;       /*vie maximum que peut avoir le joueur selon son niveau*/
     player->max_mana = 100;        /*valeur par default */
     int i ;
+
     for(i= 0; i<7 ;i++){
       player->state[i] = 0;
       player->spell[i] = 0;
@@ -24,23 +29,13 @@ character_t* creation_char(){
     player->stat_intel = 10;
     player->stat_stamina = 10;
     player->stat_strength = 10;
-    player->accessory=green_amulet;                  /*green_amulet = 0*/
+    player->accessory=  green_amulet;                  /*green_amulet = 0*/
     player->char_armor.type_object = 0;   /*armure*/
     player->char_armor.state_object=0;   /*cloth*/
-
-    player->char_weapon.type_object = 1; /*armure*/
-    player->char_weapon.state_object=0;   /*dagger*/
+    player->char_weapon.type_object = 1; /*arme*/
+    player->char_weapon.state_object= 0;   /*dagger*/
+    player->char_weapon.value_object= 30; 
     return player;
-}
-
-void levelling(character_t* player, character_t monster){
-         /*à priori le nb de monstres est variables (nb param variables)*/
-      int cap_xp = 50;
-      int cap_reward = 50;
-      player->xp += cap_xp * monster.level;
-      if(player->xp >= (cap_reward * player->level)){
-         player->level++;
-      }
 }
 
 void delete_player(character_t* player){
@@ -48,7 +43,6 @@ void delete_player(character_t* player){
       free(player);
       player=NULL;
    }
-
 }
 
 void affich(character_t* perso){

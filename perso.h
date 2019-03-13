@@ -4,7 +4,7 @@
 #include <inventaire.h>
 
 typedef struct character_s{
-  char name[15];
+  char name[40];
   int xp;
   int level;
   int health;
@@ -17,7 +17,6 @@ typedef struct character_s{
   int stat_intel;
   int stat_stamina;
   enum accessories_e accessory;
-  char sex[6];
   char class_char[15];
   object_t char_armor;  /*type = 0*/
   object_t char_weapon;  /*type = 1*/
@@ -25,7 +24,7 @@ typedef struct character_s{
 
 character_t* creation_char();
 void delete_player(character_t* player);
-void levelling(character_t* player, character_t monster);
+/*void levelling(character_t* player, character_t monster);*/
 void affich(character_t* perso); /*fonction d'affichage des details du joueur*/
 
 /*--- combat monstre

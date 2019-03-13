@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 /*commande github pour push*/
 #include <outils.h>
+
 /* Definition du type booleen */
 typedef enum booleen_s { FAUX , VRAI } booleen_t ;
 

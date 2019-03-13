@@ -18,7 +18,7 @@ enum accessories_e {
 
 typedef struct inventory_s{
     int nb_objects;
-    object_t * object[30];
+    object_t * object[30];    /*voir si il faut delete*/
 }inventory_t;
 
 /*creation des objets*/
@@ -29,8 +29,8 @@ int loot_type(int level);
 int loot_state(int type,int level);
 int loot_value(int type, int state);
 /*manipulation des objets et insertion dans l inventaire*/
-inventory_t create_or_delete_inventory();
-int fill_up_inventory(inventory_t array_inventory,object_t* object);
+inventory_t* create_or_delete_inventory();
+int fill_up_inventory(inventory_t* inventory,object_t* object);
 /*affichage */
 char* display_object(object_t object);
 #endif

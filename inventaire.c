@@ -27,6 +27,7 @@ int loot_type(int level){        /*si niv 10*/
        return 1;            /* weapon*/
      }else{
        return 2;        /* potion a 70% d etre lootée */
+
      }
 }
 
@@ -73,25 +74,25 @@ int loot_value(int type, int state){
   return -1;   /*code d erreur*/
 }
 
-inventory_t create_or_delete_inventory(){
-   inventory_t inventory;
-   inventory.nb_objects =0;
+inventory_t* create_or_delete_inventory(){
+   inventory_t* inventaire_partie= malloc(sizeof (inventory_t));
+   inventaire_partie->nb_objects =0;
    int i;
    for( i = 0; i<30; i++){
-      inventory.object[i] = NULL;
+      inventaire_partie->object[i] = NULL;
    }
 
-   return inventory;
+   return inventaire_partie;
 }
 /*ajout d un objet dans l inventaire*/
-int fill_up_inventory(inventory_t array_inventory,object_t* object) {
+int fill_up_inventory(inventory_t* inventory,object_t* object) {
 
-   if(array_inventory.nb_objects >= 30){ /*si c est plein, on renvoie 0  car on peut pas faire un overbook*/
+   if(inventory->nb_objects >= 30){ /*si c est plein, on renvoie 0  car on peut pas faire un overbook*/
          return 0;
    }
    else{
-      array_inventory.object[array_inventory.nb_objects] = object;
-      array_inventory.nb_objects++;
+      inventory->object[inventory->nb_objects] = object;
+      inventory->nb_objects++;
    }
    return 1;
 }

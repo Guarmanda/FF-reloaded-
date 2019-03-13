@@ -1,5 +1,5 @@
 include Makefile.compilation
-
+#make file pour les tests
 
 fichier_inventaire_test=test_inventaire.o inventaire.o
 fichier_perso_test=test_perso.o perso.o inventaire.o
