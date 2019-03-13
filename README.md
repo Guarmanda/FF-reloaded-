@@ -18,13 +18,13 @@ create typedef enum for armors/weapons/potions etc (pointer on maximum 30 object
   
 
 2 - Valentin Grirod: menu/interface  
-  SDL, switch, welcome menu, fighting menu, inventory menu, dialogue window , 
+  SDL, switch, welcome menu, fighting menu, inventory menu, dialogue window , quests
 
 3 - Alexandre Papot / Nathalie Karman / Valentin: map
   matrice (two, display and threat level), monster type (coordinate), random fight
 
-4 - Nathalie Karman / Alexandre Papot: quests (game goal)
-  char*
+4 - Nathalie Karman / Alexandre Papot: game goal
+  
 
 5 - Nathalie Karman / Alexandre Papot: monsters/combats
   bestiary (class ?)
