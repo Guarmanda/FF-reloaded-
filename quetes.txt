@@ -1,2 +1,2 @@
-pnj_x=502,pnj_y=504,"Pouvez-vous récupérer mon épée dans le labyrinthe?",but_x=512,but_y=545,"sword.png","Merci, c'est très aimable à vous!",xp=30;
+pnj_x=502,pnj_y=504,"Pouvez-vous récupérer mon épée dans le labyrinthe?",but_x=502,but_y=510,"sword.png","Merci, c'est très aimable à vous!",xp=30;
 pnj_x=490,pnj_y=503,"Ma mère s'est perdue, pouvez-vous la retrouver?",but_x=500,but_y=545,"priest_woman_back.png","Merci, c'est très aimable à vous!",xp=60;
