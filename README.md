@@ -2,6 +2,8 @@
 
 Installation: download everything, execute the command "export  LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./SDL2/lib", execute "make" if needed, then run that shity game
 
+Doxygen : http://info.univ-lemans.fr/~s171510/index.html
+
 A final-fantasy-like 2d game by Nathalie Karman, Alexandre Papot, Valentin Girod
 
 Tasks:
