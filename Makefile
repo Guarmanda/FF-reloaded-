@@ -4,6 +4,7 @@ include Makefile.compilation
 fichier_inventaire_test=test_inventaire.o inventaire.o
 fichier_perso_test=test_perso.o perso.o inventaire.o
 
+
 fichier_projet_FF= projet_FF.o perso.o inventaire.o
 #
 # Tests (executables+objets)
@@ -21,6 +22,8 @@ test_perso : $(fichier_perso_test)
 test_perso.o : test_perso.c inventaire.h
 	$(CCOBJ) $(CFLAGS) $(LIBMATH) test_perso.c -o test_perso.o -I./
 
+test_combat :
+
 projet_FF : $(fichier_projet_FF)
 	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fichier_projet_FF) -o projet_FF
 projet_FF.o : projet_FF.c inventaire.h	#voir si il faut changer le .h plus tard !!!!
@@ -36,6 +39,8 @@ inventaire.o : inventaire.c inventaire.h
 
 perso.o : perso.c perso.h
 	$(CCOBJ) $(CFLAGS) $(LIBMATH) perso.c -o perso.o -I./
+
+
 
 #
 # Headers
