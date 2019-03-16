@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
+
 #include <inventaire.h>
 
 object_t* create_object(int level){ /*va vérifier la valeur de l objet */

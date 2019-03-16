@@ -1,7 +1,8 @@
 #ifndef _INVENTAIRE_H_
 #define _INVENTAIRE_H_
 
-#include "commun.h"
+#include <commun.h>
+
 /*#include <>*/
 typedef struct object_s{
   int type_object; /* 0= armure, 1=weapon, 2= potion*/

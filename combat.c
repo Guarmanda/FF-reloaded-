@@ -103,13 +103,13 @@ character_t* monster_creation(int level){
 
 /*-------------------------------------------------------------*/
 void casting_spell(character_t* wizard,character_t **target, spell_t spell){
-  if(spell.spell_type == 0){ // offensif
+  if(spell.spell_type == 0){ /* offensif*/
     (*target)->health -= wizard->stat_intel * spell.spell_value;
   }
-  else if(spell.spell_type == 1){ // soin
+  else if(spell.spell_type == 1){ /* soin*/
     (*target)->health += wizard->stat_intel * spell.spell_value;
   }
-  else{ // state modifier
+  else{ /* state modifier*/
     apply_state_modifier(target,spell.spell_value,VRAI);
   }
 }
@@ -193,7 +193,7 @@ void update_tab_monster(character_t *monster_array[],int index, int nb_monstre){
   }
 }
 
-int running_away(character_t player,character_t monster){ // true => successful
+int running_away(character_t player,character_t monster){ /* true => successful*/
   /* 15% chance to flee */
   if(((rand() % 100) / 100) < 0.15){
     return VRAI;
@@ -237,7 +237,6 @@ void player_action(character_t **player, character_t ** monster, inventory_t *in
 int begin_fight(character_t **player, inventory_t* inventory){ /* return true if the player win, else false, -1 if you flee*/
   /* display fight scene */
   /* generating monster */
-  int X=20, Y=20; /*valeurs arbitraires pour tests!!*/
 
   int monster_number = rand() % 4 + 1; /*nb de monstre qui fera partie du combat*/
   printf("il y a %d monstres\n",monster_number );

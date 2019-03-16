@@ -28,5 +28,12 @@ create typedef enum for armors/weapons/potions etc (pointer on maximum 30 object
 
 5 - Nathalie Karman / Alexandre Papot: monsters/combats
   bestiary (class ?)
+
+commandes GIT:
+git clone --single-branch --branch version_terminal https://github.com/Guarmanda/FF-reloaded-.git
+
+git config --add user.email "addresse@domaine.fr"
+
+git commit -m "Suppression des fichiers SDL"
   
-  
+
