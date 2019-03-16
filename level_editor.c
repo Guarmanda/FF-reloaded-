@@ -1,7 +1,7 @@
 /**
  * \file level_editor.c
  * \brief Editeur de carte
- * \author Girod Valentin
+ * \author Karman Nathalie; Papot Alexandre; Girod Valentin
  * \date 12 mars 2019
  *
  * Contient l'éditeur de carte'

@@ -1,7 +1,7 @@
 /**
  * \file game.c
  * \brief Fonction principale du jeu
- * \author Girod Valentin
+ * \author Karman Nathalie; Papot Alexandre; Girod Valentin
  * \date 12 mars 2019
  *
  * Contient le loop du jeu

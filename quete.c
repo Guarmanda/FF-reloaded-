@@ -1,7 +1,7 @@
 /**
  * \file quetes.c
  * \brief Chargement, gestion et affichage des quêtes
- * \author Girod Valentin
+ * \author Karman Nathalie; Papot Alexandre; Girod Valentin
  * \date 12 mars 2019
  *
  * Contient les fonctions de chargement, gestion et affichage des quêtes
@@ -21,27 +21,27 @@
  */
 void afficher_quetes(){
   //on a besoin du nombre de sprites affichables
-  float nbSpriteX = SCREEN_WIDTH/125;
-  float nbSpriteY = SCREEN_HEIGHT/125;
+  float nbSpriteX = (SCREEN_WIDTH/125)/2;
+  float nbSpriteY = (SCREEN_HEIGHT/125)/2;
   for(int i=0; i<100 && quetes[i] != NULL; i++){
       //si on peut afficher le perso de début de quête, on le fait
       //printf("x:%.1f y:%.1f\n", quetes[i]->pnj_x-X, nbSpriteX/2);
-    if(fabs(quetes[i]->pnj_x-X) <= nbSpriteX/2 && fabs(quetes[i]->pnj_y-Y) <= nbSpriteY/2 ){
+    if(fabs(quetes[i]->pnj_x-X) <= nbSpriteX && fabs(quetes[i]->pnj_y-Y) <= nbSpriteY ){
       //on reprends le calcul de la map pour les coordonnées du pnj en pixels
-      int pnj_x = (quetes[i]->pnj_x-(X-nbSpriteX/2))*125;
-      int pnj_y = (quetes[i]->pnj_y-(Y-nbSpriteY/2))*125;
+      int pnj_x = (quetes[i]->pnj_x-(X-nbSpriteX))*125;
+      int pnj_y = (quetes[i]->pnj_y-(Y-nbSpriteY))*125;
       drawImage( pnj_x, pnj_y, "pnj.png", 60, 60);
     }
     //meme chose pour le but d'une quête, mais le statut de la quête doit être 1
-    if(abs((int)(quetes[i]->but_x-X)) <= nbSpriteX/2 && abs((int)(quetes[i]->but_y-Y)) <= nbSpriteY/2 && quetes[i]->statut ==1){
-      int but_x = (quetes[i]->but_x-(X-nbSpriteX/2))*125;
-      int but_y = (quetes[i]->but_y-(Y-nbSpriteY/2))*125;
+    if(abs((int)(quetes[i]->but_x-X)) <= nbSpriteX && abs((int)(quetes[i]->but_y-Y)) <= nbSpriteY && quetes[i]->statut ==1){
+      int but_x = (quetes[i]->but_x-(X-nbSpriteX))*125;
+      int but_y = (quetes[i]->but_y-(Y-nbSpriteY))*125;
       drawImage( but_x, but_y, quetes[i]->nom_img, 60, 60);
     }
     //si un joueur croise un pnj (si la distance entre les deux est inférieure à 1)
     if(fabs(quetes[i]->pnj_x-X) <= 1 && fabs(quetes[i]->pnj_y-Y) <= 1 ){
-      int pnj_x = (quetes[i]->pnj_x-(X-nbSpriteX/2))*125;
-      int pnj_y = (quetes[i]->pnj_y-(Y-nbSpriteY/2))*125;
+      int pnj_x = (quetes[i]->pnj_x-(X-nbSpriteX))*125;
+      int pnj_y = (quetes[i]->pnj_y-(Y-nbSpriteY))*125;
       //si la quête commence, on affiche le message de début
       if(quetes[i]->statut < 2){
         if(quetes[i]->statut == 0) quetes[i]->statut = 1;

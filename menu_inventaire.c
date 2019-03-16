@@ -1,7 +1,7 @@
 /**
  * \file menu_inventaire.c
  * \brief Affichage de l'inventaire du joueur
- * \author Girod Valentin
+ * \author Karman Nathalie; Papot Alexandre; Girod Valentin
  * \date 12 mars 2019
  *
  * Affichage de l'inventaire du joueur

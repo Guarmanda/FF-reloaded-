@@ -1,7 +1,7 @@
 /**
  * \file menu_principal.c
  * \brief Menu principal du jeu
- * \author Girod Valentin
+ * \author Karman Nathalie; Papot Alexandre; Girod Valentin
  * \date 12 mars 2019
  *
  * Menu principal

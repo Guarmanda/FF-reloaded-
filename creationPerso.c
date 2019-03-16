@@ -1,7 +1,7 @@
 /**
  * \file creationPerso.c
  * \brief Fonctions d'éditions du personnage
- * \author Girod Valentin
+ * \author Karman Nathalie; Papot Alexandre; Girod Valentin
  * \date 12 mars 2019
  *
  * Contient l'affichage et la gestion du menu d'édition du personnage
