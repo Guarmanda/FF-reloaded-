@@ -32,8 +32,8 @@ void showInventory(){
 
   float pixels = ((SCREEN_WIDTH/100)*95/100*8.54);
   //calcul du nombre d'xp du niveau actuel:
-  int actual_xp = 100-PLAYER->level*100-PLAYER->xp;
-
+  //int actual_xp = 100-PLAYER->level*100-PLAYER->xp;
+  int actual_xp=PLAYER->xp;
   //affichage des barres
   int W = SCREEN_WIDTH-5*SCREEN_WIDTH/100;
   int H = SCREEN_HEIGHT-5*SCREEN_HEIGHT/100;

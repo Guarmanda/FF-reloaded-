@@ -15,12 +15,15 @@
 
 
 
-int nb_images=82; /*!< Nombre d'images du jeu */
-
+int nb_images=83; /*!< Nombre d'images du jeu */
+//police de caractères
+TTF_Font *police;
+//couleur principale du jeu
+SDL_Color couleurDoree = {204, 154, 0};
 
 //initialisation des images -> on les charge une seule fois pour économiser la ram
-SDL_Texture * images[82]; /*!< Tableau de texturess des images */
-char noms[82][50]= {
+SDL_Texture * images[83]; /*!< Tableau de texturess des images */
+char noms[83][50]= {
 //map et menu principal
 "button.png", "item_selector.png", "map_grass.png", "map_grass_path1.png", "map_grass_path2.png", "map_grass_path3.png", "map_grass_path4.png",
 "map_grass_path5.png", "map_grass_path6.png", "map_grass_path7.png", "map_grass_path8.png", "map_grass_path9.png", "map_grass_path10.png", "map_grass_water.png",
@@ -44,7 +47,7 @@ char noms[82][50]= {
 "wizard_woman_back.png", "wizard_woman_right.png", "wizard_woman_left.png", "wizard_woman_forward.png",
 "priest_man_back.png", "priest_man_right.png", "priest_man_left.png", "priest_man_forward.png",
 "priest_woman_back.png", "priest_woman_right.png", "priest_woman_left.png", "priest_woman_forward.png",
-"pnj.png"
+"pnj.png", "bulle.png"
 }; /*!< Tableau des noms d'images */
 
 /**
@@ -79,11 +82,9 @@ void unloadImages(){
  * \param[in] Largeur du texte
  */
 void drawText (int x, int y, char * string, int h, int w){
-	TTF_Font *police = TTF_OpenFont("editundo.ttf", 20);
-	SDL_Color couleurDoree = {204, 154, 0};
 	SDL_Surface *texte = TTF_RenderUTF8_Blended(police, string, couleurDoree);
 
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_Texture *texte_tex = SDL_CreateTextureFromSurface(renderer, texte);
 	SDL_FreeSurface(texte); /* on a la texture, plus besoin du texte */
 	/* Position ou sera mis le texte dans la fenêtre */
@@ -139,7 +140,7 @@ void showWindow(){
 	//mieux adapter chaque élément de l'affichage dans les autres fonctions
 	SDL_DisplayMode dm;
 	SDL_GetCurrentDisplayMode(0, &dm);
-
+	police = TTF_OpenFont("editundo.ttf", 20);
 	SCREEN_HEIGHT = dm.h;
 	SCREEN_WIDTH = dm.w;
 	/* Création de la fenêtre */
