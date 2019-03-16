@@ -5,6 +5,7 @@
 
 #define map_size_x 1000
 #define map_size_y 1000
+
 typedef struct spell_s{
   char spell_name[30];
   int spell_type; /* 0 = offensif/ 1 = defensif/ 2 = state modifier*/

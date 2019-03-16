@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include <perso.h>
 
@@ -34,7 +31,7 @@ character_t* creation_char(){
     player->char_armor.state_object=0;   /*cloth*/
     player->char_weapon.type_object = 1; /*arme*/
     player->char_weapon.state_object= 0;   /*dagger*/
-    player->char_weapon.value_object= 30; 
+    player->char_weapon.value_object= 30;
     return player;
 }
 

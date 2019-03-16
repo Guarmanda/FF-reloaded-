@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 /* Constantes */
 
 #define TAILLE_STR 32 /*taille par défaut des chaines de char */
@@ -21,6 +22,8 @@ typedef int err_t ;
 #define OK 0
 #define ERR_DEB_MEMOIRE -100
 #define ERR_LISTE_IND_ELEM  -200
+
+
 
 
 
