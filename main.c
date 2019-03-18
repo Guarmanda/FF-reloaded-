@@ -15,7 +15,6 @@
 #include <quete.h>
 
 
-
 /**
  * \fn int main(int argc, char** argv)
  * \brief Main du programme.
@@ -27,10 +26,18 @@
 int main(int argc, char** argv)
 {
 	//on créer le joueur, il choisira certaines de ses statistiques au début de la partie
-
+	AFFICHAGE = 1;
+	for(int i = 0; i< argc; i++){
+		printf("%s\n", argv[i]);
+	}
+	if(argc == 2 && strcmp(argv[1], "-terminal") == 0){
+		AFFICHAGE = 0;
+	}
+	else{
+		showWindow();
+		loadImages();
+	}
 	PLAYER = creation_char();
-	showWindow();
-	loadImages();
 	charger_quetes();
 	//showMenu(renderer, pWindow);
 	loadMap("Map.txt");
