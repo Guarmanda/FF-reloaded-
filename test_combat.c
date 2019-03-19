@@ -7,8 +7,6 @@
 int main(){
    character_t* joueur= creation_char();
 
-   character_t* monstre= monster_creation(1);   /*niveau 1*/
-
    inventory_t* inventaire= create_or_delete_inventory();
    object_t* object=create_object(1);
    printf("vous avez comme objet :\n" );

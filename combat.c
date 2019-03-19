@@ -3,7 +3,9 @@
 
 #include <combat.h>
 
+
 /*partie des tests de l inventaire*/
+
 
 char* allocating_monster_name(int level){
      int randomizer = 0;
@@ -114,25 +116,12 @@ void casting_spell(character_t* wizard,character_t **target, spell_t spell){
   }
 }
 
-/* t_chance = pourcentage contenu dans une matrice (niveau de menace)*/
-/*fonction qui va etre appelée à chaque combat*/
-void fight_rand(int fight_chance,character_t **player, inventory_t inventaire){
-   int trap=( rand() % 100 + 1 );
-   printf("on est en combat et trap = %d\n", trap);
-
-   if(trap <= fight_chance){
-
-      begin_fight(player,&inventaire);   /*inventaire va etre modifié si le joueur veut accéder à ses potions et autres*/
-
-   }else
-      printf("il l' a echappée belle! ;)\n");
-}
 
 void attack(character_t* attacker,character_t **target){
    printf("%s attaque %s ...\n",attacker->name,(*target)->name);
-  int degat=(attacker->stat_strength) * (attacker->char_weapon.value_object);
-  ((*target)->health) -= degat;
-  printf("%d de dégats causés à %s  \n", degat,(*target)->name);
+   int degat = (attacker->stat_strength) * (attacker->char_weapon.value_object);
+   ((*target)->health) -= degat;
+   printf("%d de dégats causés à %s  \n", degat,(*target)->name);
 }
 
 void apply_state_modifier(character_t **target, int value, int off_or_on){
@@ -187,9 +176,11 @@ int is_dead(character_t *target){ /* rip :(*/
 }
 
 void update_tab_monster(character_t *monster_array[],int index, int nb_monstre){ /* swap monster place in an array*/
-  int i;
-  for( i = index ;i < nb_monstre ;i++){ /* -1 pour monsternumber?*/
-    monster_array[i] = monster_array[i+1];
+
+  for( ; index < nb_monstre ; index++){
+
+    *monster_array[index] = *monster_array[index+1];
+
   }
 }
 
@@ -234,41 +225,67 @@ void player_action(character_t **player, character_t ** monster, inventory_t *in
 
 }
 
-int begin_fight(character_t **player, inventory_t* inventory){ /* return true if the player win, else false, -1 if you flee*/
+/* t_chance = pourcentage contenu dans une matrice (niveau de menace)*/
+/*fonction qui va etre appelée à chaque combat*/
+void fight_rand(int fight_chance,character_t **player, inventory_t inventaire){
+   int trap=( rand() % 100 + 1 );
+
+   int etat_combat;
+   int xp_fight=0;
+   if(trap <= fight_chance){
+      printf("its a trap ==> %d\n", trap);
+      etat_combat=begin_fight(player,&inventaire,&xp_fight);   /*inventaire va etre modifié si le joueur veut accéder à ses potions et autres*/
+
+   }else
+      printf("il l' a echappée belle! ;)\n");
+
+   if(etat_combat)
+         (*player)->xp = xp_fight;
+   else{
+      printf("GAME OVER...\n");
+   }
+
+}
+int begin_fight(character_t **player, inventory_t* inventory, int* xp_temp){ /* return true if the player win, else false, -1 if you flee*/
   /* display fight scene */
   /* generating monster */
 
-  int monster_number = rand() % 4 + 1; /*nb de monstre qui fera partie du combat*/
-  printf("il y a %d monstres\n",monster_number );
-  character_t * monster[monster_number];   /*tableau de monstre généré*/
+   int monster_number = rand() % 4 + 1; /*nb de monstre qui fera partie du combat*/
+   printf("il y a %d monstres\n",monster_number );
 
-    int i;
-    for( i = 0; i < monster_number;i++){
+   character_t * monster[monster_number];   /*tableau de monstre généré*/
+
+   int i;
+   for( i = 0; i < monster_number;i++){
       monster[i] = monster_creation(1);  /*faut mettre le niveau */
-      printf("monstre %d ...\n",i+1 );
+      printf("\n\nmonstre  %d ==>",i+1 );
       affich(monster[i]);
-    }
+   }
 
-    do{
+   do{
       /*Insert player action*/
-      for( i = 0; i < monster_number;i++){
-        printf("%s\n", monster[i]->name);
-      }
+
       int choix_j;
       printf("choisir quel monstre frappey\n" );
       scanf("%d",&choix_j );
-      printf("monstre %s choisi \n", monster[choix_j-1]->name);
+      printf("monstre %s choisi\n", monster[choix_j-1]->name);
+      /*affich(monster[choix_j-1]);*/
       player_action(player,& (monster[choix_j-1]),inventory);  /*appel pour un coup du joueur*/
-      printf("etat du monstre après tour \n");
-      affich(monster[choix_j-1]);
+      printf("vie du monstre après tour");
+
       /* checking if monsters are dead */
-      for( i = 0;i<monster_number;i++){
+      for( i = 0; i < monster_number; i++){
+
           if(is_dead (monster[i]) ){
-            update_tab_monster(monster,i,monster_number);
-            free(monster[monster_number]);  /*delete player = monstre (appeler la fonction qui delete le joueur)*/
+
+            (*xp_temp)+=xp_points((*player),*monster[i]); /*ajout des points d experience au joueur*/
+
+            update_tab_monster(monster ,i , monster_number);
+            printf("i %d\n",i );
+            delete_player(&monster[monster_number-1]);
             monster_number--;
           }
-        }
+       }
 
       /*Insert monster(s) action(s), at the moment attack only*/
 
@@ -276,22 +293,28 @@ int begin_fight(character_t **player, inventory_t* inventory){ /* return true if
 
          attack(monster[i],player);
       }
-    }while(!is_dead(*player) && monster_number > 0);
+   }while(!is_dead(*player) && monster_number > 0);
 
-    if(is_dead(*player)){
+   if(is_dead(*player)){             /*fin du combat*/
       return FAUX;
-    }
-    else{
+   }
+   else{
       return VRAI;
-    }
+   }
 }
+void levelling(character_t* player){
+   int changement_niv = 50;
 
-void levelling(character_t* player, character_t monster){
-         /*à priori le nb de monstres est variables (nb param variables)*/
-      int cap_xp = 50;
-      int cap_reward = 50;
-      player->xp += cap_xp * monster.level;
-      if(player->xp >= (cap_reward * player->level)){
-         player->level++;
-      }
+   if( player->xp >= (changement_niv * player->level) ){
+      player->level++;
+   }
+}
+int xp_points(character_t* player, character_t monster){
+
+      int xp_par_niveau = 10;
+
+      int xp = player->xp;
+      xp += (xp_par_niveau * monster.level);
+      return xp;
+
 }

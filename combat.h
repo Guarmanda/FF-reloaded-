@@ -23,12 +23,12 @@ int is_dead(character_t *target);
 int running_away(character_t player,character_t monster);
 void player_action(character_t **player,character_t ** monster, inventory_t *inventory);
 
-int begin_fight(character_t **player, inventory_t* inventory);
+int begin_fight(character_t **player, inventory_t* inventory, int* xp_temp);
 character_t* monster_creation(int level);
 char* allocating_monster_name(int level);
 void update_tab_monster(character_t *monster_array[],int index, int nb_monstre);
 
-void levelling(character_t* player, character_t monster); /*ajout de la fonction qui augmentera le niveau du joueur*/
-
+int xp_points(character_t* player, character_t monster); /*ajout de la fonction qui augmentera le niveau du joueur*/
+void levelling(character_t* player);
 
 #endif

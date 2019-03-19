@@ -35,10 +35,11 @@ character_t* creation_char(){
     return player;
 }
 
-void delete_player(character_t* player){
-    if(player != NULL){
-      free(player);
-      player=NULL;
+void delete_player(character_t** player){
+
+    if(*player != NULL){
+      free(*player);
+      *player=NULL;
    }
 }
 
