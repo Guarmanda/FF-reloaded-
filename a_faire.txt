@@ -1,0 +1,6 @@
+seances semaine 19/03 (à éditer au fur et à mesure)
+
+à faire:
+1 - map sur terminal (définir village sur la carte, afficher une carte plus petite que celle sur SDL)
+2 - combat + IA
+3 - ?
