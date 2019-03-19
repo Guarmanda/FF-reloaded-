@@ -24,9 +24,9 @@
 character_t* creation_char(){
     character_t* player=NULL; 
     player = malloc(sizeof(character_t));
-    strcat(player->name , "jack");
-    strcat(player->class_char, "warrior");
-    strcat(player->gender, "man");
+    sprintf(player->name , "jack");
+    sprintf(player->class_char, "warrior");
+    sprintf(player->gender, "man");
     player->xp=0;
     player->level=1;
     player->health=100;
