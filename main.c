@@ -1,7 +1,7 @@
 /**
  * \file main.c
  * \brief Main
- * \author Papot Alexandre, Girod Valentin
+ * \author Papot Alexandre, Girod Valentin, Karman Nathalie
  * \date 12 mars 2019
  *
  * Démmarre le jeu
