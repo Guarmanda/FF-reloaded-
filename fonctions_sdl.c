@@ -26,7 +26,7 @@ SDL_Texture * images[83]; /*!< Tableau de texturess des images */
 char noms[83][50]= {
 //map et menu principal
 "button.png", "item_selector.png", "map_grass.png", "map_grass_path1.png", "map_grass_path2.png", "map_grass_path3.png", "map_grass_path4.png",
-"map_grass_path5.png", "map_grass_path6.png", "map_grass_path7.png", "map_grass_path8.png", "map_grass_path9.png", "map_grass_path10.png", "map_grass_water.png",
+"map_grass_path5.png", "map_grass_path6.png", "map_grass_path7.png", "map_grass_path8.png", "map_grass_path9.png", "map_grass_path0.png", "map_grass_water.png",
 "map_house.png", "map_path.png", "map_water.png", "map_tree1.png", "map_tree2.png", "player1.png",
 //inventaire
 "inventory.png", "life_bar.png", "mana_bar.png", "xp_bar.png",
@@ -70,6 +70,41 @@ void unloadImages(){
 	for(int i=0; i<nb_images; i++){
 		SDL_DestroyTexture(images[i]);
 	}
+}
+
+/**
+ * \fn void fond_blanc()
+ * \brief Met le fond de la fenêtre en blanc
+ */
+void fond_blanc(){
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_RenderClear(renderer);
+}
+
+/**
+ * \fn void faire_rendu()
+ * \brief met l'écran à jour
+ */
+void faire_rendu(){
+	if(AFFICHAGE){
+		SDL_RenderPresent(renderer);
+	}
+	else{
+		refresh();
+	}
+}
+
+/**
+ * \fn void quitter_sdl()
+ * \brief QUitte totallement la SDL
+ */
+void quitter_sdl(){
+	unloadImages();
+	SDL_DestroyWindow(pWindow);
+	SDL_DestroyRenderer(renderer);
+	TTF_Quit();
+	IMG_Quit();
+	SDL_Quit();
 }
 
 /**

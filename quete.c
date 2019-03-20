@@ -13,6 +13,8 @@
 #include <fonctions_sdl.h>
 #include <string.h>
 #include <creationPerso.h>
+#include <ncurses.h>
+#include <fonctions_terminal.h>
 
 //chargement des objets/personnages de quêtes sur la map s'il y en a
 /**
@@ -21,33 +23,50 @@
  */
 void afficher_quetes(){
   //on a besoin du nombre de sprites affichables
-  float nbSpriteX = (SCREEN_WIDTH/125)/2;
-  float nbSpriteY = (SCREEN_HEIGHT/125)/2;
+  float nbSpriteX = (SCREEN_WIDTH/SPRITE_W)/2;
+  float nbSpriteY = (SCREEN_HEIGHT/SPRITE_W)/2;
   for(int i=0; i<100 && quetes[i] != NULL; i++){
       //si on peut afficher le perso de début de quête, on le fait
       //printf("x:%.1f y:%.1f\n", quetes[i]->pnj_x-X, nbSpriteX/2);
     if(fabs(quetes[i]->pnj_x-X) <= nbSpriteX && fabs(quetes[i]->pnj_y-Y) <= nbSpriteY ){
       //on reprends le calcul de la map pour les coordonnées du pnj en pixels
-      int pnj_x = (quetes[i]->pnj_x-(X-nbSpriteX))*125;
-      int pnj_y = (quetes[i]->pnj_y-(Y-nbSpriteY))*125;
-      drawImage( pnj_x, pnj_y, "pnj.png", 60, 60);
+      int pnj_x = (quetes[i]->pnj_x-(X-nbSpriteX))*SPRITE_W;
+      int pnj_y = (quetes[i]->pnj_y-(Y-nbSpriteY))*SPRITE_W;
+      if(AFFICHAGE){
+         drawImage( pnj_x, pnj_y, "pnj.png", 60, 60);
+      }
+      else {
+        setcolor(14, 6);
+        mvaddstr(pnj_y, pnj_x, "!");
+      }
     }
     //meme chose pour le but d'une quête, mais le statut de la quête doit être 1
     if(abs((int)(quetes[i]->but_x-X)) <= nbSpriteX && abs((int)(quetes[i]->but_y-Y)) <= nbSpriteY && quetes[i]->statut ==1){
-      int but_x = (quetes[i]->but_x-(X-nbSpriteX))*125;
-      int but_y = (quetes[i]->but_y-(Y-nbSpriteY))*125;
-      drawImage( but_x, but_y, quetes[i]->nom_img, 60, 60);
+      int but_x = (quetes[i]->but_x-(X-nbSpriteX))*SPRITE_W;
+      int but_y = (quetes[i]->but_y-(Y-nbSpriteY))*SPRITE_W;
+      if(AFFICHAGE){
+        drawImage( but_x, but_y, quetes[i]->nom_img, 60, 60);
+      }
+      else {
+        setcolor(14, 6);
+        mvaddstr(but_y, but_x, "B");
+      }
     }
     //si un joueur croise un pnj (si la distance entre les deux est inférieure à 1)
     if(fabs(quetes[i]->pnj_x-X) <= 1 && fabs(quetes[i]->pnj_y-Y) <= 1 ){
-      int pnj_x = (quetes[i]->pnj_x-(X-nbSpriteX))*125;
-      int pnj_y = (quetes[i]->pnj_y-(Y-nbSpriteY))*125;
+      int pnj_x = (quetes[i]->pnj_x-(X-nbSpriteX))*SPRITE_W;
+      int pnj_y = (quetes[i]->pnj_y-(Y-nbSpriteY))*SPRITE_W;
       //si la quête commence, on affiche le message de début
       if(quetes[i]->statut < 2){
         if(quetes[i]->statut == 0) quetes[i]->statut = 1;
         int long_p_deb = strlen(quetes[i]->phrase_debut) * 8;
-        drawImage( pnj_x-long_p_deb/4, pnj_y-50, "bulle.png", long_p_deb+40, 60);
-        drawText(pnj_x-long_p_deb/4+20, pnj_y-45, quetes[i]->phrase_debut, 25, 8);
+        if(AFFICHAGE){
+          drawImage( pnj_x-long_p_deb/4, pnj_y-50, "bulle.png", long_p_deb+40, 60);
+          drawText(pnj_x-long_p_deb/4+20, pnj_y-45, quetes[i]->phrase_debut, 25, 8);
+        }
+        else{
+          mvaddstr(23, 20, quetes[i]->phrase_debut);
+        }
       }
       //sinon on affiche le message de fin et on donne l'xp au joueur
       else {
@@ -60,8 +79,13 @@ void afficher_quetes(){
            }
         }
         int long_p_fin = strlen(quetes[i]->phrase_fin) * 8;
-        drawImage( pnj_x-long_p_fin/4, pnj_y-50, "bulle.png", long_p_fin+40, 60);
-        drawText(pnj_x-long_p_fin/4+20, pnj_y-45, quetes[i]->phrase_fin, 25, 8);
+        if(AFFICHAGE){
+          drawImage( pnj_x-long_p_fin/4, pnj_y-50, "bulle.png", long_p_fin+40, 60);
+          drawText(pnj_x-long_p_fin/4+20, pnj_y-45, quetes[i]->phrase_fin, 25, 8);
+        }
+        else{
+          mvaddstr(23, 20, quetes[i]->phrase_fin);
+        }
       }
     }
     //si on croise un but

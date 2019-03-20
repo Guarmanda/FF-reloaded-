@@ -9,11 +9,8 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <time.h>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_image.h>
 #include <fonctions_sdl.h>
 #include <map.h>
 #include <menu_principal.h>
@@ -40,9 +37,16 @@ void startGame(float x, float y){
   showMap( x, y);
   //x_select: les coordonées du seleteur de façon à le centrer sur l'écran
   int x_select = (SCREEN_WIDTH-1200)/2;
-  SDL_RenderPresent(renderer);
+  faire_rendu();
   int running = 1;
   int selected = 1;
+  SDL_Event e;
+
+  if(!AFFICHAGE){ //si on est pas en sdl, on va accélérer la vitesse du perso
+    VITESSE_PERSO=0.15;
+    nodelay(w, TRUE);
+    notimeout(w, TRUE);
+  }
   while(running) {
     //Au départ la gestion du clavier se faisait avec un event qui détectait l'appuis d'une touche
     //mais dès que j'ai mis cette partie du code ici sans utiliser l'event, les déplacements sont devenus bien
@@ -50,16 +54,19 @@ void startGame(float x, float y){
     //(quand on restait appuyé sur une touche, le permonnage restait une seconde immobile, comme quand on écrit
     //un caractère en continu)
     //l'état du clavier à l'instant actuel
-    const Uint8 *state = SDL_GetKeyboardState(NULL);
+    const Uint8 *state = SDL_GetKeyboardState(NULL); //en sdl
+    int touche = wgetch(w); //en terminal
+    char  coor[20];
 
     //si c'est une touche de mouvement
-    if(state[SDL_SCANCODE_RIGHT] || state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_DOWN]){
+    if(state[SDL_SCANCODE_RIGHT] || state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_DOWN] || touche == KEY_UP || touche == KEY_DOWN || touche == KEY_LEFT || touche == KEY_RIGHT){
       //on gère les colisions et la vitesse du perso
       //on a besoin de regarder à quel endroit de la map on est et ce qu'il y a après
-      if (state[SDL_SCANCODE_RIGHT] && (map[(int)(floor(y))][(int)(floor(x+VITESSE_PERSO))]==4 || map[(int)(floor(y))][(int)(floor(x+VITESSE_PERSO))]==5)) x+=VITESSE_PERSO;
-      else if (state[SDL_SCANCODE_UP] && (map[(int)(floor(y-VITESSE_PERSO))][(int)(floor(x))]==4 || map[(int)(floor(y-VITESSE_PERSO))][(int)(floor(x))]==5)) y-=VITESSE_PERSO;
-      else if (state[SDL_SCANCODE_DOWN] && (map[(int)(floor(y+VITESSE_PERSO))][(int)(floor(x))]==4 || map[(int)(floor(y+VITESSE_PERSO))][(int)(floor(x))]==5)) y+=VITESSE_PERSO;
-      else if (state[SDL_SCANCODE_LEFT] && (map[(int)(floor(y))][(int)(floor(x-VITESSE_PERSO))]==4 || map[(int)(floor(y))][(int)(floor(x-VITESSE_PERSO))]==5)) x-=VITESSE_PERSO;
+      //on fait cohabiter le sdl et le terminal pour un code le plus optimisé possible
+      if ((state[SDL_SCANCODE_RIGHT] || touche == KEY_RIGHT) && (map[(int)(floor(y))][(int)(floor(x+VITESSE_PERSO))]==4 || map[(int)(floor(y))][(int)(floor(x+VITESSE_PERSO))]==5)) x+=VITESSE_PERSO;
+      else if ((state[SDL_SCANCODE_LEFT] || touche == KEY_LEFT) && (map[(int)(floor(y))][(int)(floor(x-VITESSE_PERSO))]==4 || map[(int)(floor(y))][(int)(floor(x-VITESSE_PERSO))]==5)) x-=VITESSE_PERSO;
+      if ((state[SDL_SCANCODE_UP] || touche == KEY_UP) && (map[(int)(floor(y-VITESSE_PERSO))][(int)(floor(x))]==4 || map[(int)(floor(y-VITESSE_PERSO))][(int)(floor(x))]==5)) y-=VITESSE_PERSO;
+      else if ((state[SDL_SCANCODE_DOWN] || touche == KEY_DOWN) && (map[(int)(floor(y+VITESSE_PERSO))][(int)(floor(x))]==4 || map[(int)(floor(y+VITESSE_PERSO))][(int)(floor(x))]==5)) y+=VITESSE_PERSO;
       if(x<0) x=0;
       if(y<0) y=0;
       if(x>999) x=999;
@@ -67,10 +74,8 @@ void startGame(float x, float y){
       //chargement de la map
       showMap( x, y);
       afficher_quetes();
-      SDL_RenderPresent(renderer);
+      faire_rendu();
     }
-
-  	SDL_Event e;
   	while(SDL_PollEvent(&e)) {
   		switch(e.type) {
         //la gestion du clavier hors déplacements se fait ici
@@ -98,6 +103,5 @@ void startGame(float x, float y){
     }
     SDL_Delay(5);
   }
-  SDL_RenderClear(renderer);
   showMenu();
 }

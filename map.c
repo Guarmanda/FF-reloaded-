@@ -13,18 +13,20 @@
 #include <fonctions_sdl.h>
 #include <creationPerso.h>
 #include <map.h>
+#include <ncurses.h>
+#include <fonctions_terminal.h>
 
 
 /**
  * \fn void showMap(float x, float y)
- * \brief Gère l'affichage de la map et du joueur
+ * \brief Gère l'affichage de la map et du joueur en SDL
  * \param[in] Abscisse du joueur
  * \param[in] Ordonnée du joueur
  */
-void showMap(float x, float y){
+void showMap_sdl(float x, float y){
   //le nombre de sprites à afficher, tout comme la position du joueur, dépend de la taille de l'écran
-  float nbSpriteX = SCREEN_WIDTH/125;
-  float nbSpriteY = SCREEN_HEIGHT/125;
+  float nbSpriteX = SCREEN_WIDTH/SPRITE_W;
+  float nbSpriteY = SCREEN_HEIGHT/SPRITE_W;
 
   //on veux savoir quelle sprite de joueur afficher
   char sprite[30] = "";
@@ -41,7 +43,6 @@ void showMap(float x, float y){
   //on rend accessible les nouvelles coordonnées du joueur pour les monstres/quetes
   X=x;
   Y=y;
-
   //il faut empêcher tout débordement de la map
   float x_player=x;
   float y_player=y;
@@ -59,66 +60,111 @@ void showMap(float x, float y){
         float x2 = j-(x-nbSpriteX/2);
         float y2 = i-(y-nbSpriteY/2);
       //chaque nombre dans la matrice corresponds à une sprite
+      char sprite1[40] = ""; //on définit le nom du sprite de couche inférieure
+      char sprite2[40] = ""; //et celui de couche supérieure
       switch(map[i][j]){
         //avant d'afficher le joueur, on gère tout ce qui passe sous ses pieds
-        case 5:
-              drawImage( x2*125, y2*125, "map_grass.png", 125, 125); break;
-        case 1:
-              drawImage( x2*125, y2*125, "map_grass.png", 125, 125);
-              drawImage( x2*125, y2*125, "map_tree1.png", 125, 125); break;
-        case 3:
-              drawImage( x2*125, y2*125, "map_grass.png", 125, 125);
-              drawImage( x2*125, y2*125, "map_tree2.png", 125, 125); break;
-        case 6:
-              drawImage( x2*125, y2*125, "map_grass.png", 125, 125);
-              drawImage( x2*125, y2*125, "map_house.png", 125, 125); break;
-        case 2:
-              drawImage( x2*125, y2*125, "map_water.png", 125, 125);
-              drawImage( x2*125, y2*125, "map_grass_water.png", 125, 125); break;
+        case 5: sprintf(sprite1, "map_grass.png"); break;
+        case 1: sprintf(sprite1, "map_grass.png");
+                sprintf(sprite2, "map_tree1.png"); break;
+        case 3: sprintf(sprite1, "map_grass.png");
+                sprintf(sprite2, "map_tree2.png"); break;
+        case 6: sprintf(sprite1, "map_grass.png");
+                sprintf(sprite2, "map_house.png"); break;
+        case 2: sprintf(sprite1, "map_water.png");
+                sprintf(sprite2, "map_grass_water.png"); break;
         //gestion des routes et virages
-        case 4: drawImage( x2*125, y2*125, "map_path.png", 125, 125);
-                if(map[i-1][j] == 4 && map[i+1][j]==4 && map[i][j+1]==4 && map[i][j-1]==4){
-                  break;}
+        case 4: sprintf(sprite1, "map_path.png");
+                if(map[i-1][j] == 4 && map[i+1][j]==4 && map[i][j+1]==4 && map[i][j-1]==4) break;
+                char path = ' ';
                 if(map[i-1][j] == 4 && map[i+1][j]==4 && map[i][j+1]==4){
-                  drawImage( x2*125, y2*125, "map_grass_path6.png", 125, 125);}
-                else if(map[i-1][j] == 4 && map[i+1][j]==4 && map[i][j-1]==4){
-                  drawImage( x2*125, y2*125, "map_grass_path4.png", 125, 125);}
-                else if(map[i][j-1] == 4 && map[i][j+1]==4 && map[i-1][j]==4){
-                  drawImage( x2*125, y2*125, "map_grass_path5.png", 125, 125);}
-                else if(map[i][j-1] == 4 && map[i][j+1] ==4 && map[i+1][j]==4){
-                  drawImage( x2*125, y2*125, "map_grass_path3.png", 125, 125);}
-                else if(map[i][j-1] == 4 && map[i][j+1]==4){
-                  drawImage( x2*125, y2*125, "map_grass_path2.png", 125, 125);}
-                else if(map[i-1][j] == 4 && map[i+1][j]==4){
-                  drawImage( x2*125, y2*125, "map_grass_path1.png", 125, 125);}
-                else if(map[i][j+1] == 4 && map[i+1][j]==4){
-                  drawImage( x2*125, y2*125, "map_grass_path7.png", 125, 125);}
-                else if(map[i][j-1] == 4 && map[i-1][j]==4){
-                  drawImage( x2*125, y2*125, "map_grass_path9.png", 125, 125);}
-                else if(map[i-1][j] == 4 && map[i][j+1]==4){
-                  drawImage( x2*125, y2*125, "map_grass_path10.png", 125, 125);}
-                else if(map[i][j-1] == 4 && map[i+1][j]==4){
-                  drawImage( x2*125, y2*125, "map_grass_path8.png", 125, 125);}
+                  path = '6';
+                }else if(map[i-1][j] == 4 && map[i+1][j]==4 && map[i][j-1]==4){
+                  path = '4';
+                }else if(map[i][j-1] == 4 && map[i][j+1]==4 && map[i-1][j]==4){
+                  path = '5';
+                }else if(map[i][j-1] == 4 && map[i][j+1] ==4 && map[i+1][j]==4){
+                  path = '3';
+                }else if(map[i][j-1] == 4 && map[i][j+1]==4){
+                  path = '2';
+                }else if(map[i-1][j] == 4 && map[i+1][j]==4){
+                  path = '1';
+                }else if(map[i][j+1] == 4 && map[i+1][j]==4){
+                  path = '7';
+                }else if(map[i][j-1] == 4 && map[i-1][j]==4){
+                  path = '9';
+                }else if(map[i-1][j] == 4 && map[i][j+1]==4){
+                  path = '0';
+                }else if(map[i][j-1] == 4 && map[i+1][j]==4){
+                  path = '8';
+                }
+                if(path != ' '){
+                  sprintf(sprite2, "map_grass_path%c", path);
+                }
                 break;
+      }
+      //on affiche les sprites
+      drawImage( x2*SPRITE_W, y2*SPRITE_W, sprite1, SPRITE_W, SPRITE_W);
+      if(sprite2[0]){
+        //on affiche le deuxieme sprite si il existe
+        drawImage( x2*SPRITE_W, y2*SPRITE_W, sprite2, SPRITE_W, SPRITE_W);
       }
     }
   }
   //puis on affiche le joueur si il est aux mêmes coordonnée
-  drawImage( (x_player*125+(x-(int)x))-30, (y_player*125+(y-(int)y))-30, sprite, 60,60);
+  drawImage( (x_player*SPRITE_W+(x-(int)x))-30, (y_player*SPRITE_W+(y-(int)y))-30, sprite, 60,60);
 
 }
 
+/**
+ * \fn void showMap(float x, float y)
+ * \brief Gère l'affichage de la map et du joueur en terminal
+ * \param[in] Abscisse du joueur
+ * \param[in] Ordonnée du joueur
+ */
+void showMap_terminal(float x, float y){
+  //on rend accessible les nouvelles coordonnées du joueur pour les monstres/quetes
+  X=x;
+  Y=y;
 
-/*void setRandomMap(){
-  time_t t;
-  srand((unsigned) time(&t));
-  for(int i=0; i<1000;i++){
-    for(int j=0; j<1000; j++){
-      //map[i][j]=rand()%6+1;
-      map[i][j]=5;
+  for(int i=y-11; i<=y+12;i++){
+    for(int j=x-40; j<x+40; j++){
+      int x2 = j-(x-40);
+      int y2 = i-(y-12);
+      switch(map[i][j]){
+        case 1:
+        case 3://arbres
+          setcolor(10, 2);
+          mvaddstr( y2, x2, "T" ); break;
+        case 2://eau
+          setcolor(14, 3);
+          mvaddstr(  y2, x2, "~" ); break;
+        case 4://routes
+          setcolor(8, 0);
+          mvaddstr(  y2, x2, "#" ); break;
+        case 6://maisons
+          setcolor(14, 4);
+          mvaddstr(  y2, x2, "M" ); break;
+        case 5://herbe
+          setcolor(2, 2);
+          mvaddstr(  y2, x2, " "); break;
+      }
     }
+  }//joueur
+  setcolor(15, 7);
+  mvaddstr(  11, 39, "P");
+}
+
+void showMap(float x, float y){
+
+  if(AFFICHAGE){
+    showMap_sdl(x, y);
   }
-}*/
+  else{
+    showMap_terminal(x, y);
+  }
+}
+
 
 /**
  * \fn void loadMap(char* nom)

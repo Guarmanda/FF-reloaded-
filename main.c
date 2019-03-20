@@ -1,7 +1,7 @@
 /**
  * \file main.c
  * \brief Main
- * \author Papot Alexandre, Girod Valentin, Karman Nathalie
+ * \author Karman Nathalie, Papot Alexandre, Girod Valentin
  * \date 12 mars 2019
  *
  * Démmarre le jeu
@@ -13,6 +13,7 @@
 #include <fonctions_sdl.h>
 #include <creationPerso.h>
 #include <quete.h>
+#include <fonctions_terminal.h>
 
 
 /**
@@ -32,10 +33,24 @@ int main(int argc, char** argv)
 	}
 	if(argc == 2 && strcmp(argv[1], "-terminal") == 0){
 		AFFICHAGE = 0;
+		initscr(); // initialize Ncurses
+		w = newwin( 24, 80, 0, 0 ); // création d'une fenêtre
+		//initialisation des couleurs terminal
+		if (has_colors() == FALSE) {
+        endwin();
+        puts("Vottre terminal ne supporte pas les couleurs");
+        exit(1);
+    }
+    start_color();
+    init_colorpairs();
+		SCREEN_WIDTH = 80;
+		SCREEN_HEIGHT = 24;
+		SPRITE_W = 1;
 	}
 	else{
 		showWindow();
 		loadImages();
+		SPRITE_W = 125;
 	}
 	PLAYER = creation_char();
 	charger_quetes();

@@ -13,7 +13,7 @@ typedef int err_t ;
 #define TAILLE 32
 
 /* Erreurs */
-#define OK 0
+//#define OK 0
 
 #define ERR_DEB_MEMOIRE -100
 

@@ -11,8 +11,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_image.h>
 #include <map.h>
 #include <fonctions_sdl.h>
 #include <creationPerso.h>
@@ -89,7 +87,7 @@ void showInventory(){
   if(PLAYER->accessory==crystal_ring) sprintf(accessory, "%s", "crystal ring");
   drawImage( (SCREEN_WIDTH/100)*60.75, (SCREEN_HEIGHT/100)*9, accessory, 110, 110);
 
-  SDL_RenderPresent(renderer);
+  faire_rendu();
 
   int running = 1;
   int selected = 1;
@@ -122,8 +120,7 @@ void showInventory(){
       }
     }
   }
-  SDL_RenderClear(renderer);
   showMap( X, Y);
-  SDL_RenderPresent(renderer);
+  faire_rendu();
 
 }

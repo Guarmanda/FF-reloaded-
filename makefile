@@ -6,17 +6,20 @@ SDLLIB_DIR=${SDL_DIR}/lib
 SDLINC_DIR=${SDL_DIR}/include
 
 LIBS=-L${SDLLIB_DIR} -lSDL2 -lSDL2_ttf -lSDL2_image
-INCLUDES=-I${SDLINC_DIR} -I./ -lm
+INCLUDES=-I${SDLINC_DIR} -I./ -lm -lncurses
 
 PROG=programme
 
 all: sdl_text
 
-sdl_text: fonctions_sdl.o quete.o game.o creationPerso.o menu_principal.o map.o perso.o inventaire.o menu_inventaire.o level_editor.o main.o outils.o
-	${CC} -o ${PROG} fonctions_sdl.o quete.o game.o creationPerso.o menu_principal.o map.o perso.o inventaire.o menu_inventaire.o level_editor.o outils.o main.o ${LIBS} ${INCLUDES}
+sdl_text: fonctions_sdl.o fonctions_terminal.o quete.o game.o creationPerso.o menu_principal.o map.o perso.o inventaire.o menu_inventaire.o level_editor.o main.o outils.o
+	${CC} -o ${PROG} fonctions_sdl.o fonctions_terminal.o quete.o game.o creationPerso.o menu_principal.o map.o perso.o inventaire.o menu_inventaire.o level_editor.o outils.o main.o ${LIBS} ${INCLUDES}
 
 fonctions_sdl.o:
 	${CC} -o fonctions_sdl.o -c fonctions_sdl.c ${LIBS} ${INCLUDES}
+
+fonctions_terminal.o:
+	${CC} -o fonctions_terminal.o -c fonctions_terminal.c ${LIBS} ${INCLUDES}
 
 perso.o:
 	${CC} -o perso.o -c perso.c ${LIBS} ${INCLUDES}
