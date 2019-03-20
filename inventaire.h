@@ -3,9 +3,12 @@
 
 #include <commun.h>
 
-/*#include <>*/
+enum type_obj { armor=0, weapon, potion };
+enum accessories_e { green_amulet=0,ruby_ring,crystal_ring };
+
+/*structure objet qui possède trois champs, le type_object va de 0 à */
 typedef struct object_s{
-  int type_object; /* 0= armure, 1=weapon, 2= potion*/
+  enum type_obj type_object; /* 0= armure, 1=weapon, 2= les potions*/
   int state_object; /* exemple : armure de cuir, potion de mana [0- ] */
   int value_object; /*affectation d une valeur diff selon le type de l objet pour
   ex: potion et son pourcentage
@@ -13,9 +16,7 @@ typedef struct object_s{
 }object_t;
 /*static pour eviter que les .o repetent les variables du .h si celui ci est inclu dans ++ fichiers différents   */
 
-enum accessories_e {
-      green_amulet=0,ruby_ring,crystal_ring
-};
+
 
 typedef struct inventory_s{
     int nb_objects;
@@ -34,4 +35,6 @@ inventory_t* create_or_delete_inventory();
 int fill_up_inventory(inventory_t* inventory,object_t* object);
 /*affichage */
 char* display_object(object_t object);
+/*
+void display_inventory(inventory_t* inventory); */
 #endif

@@ -23,9 +23,11 @@ typedef struct character_s{
 }character_t;
 
 character_t* creation_char();
-void delete_player(character_t** player);
+char* allocating_monster_name(int);
+character_t* monster_creation(int);
+void delete_player(character_t**);
 /*void levelling(character_t* player, character_t monster);*/
-void affich(character_t* perso); /*fonction d'affichage des details du joueur*/
+void affich(character_t*); /*fonction d'affichage des details du joueur*/
 
 /*--- combat monstre
 character_t* monster_creation();

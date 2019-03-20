@@ -1,11 +1,11 @@
 include Makefile.compilation
 #make file pour les tests
 
-fichier_inventaire_test=test_inventaire.o inventaire.o
-fichier_perso_test=test_perso.o perso.o inventaire.o
-fichier_combat_test=test_combat.o combat.o perso.o inventaire.o
+fichier_inventaire_test=test_inventaire.o inventaire.o commun.o
+fichier_perso_test=test_perso.o perso.o inventaire.o commun.o
+fichier_combat_test=test_combat.o combat.o perso.o inventaire.o commun.o
 
-fichier_projet_FF= projet_FF.o combat.o perso.o inventaire.o
+fichier_projet_FF= projet_FF.o combat.o perso.o inventaire.o commun.o
 #
 # Tests (executables+objets)
 #
@@ -35,7 +35,10 @@ projet_FF.o : projet_FF.c combat.h	#voir si il faut changer le .h plus tard !!!!
 # Modules(objets)
 #
 
-OBJ = inventaire.o perso.o combat.o
+OBJ =  commun.o inventaire.o perso.o combat.o
+
+commun.o : commun.c commun.h
+	$(CCOBJ) $(CFLAGS) $(LIBMATH) commun.c -o commun.o -I./
 
 inventaire.o : inventaire.c inventaire.h
 	$(CCOBJ) $(CFLAGS) $(LIBMATH) inventaire.c -o inventaire.o -I./
@@ -45,7 +48,6 @@ perso.o : perso.c perso.h
 
 combat.o : combat.c combat.h
 	$(CCOBJ) $(CFLAGS) $(LIBMATH) combat.c -o combat.o -I./
-
 
 #
 # Headers
@@ -70,6 +72,9 @@ clean :
 	- rm test_perso
 	- rm test_combat
 	- rm projet_FF
+
+clean2 :
+	- rm  *.o
 
 tests :
 	./test_inventaire

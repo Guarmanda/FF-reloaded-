@@ -4,7 +4,12 @@
 
 int main(){
     character_t* perso = creation_char();
+    character_t* monstre= monster_creation(perso->level);   /*meme niveau que le joueur*/
+    printf("vous êtes :\n");
     affich(perso);
-    delete_player(perso);
+    printf("vous jouez contre :\n");
+    affich(monstre);
+    delete_player(&perso);
+
     return 0;
 }
