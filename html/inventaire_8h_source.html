@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>FF reloaded:  Fichier source de inventaire.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">FF reloaded
+   </div>
+   <div id="projectbrief">RPG en SDL inspiré de Final Fantasy</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Recherche');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('inventaire_8h_source.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">inventaire.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="inventaire_8h.html">Aller à la documentation de ce fichier.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef _INVENTAIRE_H_</span></div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define _INVENTAIRE_H_</span></div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="commun_8h.html">commun.h</a>&gt;</span></div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">/*#include &lt;&gt;*/</span></div><div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="structobject__s.html">    7</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structobject__s.html">object_s</a>{</div><div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="structobject__s.html#a974e117b1224834df67c13d4a3323a0f">    8</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="structobject__s.html#a974e117b1224834df67c13d4a3323a0f">type_object</a>; <span class="comment">/* 0= armure, 1=weapon, 2= potion*/</span></div><div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="structobject__s.html#a3e6f06226037c59dc9e643b1b26e9dc0">    9</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="structobject__s.html#a3e6f06226037c59dc9e643b1b26e9dc0">state_object</a>; <span class="comment">/* exemple : armure de cuir, potion de mana [0- ] */</span></div><div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="structobject__s.html#ac7092775831cd7ade65ad49171ef079d">   10</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="structobject__s.html#ac7092775831cd7ade65ad49171ef079d">value_object</a>; <span class="comment">/*affectation d une valeur diff selon le type de l objet pour</span></div><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">  ex: potion et son pourcentage</span></div><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">  */</span></div><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;}<a class="code" href="inventaire_8h.html#a965db53884ff9e4e077dd5e2e2d6a5e2">object_t</a>;</div><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">/*static pour eviter que les .o repetent les variables du .h si celui ci est inclu dans ++ fichiers différents   */</span></div><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div><div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="inventaire_8h.html#ace15f7af60ea30bbb72a559bf0ea843d">   16</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="inventaire_8h.html#ace15f7af60ea30bbb72a559bf0ea843d">accessories_e</a> {</div><div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="inventaire_8h.html#ace15f7af60ea30bbb72a559bf0ea843dadf859cae753511ba8ffe344dc1d79e8b">   17</a></span>&#160;      <a class="code" href="inventaire_8h.html#ace15f7af60ea30bbb72a559bf0ea843dac058f193ec4ab45a03b9b1fc1e8ad481">green_amulet</a>=0,<a class="code" href="inventaire_8h.html#ace15f7af60ea30bbb72a559bf0ea843dadf859cae753511ba8ffe344dc1d79e8b">ruby_ring</a>,<a class="code" href="inventaire_8h.html#ace15f7af60ea30bbb72a559bf0ea843da888a61c53421c1647e09b58cad1c242d">crystal_ring</a></div><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;};</div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div><div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="structinventory__s.html">   20</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structinventory__s.html">inventory_s</a>{</div><div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="structinventory__s.html#a1472e70f2ed0b189551daa77c2bd1def">   21</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structinventory__s.html#a1472e70f2ed0b189551daa77c2bd1def">nb_objects</a>;</div><div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="structinventory__s.html#a6a323f9e0088c9b90a1773757c2bf07e">   22</a></span>&#160;    <a class="code" href="structobject__s.html">object_t</a> * <span class="keywordtype">object</span>[30];    <span class="comment">/*voir si il faut delete*/</span></div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}<a class="code" href="inventaire_8h.html#a1938ce702b8d949b623b1c79aa7bd4b7">inventory_t</a>;</div><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">/*creation des objets*/</span></div><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<a class="code" href="structobject__s.html">object_t</a>* <a class="code" href="inventaire_8h.html#a4a1f41e9e410ceebd6b4582ae908f777">create_object</a>(<span class="keywordtype">int</span> level);</div><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">void</span> <a class="code" href="inventaire_8h.html#a11095fcb4edca3c078f92b7bd564f3ab">delete_object</a>(<a class="code" href="structobject__s.html">object_t</a> **item);</div><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">/*definition des objets*/</span></div><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keywordtype">int</span> <a class="code" href="inventaire_8h.html#aa3838ee2eec374a706b5ccab51dc49dd">loot_type</a>(<span class="keywordtype">int</span> level);</div><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keywordtype">int</span> <a class="code" href="inventaire_8h.html#a88597303fed82d31b79f3f05a5de7f74">loot_state</a>(<span class="keywordtype">int</span> type,<span class="keywordtype">int</span> level);</div><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">int</span> <a class="code" href="inventaire_8h.html#a2065f0bf29bd461a37f3694e6d1b303b">loot_value</a>(<span class="keywordtype">int</span> type, <span class="keywordtype">int</span> state);</div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">/*manipulation des objets et insertion dans l inventaire*/</span></div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<a class="code" href="structinventory__s.html">inventory_t</a>* <a class="code" href="inventaire_8h.html#a0cf96e402460b53c06ad7bfeb23da026">create_or_delete_inventory</a>();</div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keywordtype">int</span> <a class="code" href="inventaire_8h.html#af8631173bfdde3778a47d523d903e663">fill_up_inventory</a>(<a class="code" href="structinventory__s.html">inventory_t</a>* inventory,<a class="code" href="structobject__s.html">object_t</a>* <span class="keywordtype">object</span>);</div><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">/*affichage */</span></div><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keywordtype">char</span>* <a class="code" href="inventaire_8h.html#aaea17b192beeba9feff47ea23774d545">display_object</a>(<a class="code" href="structobject__s.html">object_t</a> <span class="keywordtype">object</span>);</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#endif</span></div><div class="ttc" id="inventaire_8h_html_af8631173bfdde3778a47d523d903e663"><div class="ttname"><a href="inventaire_8h.html#af8631173bfdde3778a47d523d903e663">fill_up_inventory</a></div><div class="ttdeci">int fill_up_inventory(inventory_t *inventory, object_t *object)</div><div class="ttdef"><b>Definition:</b> inventaire.c:87</div></div>
+<div class="ttc" id="inventaire_8h_html_a0cf96e402460b53c06ad7bfeb23da026"><div class="ttname"><a href="inventaire_8h.html#a0cf96e402460b53c06ad7bfeb23da026">create_or_delete_inventory</a></div><div class="ttdeci">inventory_t * create_or_delete_inventory()</div><div class="ttdef"><b>Definition:</b> inventaire.c:76</div></div>
+<div class="ttc" id="inventaire_8h_html_ace15f7af60ea30bbb72a559bf0ea843dac058f193ec4ab45a03b9b1fc1e8ad481"><div class="ttname"><a href="inventaire_8h.html#ace15f7af60ea30bbb72a559bf0ea843dac058f193ec4ab45a03b9b1fc1e8ad481">green_amulet</a></div><div class="ttdef"><b>Definition:</b> inventaire.h:17</div></div>
+<div class="ttc" id="inventaire_8h_html_a4a1f41e9e410ceebd6b4582ae908f777"><div class="ttname"><a href="inventaire_8h.html#a4a1f41e9e410ceebd6b4582ae908f777">create_object</a></div><div class="ttdeci">object_t * create_object(int level)</div><div class="ttdef"><b>Definition:</b> inventaire.c:4</div></div>
+<div class="ttc" id="inventaire_8h_html_ace15f7af60ea30bbb72a559bf0ea843d"><div class="ttname"><a href="inventaire_8h.html#ace15f7af60ea30bbb72a559bf0ea843d">accessories_e</a></div><div class="ttdeci">accessories_e</div><div class="ttdef"><b>Definition:</b> inventaire.h:16</div></div>
+<div class="ttc" id="inventaire_8h_html_a88597303fed82d31b79f3f05a5de7f74"><div class="ttname"><a href="inventaire_8h.html#a88597303fed82d31b79f3f05a5de7f74">loot_state</a></div><div class="ttdeci">int loot_state(int type, int level)</div><div class="ttdef"><b>Definition:</b> inventaire.c:33</div></div>
+<div class="ttc" id="commun_8h_html"><div class="ttname"><a href="commun_8h.html">commun.h</a></div></div>
+<div class="ttc" id="inventaire_8h_html_a11095fcb4edca3c078f92b7bd564f3ab"><div class="ttname"><a href="inventaire_8h.html#a11095fcb4edca3c078f92b7bd564f3ab">delete_object</a></div><div class="ttdeci">void delete_object(object_t **item)</div><div class="ttdef"><b>Definition:</b> inventaire.c:14</div></div>
+<div class="ttc" id="inventaire_8h_html_aaea17b192beeba9feff47ea23774d545"><div class="ttname"><a href="inventaire_8h.html#aaea17b192beeba9feff47ea23774d545">display_object</a></div><div class="ttdeci">char * display_object(object_t object)</div><div class="ttdef"><b>Definition:</b> inventaire.c:99</div></div>
+<div class="ttc" id="inventaire_8h_html_a2065f0bf29bd461a37f3694e6d1b303b"><div class="ttname"><a href="inventaire_8h.html#a2065f0bf29bd461a37f3694e6d1b303b">loot_value</a></div><div class="ttdeci">int loot_value(int type, int state)</div><div class="ttdef"><b>Definition:</b> inventaire.c:63</div></div>
+<div class="ttc" id="inventaire_8h_html_aa3838ee2eec374a706b5ccab51dc49dd"><div class="ttname"><a href="inventaire_8h.html#aa3838ee2eec374a706b5ccab51dc49dd">loot_type</a></div><div class="ttdeci">int loot_type(int level)</div><div class="ttdef"><b>Definition:</b> inventaire.c:19</div></div>
+<div class="ttc" id="structobject__s_html_a3e6f06226037c59dc9e643b1b26e9dc0"><div class="ttname"><a href="structobject__s.html#a3e6f06226037c59dc9e643b1b26e9dc0">object_s::state_object</a></div><div class="ttdeci">int state_object</div><div class="ttdef"><b>Definition:</b> inventaire.h:9</div></div>
+<div class="ttc" id="inventaire_8h_html_ace15f7af60ea30bbb72a559bf0ea843da888a61c53421c1647e09b58cad1c242d"><div class="ttname"><a href="inventaire_8h.html#ace15f7af60ea30bbb72a559bf0ea843da888a61c53421c1647e09b58cad1c242d">crystal_ring</a></div><div class="ttdef"><b>Definition:</b> inventaire.h:17</div></div>
+<div class="ttc" id="structobject__s_html_a974e117b1224834df67c13d4a3323a0f"><div class="ttname"><a href="structobject__s.html#a974e117b1224834df67c13d4a3323a0f">object_s::type_object</a></div><div class="ttdeci">int type_object</div><div class="ttdef"><b>Definition:</b> inventaire.h:8</div></div>
+<div class="ttc" id="structobject__s_html"><div class="ttname"><a href="structobject__s.html">object_s</a></div><div class="ttdef"><b>Definition:</b> inventaire.h:7</div></div>
+<div class="ttc" id="inventaire_8h_html_a1938ce702b8d949b623b1c79aa7bd4b7"><div class="ttname"><a href="inventaire_8h.html#a1938ce702b8d949b623b1c79aa7bd4b7">inventory_t</a></div><div class="ttdeci">struct inventory_s inventory_t</div></div>
+<div class="ttc" id="structinventory__s_html_a1472e70f2ed0b189551daa77c2bd1def"><div class="ttname"><a href="structinventory__s.html#a1472e70f2ed0b189551daa77c2bd1def">inventory_s::nb_objects</a></div><div class="ttdeci">int nb_objects</div><div class="ttdef"><b>Definition:</b> inventaire.h:21</div></div>
+<div class="ttc" id="structobject__s_html_ac7092775831cd7ade65ad49171ef079d"><div class="ttname"><a href="structobject__s.html#ac7092775831cd7ade65ad49171ef079d">object_s::value_object</a></div><div class="ttdeci">int value_object</div><div class="ttdef"><b>Definition:</b> inventaire.h:10</div></div>
+<div class="ttc" id="inventaire_8h_html_ace15f7af60ea30bbb72a559bf0ea843dadf859cae753511ba8ffe344dc1d79e8b"><div class="ttname"><a href="inventaire_8h.html#ace15f7af60ea30bbb72a559bf0ea843dadf859cae753511ba8ffe344dc1d79e8b">ruby_ring</a></div><div class="ttdef"><b>Definition:</b> inventaire.h:17</div></div>
+<div class="ttc" id="structinventory__s_html"><div class="ttname"><a href="structinventory__s.html">inventory_s</a></div><div class="ttdef"><b>Definition:</b> inventaire.h:20</div></div>
+<div class="ttc" id="inventaire_8h_html_a965db53884ff9e4e077dd5e2e2d6a5e2"><div class="ttname"><a href="inventaire_8h.html#a965db53884ff9e4e077dd5e2e2d6a5e2">object_t</a></div><div class="ttdeci">struct object_s object_t</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="inventaire_8h.html">inventaire.h</a></li>
+    <li class="footer">Généré par
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
+  </ul>
+</div>
+</body>
+</html>

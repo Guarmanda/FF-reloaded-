@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>FF reloaded:  Fichier source de perso.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">FF reloaded
+   </div>
+   <div id="projectbrief">RPG en SDL inspiré de Final Fantasy</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Recherche');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('perso_8h_source.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">perso.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="perso_8h.html">Aller à la documentation de ce fichier.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef _PERSO_H_</span></div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define _PERSO_H_</span></div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="inventaire_8h.html">inventaire.h</a>&gt;</span></div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div><div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="structcharacter__s.html">    6</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structcharacter__s.html">character_s</a>{</div><div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="structcharacter__s.html#af074bed9a3b011ddb67f9122d0ebbb06">    7</a></span>&#160;  <span class="keywordtype">char</span> <a class="code" href="structcharacter__s.html#af074bed9a3b011ddb67f9122d0ebbb06">name</a>[40];</div><div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="structcharacter__s.html#a2f2a7fad33208372125f4e853a9929d5">    8</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="structcharacter__s.html#a2f2a7fad33208372125f4e853a9929d5">xp</a>;</div><div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="structcharacter__s.html#a42616ec73ee1f74d7da7657cb8748952">    9</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="structcharacter__s.html#a42616ec73ee1f74d7da7657cb8748952">level</a>;</div><div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="structcharacter__s.html#ac3b09da79f93dcb331253c82f6ea02e6">   10</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="structcharacter__s.html#ac3b09da79f93dcb331253c82f6ea02e6">health</a>;</div><div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="structcharacter__s.html#a43b0feccfced1f7653cc4b7b2affae74">   11</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="structcharacter__s.html#a43b0feccfced1f7653cc4b7b2affae74">mana</a>;</div><div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="structcharacter__s.html#aacdf18ae147763915a60ce139e1c2537">   12</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="structcharacter__s.html#aacdf18ae147763915a60ce139e1c2537">max_health</a>;       <span class="comment">/*vie maximum que peut avoir le joueur selon son niveau*/</span></div><div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="structcharacter__s.html#afd9b7f40d95471c53883623198ecc2f5">   13</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="structcharacter__s.html#afd9b7f40d95471c53883623198ecc2f5">max_mana</a>;</div><div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="structcharacter__s.html#a42dba952fdaed5c064bcf2da24b3acaf">   14</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="structcharacter__s.html#a42dba952fdaed5c064bcf2da24b3acaf">spell</a>[7];            <span class="comment">/* */</span></div><div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="structcharacter__s.html#afdd60cde4ded07c3c52c7c761d3dffef">   15</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="structcharacter__s.html#afdd60cde4ded07c3c52c7c761d3dffef">state</a>[7];         <span class="comment">/*voir possibilité de pouvoir etre sous diff states avec un tableau: blind,stunt,slow,poison,berserk,silence,bleeding*/</span></div><div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="structcharacter__s.html#a6da6e463693316a2ab4740e99ee02b4b">   16</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="structcharacter__s.html#a6da6e463693316a2ab4740e99ee02b4b">stat_strength</a>;</div><div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="structcharacter__s.html#a2a2895cfd3ea729ce40992a9f0181318">   17</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="structcharacter__s.html#a2a2895cfd3ea729ce40992a9f0181318">stat_intel</a>;</div><div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="structcharacter__s.html#a3f60fbe6e7752aa865eabfb10846873b">   18</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="structcharacter__s.html#a3f60fbe6e7752aa865eabfb10846873b">stat_stamina</a>;</div><div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="structcharacter__s.html#ac215f2635e8de02fa85fad9209712944">   19</a></span>&#160;  <span class="keyword">enum</span> <a class="code" href="inventaire_8h.html#ace15f7af60ea30bbb72a559bf0ea843d">accessories_e</a> <a class="code" href="structcharacter__s.html#ac215f2635e8de02fa85fad9209712944">accessory</a>;</div><div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="structcharacter__s.html#a34b4897fd609c787515f9e84262825fc">   20</a></span>&#160;  <span class="keywordtype">char</span> <a class="code" href="structcharacter__s.html#a34b4897fd609c787515f9e84262825fc">class_char</a>[15];</div><div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="structcharacter__s.html#a94367bfada9d814fb41b491311ee3d56">   21</a></span>&#160;  <a class="code" href="structobject__s.html">object_t</a> <a class="code" href="structcharacter__s.html#a94367bfada9d814fb41b491311ee3d56">char_armor</a>;  <span class="comment">/*type = 0*/</span></div><div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="structcharacter__s.html#a4883de6c8fde831d3a5d523a87311c51">   22</a></span>&#160;  <a class="code" href="structobject__s.html">object_t</a> <a class="code" href="structcharacter__s.html#a4883de6c8fde831d3a5d523a87311c51">char_weapon</a>;  <span class="comment">/*type = 1*/</span></div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}<a class="code" href="perso_8h.html#ab24f44887164d006cb3be7f21e4f4d76">character_t</a>;</div><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<a class="code" href="structcharacter__s.html">character_t</a>* <a class="code" href="perso_8h.html#a5fbd9872ff58de7d8968e037909c0c40">creation_char</a>();</div><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> <a class="code" href="perso_8h.html#a2754303c99cd7cadc5c67f22e77aeabf">delete_player</a>(<a class="code" href="structcharacter__s.html">character_t</a>* player);</div><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">/*void levelling(character_t* player, character_t monster);*/</span></div><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">void</span> <a class="code" href="perso_8h.html#a45dc31cf231cfa0bf396b2f57c5f5c03">affich</a>(<a class="code" href="structcharacter__s.html">character_t</a>* perso); <span class="comment">/*fonction d&#39;affichage des details du joueur*/</span></div><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">/*--- combat monstre</span></div><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">character_t* monster_creation();</span></div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">int attack(character_t **target,character_t attacker);</span></div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">void combat(character_t *player);*/</span></div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#endif</span></div><div class="ttc" id="structcharacter__s_html_a42dba952fdaed5c064bcf2da24b3acaf"><div class="ttname"><a href="structcharacter__s.html#a42dba952fdaed5c064bcf2da24b3acaf">character_s::spell</a></div><div class="ttdeci">int spell[7]</div><div class="ttdef"><b>Definition:</b> perso.h:14</div></div>
+<div class="ttc" id="structcharacter__s_html_a2f2a7fad33208372125f4e853a9929d5"><div class="ttname"><a href="structcharacter__s.html#a2f2a7fad33208372125f4e853a9929d5">character_s::xp</a></div><div class="ttdeci">int xp</div><div class="ttdef"><b>Definition:</b> perso.h:8</div></div>
+<div class="ttc" id="structcharacter__s_html_afd9b7f40d95471c53883623198ecc2f5"><div class="ttname"><a href="structcharacter__s.html#afd9b7f40d95471c53883623198ecc2f5">character_s::max_mana</a></div><div class="ttdeci">int max_mana</div><div class="ttdef"><b>Definition:</b> perso.h:13</div></div>
+<div class="ttc" id="inventaire_8h_html_ace15f7af60ea30bbb72a559bf0ea843d"><div class="ttname"><a href="inventaire_8h.html#ace15f7af60ea30bbb72a559bf0ea843d">accessories_e</a></div><div class="ttdeci">accessories_e</div><div class="ttdef"><b>Definition:</b> inventaire.h:16</div></div>
+<div class="ttc" id="inventaire_8h_html"><div class="ttname"><a href="inventaire_8h.html">inventaire.h</a></div></div>
+<div class="ttc" id="structcharacter__s_html_afdd60cde4ded07c3c52c7c761d3dffef"><div class="ttname"><a href="structcharacter__s.html#afdd60cde4ded07c3c52c7c761d3dffef">character_s::state</a></div><div class="ttdeci">int state[7]</div><div class="ttdef"><b>Definition:</b> perso.h:15</div></div>
+<div class="ttc" id="structcharacter__s_html_a2a2895cfd3ea729ce40992a9f0181318"><div class="ttname"><a href="structcharacter__s.html#a2a2895cfd3ea729ce40992a9f0181318">character_s::stat_intel</a></div><div class="ttdeci">int stat_intel</div><div class="ttdef"><b>Definition:</b> perso.h:17</div></div>
+<div class="ttc" id="structcharacter__s_html_a3f60fbe6e7752aa865eabfb10846873b"><div class="ttname"><a href="structcharacter__s.html#a3f60fbe6e7752aa865eabfb10846873b">character_s::stat_stamina</a></div><div class="ttdeci">int stat_stamina</div><div class="ttdef"><b>Definition:</b> perso.h:18</div></div>
+<div class="ttc" id="structcharacter__s_html_a94367bfada9d814fb41b491311ee3d56"><div class="ttname"><a href="structcharacter__s.html#a94367bfada9d814fb41b491311ee3d56">character_s::char_armor</a></div><div class="ttdeci">object_t char_armor</div><div class="ttdef"><b>Definition:</b> perso.h:21</div></div>
+<div class="ttc" id="perso_8h_html_ab24f44887164d006cb3be7f21e4f4d76"><div class="ttname"><a href="perso_8h.html#ab24f44887164d006cb3be7f21e4f4d76">character_t</a></div><div class="ttdeci">struct character_s character_t</div></div>
+<div class="ttc" id="structcharacter__s_html_ac3b09da79f93dcb331253c82f6ea02e6"><div class="ttname"><a href="structcharacter__s.html#ac3b09da79f93dcb331253c82f6ea02e6">character_s::health</a></div><div class="ttdeci">int health</div><div class="ttdef"><b>Definition:</b> perso.h:10</div></div>
+<div class="ttc" id="structcharacter__s_html_a34b4897fd609c787515f9e84262825fc"><div class="ttname"><a href="structcharacter__s.html#a34b4897fd609c787515f9e84262825fc">character_s::class_char</a></div><div class="ttdeci">char class_char[15]</div><div class="ttdef"><b>Definition:</b> perso.h:20</div></div>
+<div class="ttc" id="structcharacter__s_html_af074bed9a3b011ddb67f9122d0ebbb06"><div class="ttname"><a href="structcharacter__s.html#af074bed9a3b011ddb67f9122d0ebbb06">character_s::name</a></div><div class="ttdeci">char name[40]</div><div class="ttdef"><b>Definition:</b> perso.h:7</div></div>
+<div class="ttc" id="perso_8h_html_a5fbd9872ff58de7d8968e037909c0c40"><div class="ttname"><a href="perso_8h.html#a5fbd9872ff58de7d8968e037909c0c40">creation_char</a></div><div class="ttdeci">character_t * creation_char()</div><div class="ttdef"><b>Definition:</b> perso.c:4</div></div>
+<div class="ttc" id="structobject__s_html"><div class="ttname"><a href="structobject__s.html">object_s</a></div><div class="ttdef"><b>Definition:</b> inventaire.h:7</div></div>
+<div class="ttc" id="structcharacter__s_html_a4883de6c8fde831d3a5d523a87311c51"><div class="ttname"><a href="structcharacter__s.html#a4883de6c8fde831d3a5d523a87311c51">character_s::char_weapon</a></div><div class="ttdeci">object_t char_weapon</div><div class="ttdef"><b>Definition:</b> perso.h:22</div></div>
+<div class="ttc" id="structcharacter__s_html_a42616ec73ee1f74d7da7657cb8748952"><div class="ttname"><a href="structcharacter__s.html#a42616ec73ee1f74d7da7657cb8748952">character_s::level</a></div><div class="ttdeci">int level</div><div class="ttdef"><b>Definition:</b> perso.h:9</div></div>
+<div class="ttc" id="structcharacter__s_html_a6da6e463693316a2ab4740e99ee02b4b"><div class="ttname"><a href="structcharacter__s.html#a6da6e463693316a2ab4740e99ee02b4b">character_s::stat_strength</a></div><div class="ttdeci">int stat_strength</div><div class="ttdef"><b>Definition:</b> perso.h:16</div></div>
+<div class="ttc" id="structcharacter__s_html_ac215f2635e8de02fa85fad9209712944"><div class="ttname"><a href="structcharacter__s.html#ac215f2635e8de02fa85fad9209712944">character_s::accessory</a></div><div class="ttdeci">enum accessories_e accessory</div><div class="ttdef"><b>Definition:</b> perso.h:19</div></div>
+<div class="ttc" id="structcharacter__s_html_aacdf18ae147763915a60ce139e1c2537"><div class="ttname"><a href="structcharacter__s.html#aacdf18ae147763915a60ce139e1c2537">character_s::max_health</a></div><div class="ttdeci">int max_health</div><div class="ttdef"><b>Definition:</b> perso.h:12</div></div>
+<div class="ttc" id="structcharacter__s_html_a43b0feccfced1f7653cc4b7b2affae74"><div class="ttname"><a href="structcharacter__s.html#a43b0feccfced1f7653cc4b7b2affae74">character_s::mana</a></div><div class="ttdeci">int mana</div><div class="ttdef"><b>Definition:</b> perso.h:11</div></div>
+<div class="ttc" id="perso_8h_html_a45dc31cf231cfa0bf396b2f57c5f5c03"><div class="ttname"><a href="perso_8h.html#a45dc31cf231cfa0bf396b2f57c5f5c03">affich</a></div><div class="ttdeci">void affich(character_t *perso)</div><div class="ttdef"><b>Definition:</b> perso.c:45</div></div>
+<div class="ttc" id="perso_8h_html_a2754303c99cd7cadc5c67f22e77aeabf"><div class="ttname"><a href="perso_8h.html#a2754303c99cd7cadc5c67f22e77aeabf">delete_player</a></div><div class="ttdeci">void delete_player(character_t *player)</div><div class="ttdef"><b>Definition:</b> perso.c:38</div></div>
+<div class="ttc" id="structcharacter__s_html"><div class="ttname"><a href="structcharacter__s.html">character_s</a></div><div class="ttdef"><b>Definition:</b> perso.h:6</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="perso_8h.html">perso.h</a></li>
+    <li class="footer">Généré par
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
+  </ul>
+</div>
+</body>
+</html>

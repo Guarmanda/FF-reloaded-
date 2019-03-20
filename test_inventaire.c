@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <inventaire.h>
 
-
 int main(){
    printf("hi hi\n" );
     /* inventory_t inventaire = create_or_delete_inventory();
@@ -16,5 +15,6 @@ int main(){
     printf("\n\n\n\n");
     test = display_object(*objet);
     printf("%s", test);*/
+    
     return 0;
 }
