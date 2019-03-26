@@ -174,7 +174,8 @@ int running_away(character_t** player){ /* true => successful*/
    return 1;
 }
 void casting_spell( character_t* wizard,character_t **target, spell_t spell){
-  if(spell.spell_type == 0){ /* offensif*/
+ 
+   if(spell.spell_type == 0){ /* offensif*/
     (*target)->health -= wizard->stat_intel * spell.spell_value;
   }
   else if(spell.spell_type == 1){ /* soin*/
