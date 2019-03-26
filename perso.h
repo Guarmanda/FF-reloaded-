@@ -4,7 +4,7 @@
 #include <inventaire.h>
 
 typedef struct character_s{
-  char name[40];
+  char name[20];
   int xp;
   int level;
   int health;

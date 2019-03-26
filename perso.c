@@ -115,7 +115,9 @@ character_t* creation_char(){
     player = malloc(sizeof(character_t));
 
     printf("Insert your name : ");
-    scanf("%s", player->name);
+
+    lire(player->name,40);
+    printf("Bienvenue %s!\n",player->name);
     printf("Choose a class for your character : \n");
     printf("warrior, wizard, hunter, priest \n");
     scanf("%s", player->class_char);

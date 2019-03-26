@@ -73,3 +73,34 @@ void modifier_string(string *string_old, string string_new){
 	supprimer_string(string_old); /*on free l'ancienne chaine*/
 	*string_old = creer_string(string_new); /*on alloue la nouvelle chaine*/
 }
+
+void viderBuffer(){
+
+    int c = 0;
+
+    while (c != '\n' && c != EOF)
+        c = getchar();
+}
+int lire(char *chaine, int longueur){
+
+    char *positionEntree = NULL;
+
+    if (fgets(chaine, longueur, stdin) != NULL){
+
+        positionEntree = strchr(chaine, '\n');
+        if (positionEntree != NULL){
+
+            *positionEntree = '\0';
+        }else{
+
+            viderBuffer();
+			}
+
+        return 1;
+
+    }else{
+
+        viderBuffer();
+        return 0;
+    }
+}

@@ -23,7 +23,8 @@ int entier_aleatoire(int min, int max);
 string creer_string(string string_param);
 err_t supprimer_string(string *string_param);
 void modifier_string(string *string_old, string string_new);
-
+void viderBuffer();
+int lire(char *chaine, int longueur);
 /* Definition du type booleen */
 typedef enum booleen_s { FAUX , VRAI } booleen_t ;
 
