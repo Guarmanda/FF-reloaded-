@@ -5,6 +5,6 @@ int map[1000][1000]; /*!< Matrice de la map, contenant les valeurs des sprites (
 float X; /*!< Abscisse du joueur pour usage externe (quêtes, monstres,...) */
 float Y; /*!< Ordonnée du joueur pour usage externe */
 
-void showMap(float, float);
+
 /*void setRandomMap();*/
 void loadMap(char*);

@@ -10,15 +10,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <SDL2/SDL.h>
-#include <fonctions_sdl.h>
+#include <fonctions_affichage.h>
+#include <affichage.h>
 #include <map.h>
 #include <menu_principal.h>
-#include <menu_inventaire.h>
 #include <math.h>
 #include <quete.h>
+#include <ncurses.h>
 
-static float VITESSE_PERSO = 0.015; /*!< Vitesse du personnage (plus le jeu est optimisé en mémoire vive, moins il va vite, et plus il faut augmenter cette valeur) */
 
 /**
  * \fn void startGame(float x, float y)
@@ -34,74 +33,31 @@ void startGame(float x, float y){
   if(x-nbSpriteX/2<0) x=nbSpriteX/2;
   if(y+nbSpriteY/2+2>1000) y=999-(nbSpriteY/2+2);
   if(x+nbSpriteX/2+2>1000) x=999-(nbSpriteX/2+2);
-  showMap( x, y);
+  afficher_Map( x, y);
   //x_select: les coordonées du seleteur de façon à le centrer sur l'écran
   int x_select = (SCREEN_WIDTH-1200)/2;
   faire_rendu();
   int running = 1;
   int selected = 1;
-  SDL_Event e;
 
-  if(!AFFICHAGE){ //si on est pas en sdl, on va accélérer la vitesse du perso
-    VITESSE_PERSO=0.15;
-    nodelay(w, TRUE);
-    notimeout(w, TRUE);
-  }
   while(running) {
     //Au départ la gestion du clavier se faisait avec un event qui détectait l'appuis d'une touche
     //mais dès que j'ai mis cette partie du code ici sans utiliser l'event, les déplacements sont devenus bien
     //plus fluides, rapides, et surtout la latence au moment de l'appuis sur une touche a disparue
-    //(quand on restait appuyé sur une touche, le permonnage restait une seconde immobile, comme quand on écrit
+    //(quand on restait appuyé sur une touche, le personnage restait une seconde immobile, comme quand on écrit
     //un caractère en continu)
-    //l'état du clavier à l'instant actuel
-    const Uint8 *state = SDL_GetKeyboardState(NULL); //en sdl
-    int touche = wgetch(w); //en terminal
-    char  coor[20];
-
-    //si c'est une touche de mouvement
-    if(state[SDL_SCANCODE_RIGHT] || state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_DOWN] || touche == KEY_UP || touche == KEY_DOWN || touche == KEY_LEFT || touche == KEY_RIGHT){
-      //on gère les colisions et la vitesse du perso
-      //on a besoin de regarder à quel endroit de la map on est et ce qu'il y a après
-      //on fait cohabiter le sdl et le terminal pour un code le plus optimisé possible
-      if ((state[SDL_SCANCODE_RIGHT] || touche == KEY_RIGHT) && (map[(int)(floor(y))][(int)(floor(x+VITESSE_PERSO))]==4 || map[(int)(floor(y))][(int)(floor(x+VITESSE_PERSO))]==5)) x+=VITESSE_PERSO;
-      else if ((state[SDL_SCANCODE_LEFT] || touche == KEY_LEFT) && (map[(int)(floor(y))][(int)(floor(x-VITESSE_PERSO))]==4 || map[(int)(floor(y))][(int)(floor(x-VITESSE_PERSO))]==5)) x-=VITESSE_PERSO;
-      if ((state[SDL_SCANCODE_UP] || touche == KEY_UP) && (map[(int)(floor(y-VITESSE_PERSO))][(int)(floor(x))]==4 || map[(int)(floor(y-VITESSE_PERSO))][(int)(floor(x))]==5)) y-=VITESSE_PERSO;
-      else if ((state[SDL_SCANCODE_DOWN] || touche == KEY_DOWN) && (map[(int)(floor(y+VITESSE_PERSO))][(int)(floor(x))]==4 || map[(int)(floor(y+VITESSE_PERSO))][(int)(floor(x))]==5)) y+=VITESSE_PERSO;
-      if(x<0) x=0;
-      if(y<0) y=0;
-      if(x>999) x=999;
-      if(y>999) y=999;
+    //Donc, si on a un mouvement du joueur, on affiche à nouveau la map et les quêtes
+    if(detecter_mouvement(&x, &y)){
       //chargement de la map
-      showMap( x, y);
+      afficher_Map( x, y);
       afficher_quetes();
       faire_rendu();
     }
-  	while(SDL_PollEvent(&e)) {
-  		switch(e.type) {
-        //la gestion du clavier hors déplacements se fait ici
-        case SDL_KEYDOWN:
-        {
-          //si c'est la touche d'inventaire
-          if(state[SDL_SCANCODE_I]){
-            showInventory();
-          }
-          else if(state[SDL_SCANCODE_ESCAPE]){
-            running = 0;
-          }
-          break;
-        }
-        case SDL_MOUSEBUTTONDOWN:
-        //quand on clique, si on clique au dessus du sélecteur, on va placer une case.
-        //Sinon, on regarde si on a cliqué dans une case du sélecteur.
-        {
-          int mouse_x, mouse_y;
-          SDL_GetMouseState(&mouse_x, &mouse_y);
-
-        break;
-      }
-      }
-    }
-    SDL_Delay(5);
+    char coor[20] = "";
+    setcolor(14, 6);
+    sprintf(coor, "%f, %f", x, y);
+    mvaddstr(23, 20, coor);
+    detecter_touches();
   }
   showMenu();
 }
