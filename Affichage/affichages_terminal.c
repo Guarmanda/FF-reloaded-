@@ -7,7 +7,7 @@
 
 void gestion_editeur(float x, float y, int selected, int running){}
 void showInventory(){}
-void detecter_touches(){}
+void detecter_touches(int*x){}
 
 void afficher_selecteur(int x, int y){
   afficher_Map( x, y);

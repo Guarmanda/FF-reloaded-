@@ -404,7 +404,7 @@ int detecter_mouvement(float * x, float * y){
   return 0;
 }
 
-void detecter_touches(){
+void detecter_touches(int * running){
   SDL_Event e;
   while(SDL_PollEvent(&e)) {
     switch(e.type) {
@@ -417,7 +417,7 @@ void detecter_touches(){
           showInventory();
         }
         else if(state[SDL_SCANCODE_ESCAPE]){
-          running = 0;
+          *running = 0;
         }
         break;
       }
@@ -470,7 +470,7 @@ void gestion_editeur(float x, float y, int selected, int running){
           //si on est à la hauteur d'une case du sélecteur
           if(mouse_y>SCREEN_HEIGHT-200 && mouse_y<SCREEN_HEIGHT){
             //la position de x sur l'image
-            int pos = mouse_x-(x_select+245);
+            int pos = mouse_x-((SCREEN_WIDTH-1200)/2+245);
             for(int j=0,i = 1; j<pos+85 ;i++, j+=100){
               if(pos >= j && pos <= j+85){
                 //i corresponds au numéro de la case du sprite sélectionné,

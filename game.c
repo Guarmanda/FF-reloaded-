@@ -53,11 +53,7 @@ void startGame(float x, float y){
       afficher_quetes();
       faire_rendu();
     }
-    char coor[20] = "";
-    setcolor(14, 6);
-    sprintf(coor, "%f, %f", x, y);
-    mvaddstr(23, 20, coor);
-    detecter_touches();
+    detecter_touches(&running);
   }
   showMenu();
 }
