@@ -3,7 +3,7 @@ all:
 	make $$PARAM;
 
 CC=gcc
-SDL_DIR=./SDL2
+SDL_DIR=${HOME}/SDL2
 SDLLIB_DIR=${SDL_DIR}/lib
 SDLINC_DIR=${SDL_DIR}/include
 AFF=./Affichage/
