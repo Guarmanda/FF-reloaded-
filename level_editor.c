@@ -25,7 +25,7 @@
  * \param[in] Ordonnée du début de l'édition
  */
 void showEditor(float x, float y){
-  VITESSE_PERSO = 0.015; //on sera plus rapide dans l'éditeur
+  VITESSE_PERSO = 0.15; //on sera plus rapide dans l'éditeur
   //si on est à des coordonnées trop petites pour l'écran, on adapte
   int nbSpriteX = SCREEN_WIDTH/125;
   int nbSpriteY = SCREEN_HEIGHT/125;
@@ -40,7 +40,7 @@ void showEditor(float x, float y){
   int selected = 1;
   while(running) {
     //l'état du clavier à l'instant actuel
-    gestion_editeur(x, y, selected, running);
+    gestion_editeur(&x, &y, &selected, &running);
   }
   showMenu();
 }
