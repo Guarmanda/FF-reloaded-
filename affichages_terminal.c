@@ -164,16 +164,18 @@ int afficher_menu(char list[4][30]){
 	return running;
 }
 
-void afficher_quete(float x, float y, char etat, char* phrase){
+void afficher_quete(float x, float y, int i, char etat){
   switch(etat){
     case 'P':
       setcolor(14, 6);
       mvaddstr(y, x, "!");
       break;
     case 'F':
-      mvaddstr(23, 20, phrase);
+      mvaddstr(23, 10, quetes[i]->pnj_nom);
+      mvaddstr(23, 20, quetes[i]->phrase_fin);
     case 'D':
-      mvaddstr(23, 20, phrase);
+      mvaddstr(23, 10, quetes[i]->pnj_nom);
+      mvaddstr(23, 20, quetes[i]->phrase_debut);
       break;
     case 'B':
       setcolor(14, 6);

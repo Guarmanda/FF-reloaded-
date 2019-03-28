@@ -361,23 +361,71 @@ void afficher_creation(char*name, char*class_char, char*gender){
   SDL_StopTextInput();
 }
 
-void afficher_quete(float x, float y, char etat, char* message){
+void afficher_quete(float x, float y, int id, char etat){
+  int Tw = 9;
   int long_message;
+  int char_par_ligne = 90;
+  int num_lignes;
+  int pixels_bulle;
   switch(etat){
     case 'P':
-      drawImage( x, y, "pnj.png", 60, 60);
+      drawImage( x, y, quetes[id]->pnj_img, 60, 60);
       break;
     case 'F':
-      long_message = strlen(message)*8;
-      drawImage( x-long_message/4, y-50, "bulle.png", long_message+40, 60);
-      drawText(x-long_message/4+20, y-45, message, 25, 8);
+      long_message = strlen(quetes[id]->phrase_fin)*Tw;
+      //le numéro de lignes est égal à la taille du texte divisé, + 1 ligne pour le nom du pnj
+      num_lignes = (long_message/char_par_ligne)+1;
+      //si le messae est petit, la bulle fait la longueur du message
+      if(num_lignes == 2){
+        drawImage( x-long_message/4, y-110, "bulle.png", long_message+40, 120);
+        drawText(x-long_message/4+20, y-67, quetes[id]->phrase_fin, 25, Tw);
+      }else{ //sinon elle fait la longueur d'une ligne, et on affiche le texte ligne par ligne
+        drawImage( x-long_message/4, y-110, "bulle.png", char_par_ligne+40, 120);
+        for(int j = 0, i = 1; i<num_lignes; i++){
+          char ligne[91];
+          int k;
+          for(k=0; j<i*90 && j<long_message; j++, k++){
+            ligne[k] = quetes[id]->phrase_fin[j];
+          }
+          ligne[k] = '\0';
+          drawText(x-long_message/4+20, y-67, ligne, 25, Tw);
+        }
+      }
+      drawText(x-long_message/4+20, y-100, quetes[id]->pnj_nom, 25, Tw);
+      break;
     case 'D':
-      long_message = strlen(message)*8;
-      drawImage( x-long_message/4, y-50, "bulle.png", long_message+40, 60);
-      drawText(x-long_message/4+20, y-45, message, 25, 8);
+      long_message = strlen(quetes[id]->phrase_debut);
+      //le numéro de lignes est égal à la taille du texte divisé, + 1 ligne pour le nom du pnj
+      printf("test\n");
+      num_lignes = (long_message/char_par_ligne)+2;
+
+      printf("num_lignes: %d/%d = %d\n",long_message, char_par_ligne, num_lignes);
+      //si le messae est petit, la bulle fait la longueur du message
+      if(num_lignes == 2){
+        pixels_bulle = long_message*Tw;
+        drawImage( x-pixels_bulle/4, y-110, "bulle.png", pixels_bulle+40, 120);
+        drawText(x-pixels_bulle/4+20, y-70, quetes[id]->phrase_debut, 25, Tw);
+      }else{ //sinon elle fait la longueur d'une ligne, et on affiche le texte ligne par ligne
+        pixels_bulle = 90*Tw;
+        drawImage( x-pixels_bulle/4, y-(60*num_lignes-10), "bulle.png", char_par_ligne*Tw+40, 60*num_lignes);
+        for(int j = 0, i = 1; i<num_lignes; i++){
+          char ligne[91];
+          int k;
+          for(k=0; j<i*90 && j<long_message; j++, k++){
+            ligne[k] = quetes[id]->phrase_debut[j];
+            ligne[k+1] = '\0';
+          }
+          int pixel_y = y-(25*(num_lignes-i))-25*num_lignes;
+          drawText(x-pixels_bulle/4+20, pixel_y, ligne, 25, Tw);
+        }
+      }
+      char nom[30];
+      sprintf(nom, "%s", quetes[id]->pnj_nom);
+      strcat(nom, " :");
+      drawText(x-pixels_bulle/4+20, y-(60*num_lignes-10)+30, nom, 25, Tw);
       break;
     case 'B':
-      drawImage( x, y, message, 60, 60);
+      drawImage( x, y, quetes[id]->nom_img, 60, 60);
       break;
 
   }

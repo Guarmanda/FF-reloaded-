@@ -1,6 +1,6 @@
 int afficher_menu(char menu[4][30]);
 void afficher_Map(float, float);
-void afficher_quete(float, float, char, char*);
+void afficher_quete(float x, float y, int i, char etat);
 void afficher_creation(char*name, char*class_char, char*gender);
 void afficher_selecteur(int x, int y);
 void showInventory();

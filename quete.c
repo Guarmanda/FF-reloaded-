@@ -31,13 +31,13 @@ void afficher_quetes(){
       //on reprends le calcul de la map pour les coordonnées du pnj en pixels
       int pnj_x = (quetes[i]->pnj_x-(X-nbSpriteX))*SPRITE_W;
       int pnj_y = (quetes[i]->pnj_y-(Y-nbSpriteY))*SPRITE_W;
-      afficher_quete(pnj_x, pnj_y, 'P', NULL);
+      afficher_quete(pnj_x, pnj_y, i, 'P');
     }
     //meme chose pour le but d'une quête, mais le statut de la quête doit être 1
     if(abs((int)(quetes[i]->but_x-X)) <= nbSpriteX && abs((int)(quetes[i]->but_y-Y)) <= nbSpriteY && quetes[i]->statut ==1){
       int but_x = (quetes[i]->but_x-(X-nbSpriteX))*SPRITE_W;
       int but_y = (quetes[i]->but_y-(Y-nbSpriteY))*SPRITE_W;
-      afficher_quete(but_x, but_y, 'B', quetes[i]->nom_img);
+      afficher_quete(but_x, but_y, i, 'B');
     }
     //si un joueur croise un pnj (si la distance entre les deux est inférieure à 1)
     if(fabs(quetes[i]->pnj_x-X) <= 1 && fabs(quetes[i]->pnj_y-Y) <= 1 ){
@@ -46,7 +46,7 @@ void afficher_quetes(){
       //si la quête commence, on affiche le message de début
       if(quetes[i]->statut < 2){
         if(quetes[i]->statut == 0) quetes[i]->statut = 1;
-        afficher_quete(pnj_x, pnj_y, 'D', quetes[i]->phrase_debut);
+        afficher_quete(pnj_x, pnj_y, i, 'D');
       }
       //sinon on affiche le message de fin et on donne l'xp au joueur
       else {
@@ -58,7 +58,7 @@ void afficher_quetes(){
              PLAYER->xp -= 100;
            }
         }
-        afficher_quete(pnj_x, pnj_y, 'F', quetes[i]->phrase_fin);
+        afficher_quete(pnj_x, pnj_y, i, 'F');
       }
     }
     //si on croise un but
@@ -83,11 +83,11 @@ void charger_quetes(){
   while(!feof(fichier_quetes)&& i<100){
       quetes[i] = malloc(sizeof(quete_t));
       int nb1, nb2, nb3, nb4, nb5;
-      char char1[200];
+      char char1[400];
       char char2[30];
-      char char3[200];
-      fscanf(fichier_quetes, "pnj_x=%d,pnj_y=%d,\"%[^\"]\",but_x=%d,but_y=%d,\"%[^\"]\",\"%[^\"]\",xp=%d;\n",
-      &quetes[i]->pnj_x, &quetes[i]->pnj_y, quetes[i]->phrase_debut, &quetes[i]->but_x, &quetes[i]->but_y,
+      char char3[400];
+      fscanf(fichier_quetes, "pnj_nom=\"%[^\"]\",pnj_img=\"%[^\"]\",pnj_x=%d,pnj_y=%d,\"%[^\"]\",but_x=%d,but_y=%d,\"%[^\"]\",\"%[^\"]\",xp=%d;\n",
+      quetes[i]->pnj_nom, quetes[i]->pnj_img, &quetes[i]->pnj_x, &quetes[i]->pnj_y, quetes[i]->phrase_debut, &quetes[i]->but_x, &quetes[i]->but_y,
        quetes[i]->nom_img, quetes[i]->phrase_fin, &quetes[i]->xp);
       quetes[i]->statut = 0;
       i++;
