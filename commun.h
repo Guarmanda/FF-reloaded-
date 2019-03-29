@@ -17,7 +17,8 @@ typedef int err_t ;
 const err_t OK;
 const err_t KO;
 
-#define TAILLE_STR 32 /*taille par défaut des chaines de char */
+#define TAILLE_STR 40 /*taille par défaut des chaines de char */
+#define TAILLE_TAB_SORT 10
 
 int entier_aleatoire(int min, int max);
 string creer_string(string string_param);

@@ -6,13 +6,18 @@
 #include <combat.h>
 
 int main(){
+  /*   spell_t* tab_sort ; tout debut de partie, on cree un tableau de sort commun pour tous
+   int i;
+      for (i = 0; i < TAILLE_TAB_SORT ;i ++)
+         tab_sort[i] =malloc(sizeof (spell_t));
+      init_tab_sort(&tab_sort);
+*/
       character_t* joueur= creation_char();
       srand(time(NULL));
 
       inventory_t* inventaire= create_or_delete_inventory();
       object_t* tab_objet[5];
 
-      int i;
       for(i=0; i<5; i++ )
          tab_objet[i]=create_object(i);
 
@@ -27,11 +32,11 @@ int main(){
       }
 
       i=0;
-      int xp=0;
+
 
       do{
          printf("\n\t\t\t\t\t\tROUND %d \n",i);
-         combat_on(&joueur,inventaire,&xp);
+         combat_on(&joueur,inventaire);
          i++;
          sleep(5);
          printf("\n\n\n\n");

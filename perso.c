@@ -1,16 +1,66 @@
 #include <perso.h>
+#include <commun.h>
+
 /*partie des tests de l inventaire*/
+
+void init_tab_sort(spell_t** tab_sort){
+   int i;
+   (*tab_sort[0]).nom_sort=creer_string("Fire 1");
+   (*tab_sort[1]).nom_sort=creer_string("Thunder 1");
+   (*tab_sort[2]).nom_sort=creer_string("Air 1");
+   (*tab_sort[3]).nom_sort=creer_string("Ice 1");
+
+   for(i = 0; i < 4; i++){
+
+      tab_sort[i].valeur_sort = 20;
+   }
+
+   tab_sort[4].nom_sort=creer_string("Double Fire");
+   tab_sort[5].nom_sort=creer_string("Double Thunder");
+   tab_sort[6].nom_sort=creer_string("Double Air");
+   tab_sort[7].nom_sort=creer_string("Double Ice");
+   tab_sort[8].nom_sort=creer_string("Demi");   /*si niveau du target <= niv lanceur de sort + gerer aleatoire comme "evader"*/
+   tab_sort[9].nom_sort=creer_string("Ultima"); /*super sort kek*/
+   tab_sort[10].nom_sort=creer_string("Ultima 2"); /*9999 dégats*/
+
+   for( ; i < 8; i++){
+      tab_sort[i].valeur_sort = 40;
+   }
+   tab_sort[i].valeur_sort =50 ;
+   tab_sort[i++].valeur_sort =70 ;
+   tab_sort[i++].valeur_sort =90 ;
+   for(i = 0; i<= 10; i++){
+      tab_sort[i].type_sort = offensif;
+   }
+
+   /*sorts specifiques pour les monstres*/
+   tab_sort[11].nom_sort=creer_string("Blind"); /*gerer avec aleatoire + chance  + level du lanceur de sort*/
+   tab_sort[12].nom_sort=creer_string("Sleep");
+   tab_sort[13].nom_sort=creer_string("Slow");
+   tab_sort[14].nom_sort=creer_string("Stunt");
+   tab_sort[15].nom_sort=creer_string("Bleed");
+   tab_sort[16].nom_sort=creer_string("Berserk");
+   int j;
+   for(j=1 ; i < TAILLE_TAB_SORT; i++,j++){
+      tab_sort[i].type_sort = modifie_etat;
+      tab_sort[i].valeur_sort = j ;
+   }
+
+}
+
 
 char* allocating_monster_name(int level){
      int randomizer = 0;
-     randomizer = rand() % 100+1;   /*faire une fonction qui fasse le job*/
 
-     char* monster_name= malloc(sizeof(char)*40);  /*faire une fonction qui alloue et realloue plus tard 40 char */
+     randomizer = entier_aleatoire(1,100);   /*faire une fonction qui fasse le job*/
+
+     char* monster_name= malloc(sizeof(char)*TAILLE_STR);  /*faire une fonction qui alloue et realloue plus tard 40 char */
 
      if(level > 8){
 
          if (randomizer > 80) {
             strcpy(monster_name, "Dragon");
+
          }
          else if (randomizer > 60){
             strcpy(monster_name, "Manticore");
@@ -72,7 +122,7 @@ char* allocating_monster_name(int level){
          else
             strcpy(monster_name,"Thief");
          }
-         printf("le nom du monstre %s\n",monster_name );
+
    return monster_name;
 }
 
@@ -91,8 +141,9 @@ character_t* monster_creation(int level){
 
      for(i= 0; i<7 ;i++){
        monster->state[i] = 0;
-       monster->spell[i] = 0;
      }
+    /*espace pour les sorts*/
+
 
      monster->stat_intel = 3;
      monster->stat_stamina = 3;
@@ -112,6 +163,7 @@ character_t* monster_creation(int level){
 
 character_t* creation_char(){
     character_t* player=NULL;
+
     player = malloc(sizeof(character_t));
 
     printf("Insert your name : ");
@@ -120,20 +172,22 @@ character_t* creation_char(){
     printf("Bienvenue %s!\n",player->name);
     printf("Choose a class for your character : \n");
     printf("warrior, wizard, hunter, priest \n");
-    scanf("%s", player->class_char);
+    lire(player->class_char,8);
 
     player->xp=0;
     player->level=1;
     player->health=100;
     player->mana=100;
-    player->max_health=100;       /*vie maximum que peut avoir le joueur selon son niveau*/
+    player->max_health =100;       /*vie maximum que peut avoir le joueur selon son niveau*/
     player->max_mana = 100;        /*valeur par default */
+
     int i ;
 
-    for(i= 0; i<7 ;i++){
+    for( i = 0; i < 7 ; i++){
       player->state[i] = 0;
-      player->spell[i] = 0;
+
     }
+    player->spell= malloc(sizeof(spell_t)*7);
 
     player->stat_intel = 10;
     player->stat_stamina = 10;
@@ -172,4 +226,8 @@ void affich(character_t* perso){
    char* objet2= display_object(perso->char_weapon);
    printf("armure = %s\n",objet);
    printf("arme = %s\n",objet2);
+}
+
+void attribution_sort(character_t* perso){
+
 }

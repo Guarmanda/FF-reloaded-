@@ -4,7 +4,8 @@
 #include <commun.h>
 
 enum type_obj { armor=0, weapon, potion };
-enum accessories_e { green_amulet=0,ruby_ring,crystal_ring };
+
+enum accessories_e { green_amulet=10,ruby_ring=20,crystal_ring=30};
 
 /*structure objet qui possède trois champs, le type_object va de 0 à */
 typedef struct object_s{
