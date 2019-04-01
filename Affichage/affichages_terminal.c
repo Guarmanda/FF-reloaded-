@@ -4,10 +4,13 @@
 #include <fonctions_affichage.h>
 #include <ncurses.h>
 #include <math.h>
+#include <inventaire.h>
+#include <creationPerso.h>
 
 void gestion_editeur(float* x, float* y, int *selected, int *running){}
-void showInventory(){}
-void detecter_touches(int*x){}
+void detecter_touches(int*x){
+
+}
 
 void afficher_selecteur(int x, int y){
   afficher_Map( x, y);
@@ -162,6 +165,65 @@ int afficher_menu(char list[4][30]){
 					wattroff( fenetre, A_STANDOUT );
 	}
 	return running;
+}
+
+void showInventory(){
+  int running = -1; //la variable qui gère le choix du menu
+  char classe[inventaire->nb_objects][30];
+  for(int i=0; i<inventaire->nb_objects; i++){
+    strcpy(classe[i], display_object(*(inventaire->object[i])));
+  }
+  char item[30];
+  int ch, i = 0, width = 30;
+  wclear(fenetre);
+  initscr(); // initialize Ncurses
+  box( fenetre, 0, 0 ); //initialisation des bordures
+  //affichage des boutons
+  for( i=0; i<inventaire->nb_objects; i++ ) {
+      if( i == 0 )
+          wattron( fenetre, A_STANDOUT ); //on surligne le premier
+      else
+          wattroff( fenetre, A_STANDOUT );
+      mvwprintw( fenetre, i+12, 30, "%s", classe[i] );
+  }
+  mvwprintw( fenetre, 12, 10, "Nom: %s        ", PLAYER->name);
+  mvwprintw( fenetre, 13, 10, "Classe: %s     ", PLAYER->class_char);
+  mvwprintw( fenetre, 14, 10, "Genre: %s      ", PLAYER->gender);
+  wrefresh( fenetre ); //mise à jour de l'écran
+  int classe_ind = 0;
+
+  noecho(); //désactivation de l'écho des caratères
+  keypad( fenetre, TRUE ); //on autorise à taper des trucs
+  curs_set( 0 ); //on cache le curseur du terminal
+
+  //détection de la touche
+  while(( ch = wgetch(fenetre)) != '\n'){
+          mvwprintw( fenetre, classe_ind+12, 30, "%s", classe[classe_ind] );
+          switch( ch ) {
+              case KEY_UP:
+                          classe_ind--;
+                          classe_ind = ( classe_ind<0 ) ? inventaire->nb_objects-1 : classe_ind;
+                          break;
+              case KEY_DOWN:
+                          classe_ind++;
+                          classe_ind = ( classe_ind>inventaire->nb_objects-1 ) ? 0 : classe_ind;
+                          break;
+              case KEY_LEFT:
+                          //genre_ind--;
+                          //genre_ind = ( genre_ind<0 ) ? 1 : genre_ind;
+                          break;
+              case KEY_RIGHT:
+                          //genre_ind++;
+                          //genre_ind = ( genre_ind>1 ) ? 0 : genre_ind;
+                          break;
+          }
+          wattron( fenetre, A_STANDOUT );
+          mvwprintw( fenetre, classe_ind+12, 30, "%s", classe[classe_ind]);
+          wattroff( fenetre, A_STANDOUT );
+          mvwprintw( fenetre, 12, 10, "Nom: %s        ", PLAYER->name);
+          mvwprintw( fenetre, 13, 10, "Classe: %s     ", PLAYER->class_char);
+          mvwprintw( fenetre, 14, 10, "Genre: %s      ", PLAYER->gender);
+    }
 }
 
 void afficher_quete(float x, float y, int i, char etat){

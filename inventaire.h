@@ -22,6 +22,7 @@ typedef struct inventory_s{
     object_t * object[30];    /*voir si il faut delete*/
 }inventory_t;
 
+inventory_t* inventaire;
 /*creation des objets*/
 object_t* create_object(int level);
 void delete_object(object_t **item);

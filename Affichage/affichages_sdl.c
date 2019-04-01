@@ -396,10 +396,8 @@ void afficher_quete(float x, float y, int id, char etat){
     case 'D':
       long_message = strlen(quetes[id]->phrase_debut);
       //le numéro de lignes est égal à la taille du texte divisé, + 1 ligne pour le nom du pnj
-      printf("test\n");
       num_lignes = (long_message/char_par_ligne)+2;
 
-      printf("num_lignes: %d/%d = %d\n",long_message, char_par_ligne, num_lignes);
       //si le messae est petit, la bulle fait la longueur du message
       if(num_lignes == 2){
         pixels_bulle = long_message*Tw;

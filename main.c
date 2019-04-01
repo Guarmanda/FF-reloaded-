@@ -13,6 +13,7 @@
 #include <fonctions_affichage.h>
 #include <creationPerso.h>
 #include <quete.h>
+#include <inventaire.h>
 
 
 /**
@@ -28,6 +29,7 @@ int main(int argc, char** argv)
 	//on initialise l'affichage. Selon qu'on lance le programme terminal ou le programme sdl,
 	//le programme aura été compilé avec les fonctions correspondantes.
 	init_affichage();
+	inventaire = create_or_delete_inventory();
 	//on créer le joueur, il choisira certaines de ses statistiques au début de la partie
 	PLAYER = creation_char();
 	charger_quetes();
