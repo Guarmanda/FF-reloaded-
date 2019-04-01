@@ -9,7 +9,8 @@
  * \fn void showInventory()
  * \brief Affichage de l'inventaire du joueur
  */
-void showInventory(){
+
+void afficher_inv(int PH, int PW, int H, int W, int PSH, int PSW, int partie_items){
   //la longueur des barres de vie/mana/xp est de 8.54% de l'image, suivie d'une autre barre de 8.54% de l'image d'une autre couleur pour la barre vide
   //Il faut (pour l'instant) 100xp par niveau, 100hp en tout,
   //8.54%/100 = le nombre de pixels pour 1xp
@@ -41,12 +42,10 @@ void showInventory(){
   float PxTextYMana = ((SCREEN_WIDTH/100)*15.2);
 
   //affichage des barres
-  int W = SCREEN_WIDTH-5*SCREEN_WIDTH/100;
-  int H = SCREEN_HEIGHT-5*SCREEN_HEIGHT/100;
-  drawImage( (PLAYER->health*pixels/100)-pixels+2.5*SCREEN_WIDTH/100, 0, "life_bar.png", W, H);
-  drawImage( actual_xp*pixels/100-pixels+2.5*SCREEN_WIDTH/100, 0, "xp_bar.png", W, H);
-  drawImage( PLAYER->mana*pixels/100-pixels+2.5*SCREEN_WIDTH/100, 0, "mana_bar.png", W, H);
-  drawImage( 2.5*SCREEN_WIDTH/100, 0, "inventory.png", W, H);
+  drawImage( (PLAYER->health*pixels/100)-pixels+PSW, PSH, "life_bar.png", W, H);
+  drawImage( actual_xp*pixels/100-pixels+PSW, PSH, "xp_bar.png", W, H);
+  drawImage( PLAYER->mana*pixels/100-pixels+PSW, PSH, "mana_bar.png", W, H);
+  drawImage( PSW, PSH, "inventory.png", W, H);
   //affichage des valeurs des barres
   sprintf(num,"%d",PLAYER->health);
   drawText( PxTextXActuel, PxTextYVie, num, textH, textW);
@@ -75,8 +74,36 @@ void showInventory(){
   if(PLAYER->accessory==crystal_ring) sprintf(accessory, "%s", "crystal ring");
   drawImage( (SCREEN_WIDTH/100)*60.75, (SCREEN_HEIGHT/100)*9, accessory, 110, 110);
 
-  faire_rendu();
 
+  //affichage des items de l'inventaire
+  char item[Inventaire->nb_objects][30];
+  for(int i=15*partie_items, j=0, k=0; i<Inventaire->nb_objects && i < partie_items+15; i++, j++){
+    if(i%5==0 && i!=0 && i!=15){
+      j=0;
+      k++;
+    }
+    drawImage( (j*9.25+3.05)*PW+PSW, (k*14+58)*PH+PSH, display_object(*(Inventaire->object[i])), 60, 60);
+    //strcpy(item[i], display_object(*(Inventaire->object[i])));
+  }
+  faire_rendu();
+}
+
+void showInventory(){
+  //les pixels de l'image
+  int W = 95*SCREEN_WIDTH/100;
+  int H = 95*SCREEN_HEIGHT/100;
+
+  //les pixels qui représentent 1% de l'image
+  int PW = W/100;
+  int PH = H/100;
+
+  //les pixels qui représentent 2.5% de l'écran, donc les coordonnées de l'image
+  int PSW = 2.5*SCREEN_WIDTH/100;
+  int PSH = 0;
+  //l'inventaire est séparé en deux parties étant donné que l'image contient 15 cases d'inventaire
+  //et que l'inventaire peut contenir 30 items
+  int partie_items = 0;
+  afficher_inv(PH, PW, H, W, PSH, PSW, partie_items);
   int running = 1;
   int selected = 1;
   while(running) {
@@ -101,8 +128,19 @@ void showInventory(){
         {
           int mouse_x, mouse_y;
           SDL_GetMouseState(&mouse_x, &mouse_y);
-          //si on est dans le sélecteur
-
+          //si on est sur la fleche vers le bas
+          printf("souris %d %d\n", mouse_x, mouse_y);
+          printf("coordonnées: %.2f, %.2f, %.2f, %.2f\n", 74.7*PH, 93.66*PH, 43.82*PW+PSW, 51.6*PW+PSW);
+          if(mouse_y > 74.7*PH && mouse_y < 93.66*PH && mouse_x > 43.82*PW+PSW && mouse_x < 51.6*PW+PSW){
+            partie_items = 1;
+            printf("partieitem %d\n", partie_items);
+            afficher_inv(PH, PW, H, W, PSH, PSW, partie_items);
+          }
+          else if(mouse_y < 73.66*PH && mouse_y > 53.55*PH && mouse_x > 43.82*PW+PSW && mouse_x < 51.6*PW+PSW){
+            partie_items = 0;
+            printf("partieitem %d\n", partie_items);
+            afficher_inv(PH, PW, H, W, PSH, PSW, partie_items);
+          }
         break;
       }
       }

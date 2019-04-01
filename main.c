@@ -14,6 +14,7 @@
 #include <creationPerso.h>
 #include <quete.h>
 #include <inventaire.h>
+#include <unistd.h>
 
 
 /**
@@ -28,8 +29,25 @@ int main(int argc, char** argv)
 {
 	//on initialise l'affichage. Selon qu'on lance le programme terminal ou le programme sdl,
 	//le programme aura été compilé avec les fonctions correspondantes.
+	Inventaire = create_or_delete_inventory();
+	fill_up_inventory(Inventaire, create_object(8));
+  fill_up_inventory(Inventaire, create_object(7));
+  fill_up_inventory(Inventaire, create_object(6));
+  fill_up_inventory(Inventaire, create_object(8));
+	fill_up_inventory(Inventaire, create_object(1));
+  fill_up_inventory(Inventaire, create_object(2));
+  fill_up_inventory(Inventaire, create_object(3));
+  fill_up_inventory(Inventaire, create_object(4));
+	fill_up_inventory(Inventaire, create_object(8));
+	fill_up_inventory(Inventaire, create_object(7));
+	fill_up_inventory(Inventaire, create_object(6));
+	fill_up_inventory(Inventaire, create_object(8));
+	fill_up_inventory(Inventaire, create_object(1));
+	fill_up_inventory(Inventaire, create_object(2));
+	fill_up_inventory(Inventaire, create_object(3));
+	fill_up_inventory(Inventaire, create_object(4));
 	init_affichage();
-	inventaire = create_or_delete_inventory();
+
 	//on créer le joueur, il choisira certaines de ses statistiques au début de la partie
 	PLAYER = creation_char();
 	charger_quetes();

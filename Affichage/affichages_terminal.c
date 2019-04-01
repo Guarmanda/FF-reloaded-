@@ -9,7 +9,27 @@
 
 void gestion_editeur(float* x, float* y, int *selected, int *running){}
 void detecter_touches(int*x){
-
+  /*ch = wgetch(fenetre);
+	mvwprintw( fenetre, classe_ind+12, 30, "%s", classe[classe_ind] );
+	mvwprintw( fenetre, genre_ind+12, 50, "%s", genre[genre_ind] );
+	switch( ch ) {
+			case 'i':
+									classe_ind--;
+									classe_ind = ( classe_ind<0 ) ? 3 : classe_ind;
+									break;
+			case KEY_DOWN:
+									classe_ind++;
+									classe_ind = ( classe_ind>3 ) ? 0 : classe_ind;
+									break;
+			case KEY_LEFT:
+									genre_ind--;
+									genre_ind = ( genre_ind<0 ) ? 1 : genre_ind;
+									break;
+			case KEY_RIGHT:
+									genre_ind++;
+									genre_ind = ( genre_ind>1 ) ? 0 : genre_ind;
+									break;
+	}*/
 }
 
 void afficher_selecteur(int x, int y){
@@ -169,9 +189,9 @@ int afficher_menu(char list[4][30]){
 
 void showInventory(){
   int running = -1; //la variable qui gère le choix du menu
-  char classe[inventaire->nb_objects][30];
-  for(int i=0; i<inventaire->nb_objects; i++){
-    strcpy(classe[i], display_object(*(inventaire->object[i])));
+  char classe[Inventaire->nb_objects][30];
+  for(int i=0; i<Inventaire->nb_objects; i++){
+    strcpy(classe[i], display_object(*(Inventaire->object[i])));
   }
   char item[30];
   int ch, i = 0, width = 30;
@@ -179,7 +199,7 @@ void showInventory(){
   initscr(); // initialize Ncurses
   box( fenetre, 0, 0 ); //initialisation des bordures
   //affichage des boutons
-  for( i=0; i<inventaire->nb_objects; i++ ) {
+  for( i=0; i<Inventaire->nb_objects; i++ ) {
       if( i == 0 )
           wattron( fenetre, A_STANDOUT ); //on surligne le premier
       else
@@ -202,19 +222,11 @@ void showInventory(){
           switch( ch ) {
               case KEY_UP:
                           classe_ind--;
-                          classe_ind = ( classe_ind<0 ) ? inventaire->nb_objects-1 : classe_ind;
+                          classe_ind = ( classe_ind<0 ) ? Inventaire->nb_objects-1 : classe_ind;
                           break;
               case KEY_DOWN:
                           classe_ind++;
-                          classe_ind = ( classe_ind>inventaire->nb_objects-1 ) ? 0 : classe_ind;
-                          break;
-              case KEY_LEFT:
-                          //genre_ind--;
-                          //genre_ind = ( genre_ind<0 ) ? 1 : genre_ind;
-                          break;
-              case KEY_RIGHT:
-                          //genre_ind++;
-                          //genre_ind = ( genre_ind>1 ) ? 0 : genre_ind;
+                          classe_ind = ( classe_ind>Inventaire->nb_objects-1 ) ? 0 : classe_ind;
                           break;
           }
           wattron( fenetre, A_STANDOUT );

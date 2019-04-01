@@ -16,24 +16,24 @@ void delete_object(object_t **item){
   *item = NULL;
 }
 
-int loot_type(int level){        /*si niv 10*/
+int loot_type(int level){
 
-     int value = rand() % 100;
-     printf("valeur %d\n",value );
-     if(value <15){
-       return 0;              /* armor */
-     }else if(value < 30){
-       return 1;            /* weapon*/
+     int value = entier_aleatoire(1,100);
+     printf("valeur aleatoire tirée pour l'objet %d [0=armure, 1= arme, 2 =potions]\n",value );
+     if(value <15){              /* 15% de chance d avoir une armure */
+       return armor;
+    }else if(value < 30){        /* 30% de chance d avoir une arme*/
+       return weapon;
      }else{
-       return 2;        /* potion a 70% d etre lootée */
+       return potion;        /* potion a 70% d etre lootée */
 
      }
 }
 
-int loot_state(int type,int level){
+int loot_state(int type, int level){
 
   switch(type){
-       case 0 : {
+       case armor : {
                  if(level < 3)
                      return 0;
                  else if(level < 8){
@@ -44,8 +44,8 @@ int loot_state(int type,int level){
                    return 4;
                  }
                  }; break;
-       case 1 : return rand() % 5 ;break;
-       case 2 : {
+       case weapon : return rand() % 5 ;break;
+       case potion : {
                  if(level < 3){
                    return rand() % 2;
                  }
@@ -61,7 +61,7 @@ int loot_state(int type,int level){
 }
 
 int loot_value(int type, int state){
-  int tab_armor[4] = {10,20,30,40};
+  int tab_armor[4] = {10,20,30,40}; /**/
   int tab_weapon[5] = {3,5,7,7,10};
   int tab_potion[14] = {30,30,1,2,3,4,5,6,30,70,70,70,7,8};
 
@@ -75,13 +75,14 @@ int loot_value(int type, int state){
 
 inventory_t* create_or_delete_inventory(){
    inventory_t* inventaire_partie= malloc(sizeof (inventory_t));
+
    inventaire_partie->nb_objects =0;
    int i;
    for( i = 0; i<30; i++){
       inventaire_partie->object[i] = NULL;
    }
-
    return inventaire_partie;
+
 }
 /*ajout d un objet dans l inventaire*/
 int fill_up_inventory(inventory_t* inventory,object_t* object) {
@@ -96,12 +97,13 @@ int fill_up_inventory(inventory_t* inventory,object_t* object) {
    return 1;
 }
 
-char* display_object(object_t object){
+
+char* display_object(object_t object){ /*voir si il faut faire un free à la fin et ne rien retourner,
+    comment gerer le malloc ici et dans le main par ex*/
 
       char* etat= malloc (sizeof(char)*20);
 
       if(object.type_object ==0){      /*armure*/
-         printf("objet armure = %d\n", object.state_object);
          switch (object.state_object) {
 
             case 0: etat = "cloth armor"; break;
@@ -138,5 +140,11 @@ char* display_object(object_t object){
       }
       return etat;
 }
+/*
+void display_inventory(inventory_t* inventory){
+   printf("vous avez dans votre inventaire:\n" );
+   int total_objet= inventory->nb_objects;
+   int i;
 
-/*void delete_etat*/
+}
+void delete_etat*/
