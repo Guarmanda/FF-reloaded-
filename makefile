@@ -13,10 +13,10 @@ INCLUDES=-I${SDLINC_DIR} -I./ -lm -lncurses -I./Affichage/
 PROG=programme
 
 sdl: clean
-	${CC} main.c map.c ${AFF}affichages_sdl.c ${AFF}fonctions_sdl.c quete.c game.c creationPerso.c menu_principal.c perso.c inventaire.c level_editor.c outils.c -o ${PROG} ${LIBS} ${INCLUDES}
+	${CC} main.c map.c ${AFF}affichages_sdl.c ${AFF}fonctions_sdl.c quete.c game.c creationPerso.c menu_principal.c perso.c inventaire.c level_editor.c outils.c commun.c combat.c -o ${PROG} ${LIBS} ${INCLUDES}
 
 terminal: clean
-	${CC} main.c map.c ${AFF}affichages_terminal.c ${AFF}fonctions_terminal.c quete.c game.c creationPerso.c menu_principal.c perso.c inventaire.c level_editor.c outils.c -o ${PROG} ${LIBS} ${INCLUDES}
+	${CC} main.c map.c ${AFF}affichages_terminal.c ${AFF}fonctions_terminal.c quete.c game.c creationPerso.c menu_principal.c perso.c inventaire.c level_editor.c outils.c commun.c combat.c -o ${PROG} ${LIBS} ${INCLUDES}
 
 
 clean:

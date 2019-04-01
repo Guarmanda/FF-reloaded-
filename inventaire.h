@@ -1,43 +1,25 @@
 #ifndef _INVENTAIRE_H_
 #define _INVENTAIRE_H_
 
-#include "commun.h"
+#include <commun.h>
+
 /*#include <>*/
-
-/**
- *
-
- \brief Structure objet.
-
- */
-
 typedef struct object_s{
-  int type_object; /*!< 0 = armure, 1 = arme, 2 = potion */
-  int state_object; /*!< Numero de l'objet dans le type */
-  int value_object; /*!< Valeur de l'objet (armure, pourcentage de vie rendu etc...) */
+  int type_object; /* 0= armure, 1=weapon, 2= potion*/
+  int state_object; /* exemple : armure de cuir, potion de mana [0- ] */
+  int value_object; /*affectation d une valeur diff selon le type de l objet pour
+  ex: potion et son pourcentage
+  */
 }object_t;
 /*static pour eviter que les .o repetent les variables du .h si celui ci est inclu dans ++ fichiers différents   */
 
-
-/**
- *
- \brief Accesoire du joueur.
- */
-
 enum accessories_e {
-      green_amulet=0, /*!< 0 */
-      ruby_ring=1, /*!< 1*/
-      crystal_ring=2 /*!< 2 */
+      green_amulet=0,ruby_ring,crystal_ring
 };
 
-/**
- *
- \brief Inventaire du joueur.
- */
-
 typedef struct inventory_s{
-    int nb_objects; /*!< Nombre d'emplacements maximal dans l'inventaire. */
-    object_t * object[30]; /*!< Tableau de 30 pointeurs vers objet. */
+    int nb_objects;
+    object_t * object[30];    /*voir si il faut delete*/
 }inventory_t;
 
 /*creation des objets*/
@@ -48,8 +30,8 @@ int loot_type(int level);
 int loot_state(int type,int level);
 int loot_value(int type, int state);
 /*manipulation des objets et insertion dans l inventaire*/
-inventory_t create_or_delete_inventory();
-int fill_up_inventory(inventory_t array_inventory,object_t* object);
+inventory_t* create_or_delete_inventory();
+int fill_up_inventory(inventory_t* inventory,object_t* object);
 /*affichage */
 char* display_object(object_t object);
 #endif

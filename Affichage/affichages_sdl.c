@@ -361,23 +361,71 @@ void afficher_creation(char*name, char*class_char, char*gender){
   SDL_StopTextInput();
 }
 
-void afficher_quete(float x, float y, char etat, char* message){
+void afficher_quete(float x, float y, int id, char etat){
+  int Tw = 9;
   int long_message;
+  int char_par_ligne = 90;
+  int num_lignes;
+  int pixels_bulle;
   switch(etat){
     case 'P':
-      drawImage( x, y, "pnj.png", 60, 60);
+      drawImage( x, y, quetes[id]->pnj_img, 60, 60);
       break;
     case 'F':
-      long_message = strlen(message)*8;
-      drawImage( x-long_message/4, y-50, "bulle.png", long_message+40, 60);
-      drawText(x-long_message/4+20, y-45, message, 25, 8);
+      long_message = strlen(quetes[id]->phrase_fin)*Tw;
+      //le numéro de lignes est égal à la taille du texte divisé, + 1 ligne pour le nom du pnj
+      num_lignes = (long_message/char_par_ligne)+1;
+      //si le messae est petit, la bulle fait la longueur du message
+      if(num_lignes == 2){
+        drawImage( x-long_message/4, y-110, "bulle.png", long_message+40, 120);
+        drawText(x-long_message/4+20, y-67, quetes[id]->phrase_fin, 25, Tw);
+      }else{ //sinon elle fait la longueur d'une ligne, et on affiche le texte ligne par ligne
+        drawImage( x-long_message/4, y-110, "bulle.png", char_par_ligne+40, 120);
+        for(int j = 0, i = 1; i<num_lignes; i++){
+          char ligne[91];
+          int k;
+          for(k=0; j<i*90 && j<long_message; j++, k++){
+            ligne[k] = quetes[id]->phrase_fin[j];
+          }
+          ligne[k] = '\0';
+          drawText(x-long_message/4+20, y-67, ligne, 25, Tw);
+        }
+      }
+      drawText(x-long_message/4+20, y-100, quetes[id]->pnj_nom, 25, Tw);
+      break;
     case 'D':
-      long_message = strlen(message)*8;
-      drawImage( x-long_message/4, y-50, "bulle.png", long_message+40, 60);
-      drawText(x-long_message/4+20, y-45, message, 25, 8);
+      long_message = strlen(quetes[id]->phrase_debut);
+      //le numéro de lignes est égal à la taille du texte divisé, + 1 ligne pour le nom du pnj
+      printf("test\n");
+      num_lignes = (long_message/char_par_ligne)+2;
+
+      printf("num_lignes: %d/%d = %d\n",long_message, char_par_ligne, num_lignes);
+      //si le messae est petit, la bulle fait la longueur du message
+      if(num_lignes == 2){
+        pixels_bulle = long_message*Tw;
+        drawImage( x-pixels_bulle/4, y-110, "bulle.png", pixels_bulle+40, 120);
+        drawText(x-pixels_bulle/4+20, y-70, quetes[id]->phrase_debut, 25, Tw);
+      }else{ //sinon elle fait la longueur d'une ligne, et on affiche le texte ligne par ligne
+        pixels_bulle = 90*Tw;
+        drawImage( x-pixels_bulle/4, y-(60*num_lignes-10), "bulle.png", char_par_ligne*Tw+40, 60*num_lignes);
+        for(int j = 0, i = 1; i<num_lignes; i++){
+          char ligne[91];
+          int k;
+          for(k=0; j<i*90 && j<long_message; j++, k++){
+            ligne[k] = quetes[id]->phrase_debut[j];
+            ligne[k+1] = '\0';
+          }
+          int pixel_y = y-(25*(num_lignes-i))-25*num_lignes;
+          drawText(x-pixels_bulle/4+20, pixel_y, ligne, 25, Tw);
+        }
+      }
+      char nom[30];
+      sprintf(nom, "%s", quetes[id]->pnj_nom);
+      strcat(nom, " :");
+      drawText(x-pixels_bulle/4+20, y-(60*num_lignes-10)+30, nom, 25, Tw);
       break;
     case 'B':
-      drawImage( x, y, message, 60, 60);
+      drawImage( x, y, quetes[id]->nom_img, 60, 60);
       break;
 
   }
@@ -435,22 +483,22 @@ void detecter_touches(int * running){
 }
 
 
-void gestion_editeur(float x, float y, int selected, int running){
+void gestion_editeur(float * x, float * y, int* selected, int *running){
   const Uint8 *state = SDL_GetKeyboardState(NULL);
 
   //si c'est une touche de mouvement
   if(state[SDL_SCANCODE_RIGHT] || state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_DOWN]){
     //on gère les colisions et la vitesse du perso
     //on a besoin de regarder à quel endroit de la map on est et ce qu'il y a après
-    if (state[SDL_SCANCODE_RIGHT] ) x+=VITESSE_PERSO;
-    else if (state[SDL_SCANCODE_UP] ) y-=VITESSE_PERSO;
-    else if (state[SDL_SCANCODE_DOWN] ) y+=VITESSE_PERSO;
-    else if (state[SDL_SCANCODE_LEFT]) x-=VITESSE_PERSO;
-    if(x<0) x=0;
-    if(y<0) y=0;
-    if(x>1000) x=999;
-    if(y>1000) y=999;
-    afficher_selecteur(x, y);
+    if (state[SDL_SCANCODE_RIGHT] ) *x+=VITESSE_PERSO;
+    else if (state[SDL_SCANCODE_UP] ) *y-=VITESSE_PERSO;
+    else if (state[SDL_SCANCODE_DOWN] )*y+=VITESSE_PERSO;
+    else if (state[SDL_SCANCODE_LEFT]) *x-=VITESSE_PERSO;
+    if(*x<0) *x=0;
+    if(*y<0) *y=0;
+    if(*x>1000) *x=999;
+    if(*y>1000) *y=999;
+    afficher_selecteur(*x, *y);
 
   }
 
@@ -490,24 +538,24 @@ void gestion_editeur(float x, float y, int selected, int running){
                   fclose(map_file);
                 }
                 if(i==9){
-                  running=0;
+                  *running=0;
                   break;
                 }
-                selected = i;
+                *selected = i;
               }
             }
           }
         }
         //sinon on détecte la bonne position du sprite pour l'afficher sur l'écran, et on l'enregistre
         else{
-          int h=y-SCREEN_HEIGHT/125/2;
+          int h=*y-SCREEN_HEIGHT/125/2;
           for(int j=0; j+125<mouse_y;j+=125, h++);
-          int w=x-SCREEN_WIDTH/125/2;
+          int w=*x-SCREEN_WIDTH/125/2;
           for(int j=0; j+125<mouse_x;j+=125, w++);
 
           //une fois qu'on a trouvé les bonnes coordonées on modifie la map pour l'afficher en direct
-          map[h][w]= selected;
-          afficher_selecteur(x, y);
+          map[h][w]= *selected;
+          afficher_selecteur(*x, *y);
         }
       break;
     }

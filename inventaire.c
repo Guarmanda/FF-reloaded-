@@ -1,13 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <inventaire.h>
 
-/**
- * \fn object_t* create_object(int level)
- * \brief Fonction qui cree un objet en fonction du niveau du monstre vaincu
- * \param[in] Niveau du monstre
- * \return Un pointeur sur l'objet objet (object_t*)
- */
+#include <inventaire.h>
 
 object_t* create_object(int level){ /*va vérifier la valeur de l objet */
    /* state sera donne par un rand dans une range selon la difficulte du mob monstre->level*/
@@ -19,44 +11,24 @@ object_t* create_object(int level){ /*va vérifier la valeur de l objet */
    return new_item;
 }
 
-/**
- * \fn void delete_object(object_t **item)
- * \brief Fonction qui supprime un objet
- * \param[in] Double pointeur sur un objet
- */
-
 void delete_object(object_t **item){
   free(*item);
   *item = NULL;
 }
 
-/**
- * \fn int loot_type(int level)
- * \brief Fonction qui determine le type de la recompense (potion,armure,arme)
- * \param[in] Niveau du monstre vaincu
- * \return Type de la recompense (0 = armure, 1 = arme, 2 = potion)
- */
-
-int loot_type(int level){
+int loot_type(int level){        /*si niv 10*/
 
      int value = rand() % 100;
      printf("valeur %d\n",value );
      if(value <15){
-       return 0;
+       return 0;              /* armor */
      }else if(value < 30){
-       return 1;
+       return 1;            /* weapon*/
      }else{
-       return 2;
+       return 2;        /* potion a 70% d etre lootée */
+
      }
 }
-
-/**
- * \fn int loot_state(int level)
- * \brief Fonction qui determine la recompense dans un type bien particulier
- * \param[in] Type de la recompense
- * \param[in] Niveau du monstre vaincu
- * \return Entier representant la recompense, ou -1 signal d'erreur
- */
 
 int loot_state(int type,int level){
 
@@ -88,14 +60,6 @@ int loot_state(int type,int level){
      return -1; /*voir code d erreur */
 }
 
-/**
- * \fn int loot_value(int type, int state)
- * \brief Fonction qui affecte a la recompense sa valeur
- * \param[in] Type de la recompense
- * \param[in] Numero de la recompense
- * \return Valeur entiere de la recompense
- */
-
 int loot_value(int type, int state){
   int tab_armor[4] = {10,20,30,40};
   int tab_weapon[5] = {3,5,7,7,10};
@@ -109,47 +73,28 @@ int loot_value(int type, int state){
   return -1;   /*code d erreur*/
 }
 
-/**
- * \fn inventory_t create_or_delete_inventory()
- * \brief Fonction qui cree un inventaire vide
- * \return Un inventaire (inventory_t)
- */
-
-inventory_t create_or_delete_inventory(){
-   inventory_t inventory;
-   inventory.nb_objects =0;
+inventory_t* create_or_delete_inventory(){
+   inventory_t* inventaire_partie= malloc(sizeof (inventory_t));
+   inventaire_partie->nb_objects =0;
    int i;
    for( i = 0; i<30; i++){
-      inventory.object[i] = NULL;
+      inventaire_partie->object[i] = NULL;
    }
 
-   return inventory;
+   return inventaire_partie;
 }
+/*ajout d un objet dans l inventaire*/
+int fill_up_inventory(inventory_t* inventory,object_t* object) {
 
-/**
- * \fn int fill_up_inventory(inventory_t array_inventory,object_t* object)
- * \brief Fonction qui ajoute un objet dans l'inventaire
- * \return 0 si inventaire plein, 1 sinon
- */
-
-int fill_up_inventory(inventory_t array_inventory,object_t* object) {
-
-   if(array_inventory.nb_objects >= 30){ /*si c est plein, on renvoie 0  car on peut pas faire un overbook*/
+   if(inventory->nb_objects >= 30){ /*si c est plein, on renvoie 0  car on peut pas faire un overbook*/
          return 0;
    }
    else{
-      array_inventory.object[array_inventory.nb_objects] = object;
-      array_inventory.nb_objects++;
+      inventory->object[inventory->nb_objects] = object;
+      inventory->nb_objects++;
    }
    return 1;
 }
-
-/**
- * \fn char* display_object(object_t object)
- * \brief Fonction qui retourne le nom de l'object_t
- * \param[in] Une structure objet
- * \return Le nom de l'objet
- */
 
 char* display_object(object_t object){
 
