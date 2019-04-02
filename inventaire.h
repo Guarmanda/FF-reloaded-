@@ -4,8 +4,9 @@
 #include <commun.h>
 
 enum type_obj { armor=0, weapon, potion };
-
-enum accessories_e { green_amulet=10,ruby_ring=20,crystal_ring=30};
+/*evite_combats sert à baisser les chances de tomber sur des monstres lorsqu le joueur se balade sur la carte*/
+enum accessories_e {est_monstre=0,evite_combats, green_amulet=10,ruby_ring=20,crystal_ring=30}; /*est_monstre indique c est un monstre => il n a pas d accessoire*/
+enum adv_armure {contre_fire=0, contre_thunder, contre_air,contre_ice,invicible=8,invincible2,boss};
 
 /*structure objet qui possède trois champs, le type_object va de 0 à */
 typedef struct object_s{
@@ -24,6 +25,7 @@ typedef struct inventory_s{
     object_t * object[30];    /*voir si il faut delete*/
 }inventory_t;
 
+inventory_t Inventaire;
 /*creation des objets*/
 object_t* create_object(int level);
 void delete_object(object_t **item);

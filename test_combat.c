@@ -6,42 +6,50 @@
 #include <combat.h>
 
 int main(){
-  /*   spell_t* tab_sort ; tout debut de partie, on cree un tableau de sort commun pour tous
-   int i;
-      for (i = 0; i < TAILLE_TAB_SORT ;i ++)
-         tab_sort[i] =malloc(sizeof (spell_t));
-      init_tab_sort(&tab_sort);
-*/
-      character_t* joueur= creation_char();
-      srand(time(NULL));
+   /*  spell_t *sorts = malloc(sizeof(*sorts)*TAILLE_TAB_SORT);
+       */int i;
 
-      inventory_t* inventaire= create_or_delete_inventory();
-      object_t* tab_objet[5];
+       position_x =501;
+       position_y = 400;
+     /*  init_tab_sort(sorts);
+       printf("sort 0 %s\n",sorts[0].nom_sort );
+       printf("sort 1 %s\n",sorts[1].nom_sort );
+       printf("sort 16 %s\n",sorts[16].nom_sort );*/
+     /*  detruire_tab_sort(&sorts);*/
+       character_t* joueur= creation_char();
+       srand(time(NULL));
 
-      for(i=0; i<5; i++ )
-         tab_objet[i]=create_object(i);
+       inventory_t* inventaire= create_or_delete_inventory();
+       object_t* tab_objet[5];
 
-      /*display_inventory(inventaire);*/
-      printf("\t\t\t\t\tvous avez le(s) objet(s) suivant(s):\n" );
-      char * nom_obj;
+       for(i=0; i<5; i++ )
+          tab_objet[i]=create_object(i);
 
-      for(i=0; i<5;i++ ){
-         nom_obj= display_object(*tab_objet[i]);
-         printf("\t\t\tobjet %d %s\n",i, nom_obj);
-         fill_up_inventory(inventaire,tab_objet[i]);
-      }
+       /*display_inventory(inventaire);*/
+       printf("\t\t\t\t\tvous avez le(s) objet(s) suivant(s):\n" );
+       char * nom_obj;
 
-      i=0;
+       for(i=0; i<5;i++ ){
+          nom_obj= display_object(*tab_objet[i]);
+          printf("\t\t\tobjet %d %s\n",i, nom_obj);
+          fill_up_inventory(inventaire,tab_objet[i]);
+       }
+       i=0;
+       character_t* advers=monster_creation();
+       character_t* advers2=monster_creation();
+        /*
+             do{
+                printf("\n\n\n\n\t\t\t\t\ttROUND %d\n",i);
+                combat_on(&joueur,inventaire);
+                i++;
+                sleep(5);
+                printf("\n\n\n\n");
+             }while(i<5);
+       */
+       for(i=0; i<5;i++ ){
+          delete_object(&(tab_objet[i]));
+       }
+       return 0;
 
 
-      do{
-         printf("\n\t\t\t\t\t\tROUND %d \n",i);
-         combat_on(&joueur,inventaire);
-         i++;
-         sleep(5);
-         printf("\n\n\n\n");
-      }while(i<5);
-
-
-      return 0;
 }

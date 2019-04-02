@@ -3,8 +3,7 @@
 #include <unistd.h>
 #include <combat.h>
 
-int x_coord=500;
-int y_coord=500;
+
 
 
 /*menu principal du combat*/
@@ -12,15 +11,16 @@ int y_coord=500;
 int combat_on(character_t **player, inventory_t *inventory){
 
    int monster_number = entier_aleatoire(1,4); /*nb de monstre qui fera partie du combat*/
-   printf("vous êtes aux coordonnees %d et %d\n", x_coord, y_coord);
+   printf("vous êtes aux coordonnees %d et %d\n", position_x, position_y);
 
    character_t * monster[monster_number];   /*tableau de monstre généré*/
 
    int i;
    for( i = 0; i < monster_number;i++){
       monster[i] = NULL;
-      monster[i] = monster_creation(1);  /*faut mettre les coordonnees */
+      monster[i] = monster_creation();/* faut mettre les coordonnees */
    }
+
    int etat=1;
    int xp_temp=0;
 
@@ -29,7 +29,7 @@ int combat_on(character_t **player, inventory_t *inventory){
       printf("\nil y a %d monstres\n",monster_number );
 
       for( i = 0; i < monster_number;i++){
-         printf("\tadversaire %d : %s (vie: %d/%d)\n",i+1, monster[i]->name,monster[i]->health, monster[i]->max_health);
+         printf("\tadversaire %d : %s (vie: %d/%d ; niveau : %d)\n",i+1, monster[i]->name,monster[i]->health, monster[i]->max_health, monster[i]->level);
       }
       etat= affich_choix();
       int retour=1;  /*retour sert à revenir au menu lorsque le joueur a mal fait son choix

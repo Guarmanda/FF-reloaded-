@@ -74,30 +74,29 @@ void modifier_string(string *string_old, string string_new){
 	*string_old = creer_string(string_new); /*on alloue la nouvelle chaine*/
 }
 
-void viderBuffer(){
+void viderBuffer(){	/*si depassement  */
 
-    int c = 0;
+    int temp = 0;
 
-    while (c != '\n' && c != EOF)
-        c = getchar();
+    while (temp != '\n' && temp != EOF)
+        temp = getchar();	/*récupère le reste du texte entré (clavier) jusqu à la fin*/
 }
-int lire(char *chaine, int longueur){
 
-    char *positionEntree = NULL;
+int lire(char *chaine, int longueur){	/*pour lecture correcte via clavier*/
 
-    if (fgets(chaine, longueur, stdin) != NULL){
+    char *cherche_Enter = NULL;
 
-        positionEntree = strchr(chaine, '\n');
-        if (positionEntree != NULL){
+    if ( fgets(chaine, longueur, stdin) != NULL ){	/*fgets evite le debordement de mémoire*/
 
-            *positionEntree = '\0';
-        }else{
+        cherche_Enter = strchr(chaine, '\n');	/*recherche la touche [entree]*/
+        if (cherche_Enter != NULL){
+
+            *cherche_Enter = '\0';	/*fin de la chaîne */
+        }else{	/*si l utilisateur a dépassé la taille de la chaine par défaut on va vider les caractères qui se trouvent dans le buffer*/
 
             viderBuffer();
 			}
-
         return 1;
-
     }else{
 
         viderBuffer();
