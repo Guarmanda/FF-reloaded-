@@ -216,8 +216,9 @@ void afficher_Map(float x, float y){
                 sprintf(sprite2, "map_grass_water.png"); break;
         //gestion des routes et virages
         case 4: sprintf(sprite1, "map_path.png");
+                char path = 'x';
                 if(map[i-1][j] == 4 && map[i+1][j]==4 && map[i][j+1]==4 && map[i][j-1]==4) break;
-                char path = ' ';
+                  path = ' ';
                 if(map[i-1][j] == 4 && map[i+1][j]==4 && map[i][j+1]==4){
                   path = '6';
                 }else if(map[i-1][j] == 4 && map[i+1][j]==4 && map[i][j-1]==4){
@@ -226,10 +227,6 @@ void afficher_Map(float x, float y){
                   path = '5';
                 }else if(map[i][j-1] == 4 && map[i][j+1] ==4 && map[i+1][j]==4){
                   path = '3';
-                }else if(map[i][j-1] == 4 && map[i][j+1]==4){
-                  path = '2';
-                }else if(map[i-1][j] == 4 && map[i+1][j]==4){
-                  path = '1';
                 }else if(map[i][j+1] == 4 && map[i+1][j]==4){
                   path = '7';
                 }else if(map[i][j-1] == 4 && map[i-1][j]==4){
@@ -238,12 +235,18 @@ void afficher_Map(float x, float y){
                   path = '0';
                 }else if(map[i][j-1] == 4 && map[i+1][j]==4){
                   path = '8';
+                }else if(map[i][j-1] == 4 || map[i][j+1]==4){
+                  path = '2';
+                }else if(map[i-1][j] == 4 || map[i+1][j]==4){
+                  path = '1';
                 }
-                if(path != ' '){
-                  sprintf(sprite2, "map_grass_path%c", path);
+                if(path != ' ' && path != '0') sprintf(sprite2, "map_grass_path%c", path);
+                if(path == '0'){
+                   sprintf(sprite2, "map_grass_path10");
                 }
                 break;
       }
+      
       //on affiche les sprites
       drawImage( x2*SPRITE_W, y2*SPRITE_W, sprite1, SPRITE_W, SPRITE_W);
       if(sprite2[0]){

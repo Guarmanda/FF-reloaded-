@@ -15,19 +15,22 @@
 
 SDL_Renderer*renderer; /*!< Pointeur sur l'état du rendu */
 
-int nb_images=83; /*!< Nombre d'images du jeu */
+int nb_images=98; /*!< Nombre d'images du jeu */
 //police de caractères
 TTF_Font *police;
 //couleur principale du jeu
 SDL_Color couleurDoree = {204, 154, 0};
 
 //initialisation des images -> on les charge une seule fois pour économiser la ram
-SDL_Texture * images[83]; /*!< Tableau de texturess des images */
-char noms[83][50]= {
+SDL_Texture * images[98]; /*!< Tableau de texturess des images */
+char noms[98][50]= {
 //map et menu principal
 "button.png", "item_selector.png", "map_grass.png", "map_grass_path1.png", "map_grass_path2.png", "map_grass_path3.png", "map_grass_path4.png",
-"map_grass_path5.png", "map_grass_path6.png", "map_grass_path7.png", "map_grass_path8.png", "map_grass_path9.png", "map_grass_path0.png", "map_grass_water.png",
+"map_grass_path5.png", "map_grass_path6.png", "map_grass_path7.png", "map_grass_path8.png", "map_grass_path9.png", "map_grass_path10.png", "map_grass_water.png",
 "map_house.png", "map_path.png", "map_water.png", "map_tree1.png", "map_tree2.png", "player1.png",
+"map_grass_snow.png", "map_grass_path1_snow.png", "map_grass_path2_snow.png", "map_grass_path3_snow.png", "map_grass_path4_snow.png",
+"map_grass_path5_snow.png", "map_grass_path6_snow.png", "map_grass_path7_snow.png", "map_grass_path8_snow.png", "map_grass_path9_snow.png", "map_grass_path10_snow.png", "map_grass_water_snow.png",
+"map_house_snow.png", "map_water_snow.png", "map_tree1_snow.png", "map_tree2_snow.png",
 //inventaire
 "inventory.png", "life_bar.png", "mana_bar.png", "xp_bar.png",
 //armures

@@ -82,10 +82,6 @@ void charger_quetes(){
   int i=0;
   while(!feof(fichier_quetes)&& i<100){
       quetes[i] = malloc(sizeof(quete_t));
-      int nb1, nb2, nb3, nb4, nb5;
-      char char1[400];
-      char char2[30];
-      char char3[400];
       fscanf(fichier_quetes, "pnj_nom=\"%[^\"]\",pnj_img=\"%[^\"]\",pnj_x=%d,pnj_y=%d,\"%[^\"]\",but_x=%d,but_y=%d,\"%[^\"]\",\"%[^\"]\",xp=%d;\n",
       quetes[i]->pnj_nom, quetes[i]->pnj_img, &quetes[i]->pnj_x, &quetes[i]->pnj_y, quetes[i]->phrase_debut, &quetes[i]->but_x, &quetes[i]->but_y,
        quetes[i]->nom_img, quetes[i]->phrase_fin, &quetes[i]->xp);

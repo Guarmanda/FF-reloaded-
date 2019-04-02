@@ -8,28 +8,17 @@
 #include <creationPerso.h>
 
 void gestion_editeur(float* x, float* y, int *selected, int *running){}
-void detecter_touches(int*x){
-  /*ch = wgetch(fenetre);
-	mvwprintw( fenetre, classe_ind+12, 30, "%s", classe[classe_ind] );
-	mvwprintw( fenetre, genre_ind+12, 50, "%s", genre[genre_ind] );
+void detecter_touches(int*running){
+  char ch = wgetch(fenetre);
 	switch( ch ) {
 			case 'i':
-									classe_ind--;
-									classe_ind = ( classe_ind<0 ) ? 3 : classe_ind;
+									showInventory();
 									break;
-			case KEY_DOWN:
-									classe_ind++;
-									classe_ind = ( classe_ind>3 ) ? 0 : classe_ind;
+			case 27:
+									*running = 0;
+                  wclear(fenetre);
 									break;
-			case KEY_LEFT:
-									genre_ind--;
-									genre_ind = ( genre_ind<0 ) ? 1 : genre_ind;
-									break;
-			case KEY_RIGHT:
-									genre_ind++;
-									genre_ind = ( genre_ind>1 ) ? 0 : genre_ind;
-									break;
-	}*/
+  }
 }
 
 void afficher_selecteur(int x, int y){
