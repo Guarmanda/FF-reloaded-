@@ -98,7 +98,7 @@ void init_affichage(){
   SCREEN_WIDTH = 80;
   SCREEN_HEIGHT = 24;
   SPRITE_W = 1;
-  VITESSE_PERSO = 0.2; //on est en terminal, le perso sera plus rapide qu'en sdl
+  VITESSE_PERSO = 0.4; //on est en terminal, le perso sera plus rapide qu'en sdl
 }
 
 void fond_blanc(){

@@ -1,7 +1,7 @@
 /**
  * \file map.c
  * \brief Affichage de la carte autour du joueur
- * \author Girod Valentin
+ * \author Girod Valentin Nathalie Karman Alexandre Papot
  * \date 12 mars 2019
  *
  * Contient la fonction de chargement de la carte

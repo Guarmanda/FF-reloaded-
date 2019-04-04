@@ -7,6 +7,7 @@
  * Contient les fonctions d'affichage et de gestion de fenêtres SDL, ainsi que le chargement/déchargement des images
  *
  */
+#include <dirent.h>
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
@@ -15,49 +16,36 @@
 
 SDL_Renderer*renderer; /*!< Pointeur sur l'état du rendu */
 
-int nb_images=98; /*!< Nombre d'images du jeu */
+int nb_images=0; /*!< Nombre d'images du jeu */
 //police de caractères
 TTF_Font *police;
 //couleur principale du jeu
 SDL_Color couleurDoree = {204, 154, 0};
 
 //initialisation des images -> on les charge une seule fois pour économiser la ram
-SDL_Texture * images[98]; /*!< Tableau de texturess des images */
-char noms[98][50]= {
-//map et menu principal
-"button.png", "item_selector.png", "map_grass.png", "map_grass_path1.png", "map_grass_path2.png", "map_grass_path3.png", "map_grass_path4.png",
-"map_grass_path5.png", "map_grass_path6.png", "map_grass_path7.png", "map_grass_path8.png", "map_grass_path9.png", "map_grass_path10.png", "map_grass_water.png",
-"map_house.png", "map_path.png", "map_water.png", "map_tree1.png", "map_tree2.png", "player1.png",
-"map_grass_snow.png", "map_grass_path1_snow.png", "map_grass_path2_snow.png", "map_grass_path3_snow.png", "map_grass_path4_snow.png",
-"map_grass_path5_snow.png", "map_grass_path6_snow.png", "map_grass_path7_snow.png", "map_grass_path8_snow.png", "map_grass_path9_snow.png", "map_grass_path10_snow.png", "map_grass_water_snow.png",
-"map_house_snow.png", "map_water_snow.png", "map_tree1_snow.png", "map_tree2_snow.png",
-//inventaire
-"inventory.png", "life_bar.png", "mana_bar.png", "xp_bar.png",
-//armures
-"golden armor.png", "cloth armor.png", "leather armor.png", "silver armor.png",
-//armes
-"dagger.png", "sword.png", "staff.png", "bow.png",
-//potions
-"mana potion.png", "super mana potion.png", "phoenix potion.png", "super phoenix potion.png", "health potion.png", "super health potion.png", "anti blind potion.png", "anti slow potion.png", "anti bleeding potion.png", "anti poison potion.png", "anti silence potion.png", "anti stunt potion.png", "speed potion.png", "lucidity potion.png",
-//accessories
-"ruby ring.png", "crystal ring.png", "green amulet.png",
-//personnages
-"warrior_man_back.png", "warrior_man_right.png", "warrior_man_left.png", "warrior_man_forward.png",
-"warrior_woman_back.png", "warrior_woman_right.png", "warrior_woman_left.png", "warrior_woman_forward.png",
-"hunter_man_back.png", "hunter_man_right.png", "hunter_man_left.png", "hunter_man_forward.png",
-"hunter_woman_back.png", "hunter_woman_right.png", "hunter_woman_left.png", "hunter_woman_forward.png",
-"wizard_man_back.png", "wizard_man_right.png", "wizard_man_left.png", "wizard_man_forward.png",
-"wizard_woman_back.png", "wizard_woman_right.png", "wizard_woman_left.png", "wizard_woman_forward.png",
-"priest_man_back.png", "priest_man_right.png", "priest_man_left.png", "priest_man_forward.png",
-"priest_woman_back.png", "priest_woman_right.png", "priest_woman_left.png", "priest_woman_forward.png",
-"pnj.png", "bulle.png"
-}; /*!< Tableau des noms d'images */
+SDL_Texture * images[200]; /*!< Tableau de texturess des images. Comme on ne peut pas faire de sizeof(sdl_texture) on met une taille suposée assez grande */
+char ** noms; /*!< Tableau des noms d'images */
 
 /**
  * \fn void loadImages()
  * \brief Chargement de toutes les textures du jeu dans la mémoire
  */
 void loadImages(){
+	DIR *d;
+	struct dirent *dir;
+
+	d = opendir("./IMG/");
+	while ((dir = readdir(d)) != NULL) nb_images++;
+	closedir(d);
+
+	noms = malloc(sizeof(char*)*nb_images);
+
+	d = opendir("./IMG/");
+	for (int i=0;(dir = readdir(d)) != NULL; i++){
+		noms[i] = malloc(sizeof(char)*strlen(dir->d_name));
+		strcpy(noms[i], dir->d_name);
+	}
+	closedir(d);
 	for(int i=0; i<nb_images; i++){
 		char nom[50] = "./IMG/";
 		strcat(nom, noms[i]);
