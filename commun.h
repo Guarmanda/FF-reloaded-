@@ -3,8 +3,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>  /*fonction sleep nécessaire*/
 #include <string.h>
 #include <time.h>
+#include <ncurses.h>
 
 /* Definition du type string */
 typedef char* string;
@@ -14,8 +16,8 @@ typedef int err_t ;
 
 /* Constantes */
 
-const err_t OK;
-const err_t KO;
+const err_t OK_state;
+const err_t KO_state;
 
 #define map_size_x 1000
 #define map_size_y 1000
@@ -44,6 +46,8 @@ typedef enum booleen_s { FAUX , VRAI } booleen_t ;
 #define ERR_DEB_MEMOIRE -100
 #define ERR_LISTE_IND_ELEM  -200
 
+int etat_jeu;/*variable globale qui vérifie qu on est bien dans le jeu*/
+#define EN_COMBAT VRAI /*pdt le jeu*/
 #define END_OF_GAME 666 /*fin du jeu*/
 
 #endif

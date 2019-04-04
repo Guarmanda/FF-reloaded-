@@ -1,8 +1,8 @@
-#include <stdlib.h>
+
 #include <commun.h>
 
-const err_t OK = 1;
-const err_t KO = 0;
+const err_t OK_state = 1;
+const err_t KO_state = 0;
 
 /**
  * \fn entier_aleatoire(int min, int max)
@@ -44,21 +44,21 @@ string creer_string(string string_param){
 }
 
 /**
- * \fn int supprimer_string(string *string_param)
- * \brief Supprime une chaine de caractere
- * \param[in] pointeur de pointeur chaine de caractere (string* AKA char**)
- * \return err_t OK/KO (1/0)
- */
+* \fn int supprimer_string(string *string_param)
+* \brief Supprime une chaine de caractere
+* \param[in] pointeur de pointeur chaine de caractere (string* AKA char**)
+* \return err_t OK/KO (1/0)
+*/
 
 err_t supprimer_string(string *string_param){
 
 	if(*string_param != NULL){ /*Si le pointeur pointe sur une zone memoire en cours d'occupation*/
 		free(*string_param);
 		*string_param = NULL;
-		return OK;
+		return OK_state;
 	}
 	else{
-		return KO;
+		return KO_state;
 	}
 }
 

@@ -1,10 +1,9 @@
 #ifndef _COMBAT_H_
 #define _COMBAT_H_
 
+#include <commun.h>
 #include <perso.h>
-
-
-
+#include <map_menace.h>
 
 /*-------------------------------------------------------------*/
 void casting_spell(character_t* wizard,character_t **target);  /*à implémenter */
@@ -37,8 +36,8 @@ int levelling(character_t* player);
 int combat_on(character_t **player, inventory_t *inventory);
 
 /*Affichage du menu combat*/
-int affich_choix();
-
+int affich_choix(void);
+int fight_rand(void);
 
 
 #endif

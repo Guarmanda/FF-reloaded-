@@ -1,10 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+
 #include <combat.h>
-
-
-
 
 /*menu principal du combat*/
 
@@ -61,7 +56,6 @@ int combat_on(character_t **player, inventory_t *inventory){
             attack(monster[i], player);
          }
 
-
          /*printf("etat %d\n",etat );*/
       }
 
@@ -69,17 +63,18 @@ int combat_on(character_t **player, inventory_t *inventory){
 
    if(!monster_number){
 
-
       (*player)->xp += xp_temp;
-      printf("vos nouveaux points d 'xp = %d\n",(*player)->xp);
-      printf("vous avez le niveau %d \n", (*player)->level);
+      printf("vos nouveaux points d 'xp = %d\nvous avez le niveau %d\n",(*player)->xp,(*player)->level);
 
       if(levelling(*player)){
          printf("vous avez atteint le niveau %d \n",(*player)->level);
       }
-   }else
+   }else{
       printf("GAME OVER...\n" );
-   printf("fin du combat\n" );
+      etat_jeu=END_OF_GAME;
+   }
+
+   printf("\t\tfin du combat ^^\n" );
    return 1;
 }
 
@@ -107,7 +102,7 @@ void attaque_joueur(character_t* player,character_t* tab_monstre[], int nb_monst
    /* affich(tab_monstre[choix_j-1]);*/
 
 }
-
+/*
 void sort_joueur(character_t* player,character_t* tab_monstre[], int nb_monstre){
 
    int i;
@@ -125,10 +120,11 @@ void sort_joueur(character_t* player,character_t* tab_monstre[], int nb_monstre)
    }while((choix_j-1) > nb_monstre || (choix_j-1) <0);
 
    printf("monstre %s choisi\n", tab_monstre[choix_j-1]->name);
-/*   affich(tab_monstre[choix_j-1]);
-   casting_spell(player,&tab_monstre[choix_j-1],);*/
-   /* affich(tab_monstre[choix_j-1]);*/
+    affich(tab_monstre[choix_j-1]);
+    casting_spell(player,&tab_monstre[choix_j-1],);
+    affich(tab_monstre[choix_j-1]);
 }
+*/
 int affich_choix(){
 
          int player_choice = 0; /* voir plus tard pour que le joueur puisse selectionner dans le menu */
@@ -137,7 +133,7 @@ int affich_choix(){
               printf("Vous êtes en combat, choisir entre les actions ci-dessous:\n" );
               printf(" 1 - Attaquer l'adversaire\n");
               printf(" 2 - Prendre une potion\n");
-              printf(" 3 - Appliquer un sort\n");
+              printf(" 3 - Appliquer un sort (à faire)\n");
               printf(" 4 - S'évader\n");
               printf(" 5 - Quitter le jeu\n");
               printf("Votre choix : ");
@@ -151,7 +147,6 @@ void update_tab_monster(character_t *monster_array[],int index, int nb_monstre){
   for( ; index < (nb_monstre-1) ; index++){
 
     *monster_array[index] = *monster_array[index+1];
-
   }
 }
 
@@ -185,22 +180,29 @@ int xp_points(character_t* player, character_t monster){
       return (xp_par_niveau * monster.level);
 
 }
+/*fight chance change selon l emplacement du joueur sur la map*/
 
 
-/*fonction qui va etre appelée pendant que le joueur marche dans la map*/
-int fight_rand(int fight_chance,character_t **player, inventory_t inventaire){
-   /*fight chance change selon l emplacement du joueur sur la map*/
+int fight_rand(){
 
-   int trap= entier_aleatoire(1,100);  /*aleatoire qui defini les combat*/
-
-   if(trap <= fight_chance){
-
-      combat_on(player,&inventaire);
+   int trap=0;
+   if (Personnage->accessory != evite_combats){
+      trap= entier_aleatoire(1,100);
    }else
-      printf("vous l'avez echappée belle! ;)\n");
+      trap= entier_aleatoire(1,50);
 
-   return OK;
+   int chances= map_threat[position_x][position_y];
+   printf("chances de la map %d, trap random %d \n",chances, trap );
+   if(trap <= chances){
+      combat_on(&Personnage,Inventaire);
+      return EN_COMBAT;
+   }
+   return FAUX;
+
 }
+
+
+
 
 /*-------------------------------------------------------------*/
 
@@ -219,9 +221,7 @@ int running_away(character_t** player){ /* true => successful*/
 void casting_spell(character_t* perso, character_t **target){
 
 
-
 }
-
 
 
 void apply_state_modifier(character_t **target, int value, int off_or_on){
