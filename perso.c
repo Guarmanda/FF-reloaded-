@@ -1,8 +1,6 @@
 #include <perso.h>
 #include <commun.h>
 
-
-#include <stdarg.h>
 /*partie des tests de l inventaire*/
 
 void init_tab_sort(spell_t* tab_sort){ /*à initialiser au début de la partie*/
@@ -75,7 +73,7 @@ int detruire_tab_sort(spell_t** tab_sort){
     }else
       return(1);
 }
-
+/*
 void attribution_sort(character_t* joueur, spell_t* tab_sort, int indice){
 
 
@@ -89,94 +87,17 @@ void attribution_sort(character_t* joueur, spell_t* tab_sort, int indice){
       }
     }
 
-    joueur->spell[i] = tab_sort[i]; /*déférencement*/
+    joueur->spell[i] = tab_sort[i];
 
-}
-static void creer_dragon(character_t** monstre){
-    strcpy((*monstre)->name, "Dragon");
+}*/
 
-}
-static void creer_wolf(character_t** monstre){
-  strcpy((*monstre)->name,"Wolf");
-
-}
-static void creer_snake(character_t** monstre){
-  strcpy((*monstre)->name,"Snake");
-
-}
-static void creer_skeleton(character_t** monstre){
-  strcpy((*monstre)->name,"Skeleton");
-
-}
-static void creer_goblin(character_t** monstre){
-  strcpy((*monstre)->name,"Goblin");
-
-}
-static void creer_thief(character_t** monstre){
-  strcpy((*monstre)->name,"Thief");
-
-}
 
 static int name_and_spells(character_t** monstre){
       int i;
+/*
 
-      int chance_vs_advers=0;
-      chance_vs_advers = entier_aleatoire(1,100); /*pourcentage de chance de tomber sur un monstre spécifique*/
-
-      if((*monstre)->level > 7){
-
-          if (chance_vs_advers > 80)          /*20% de chance que ce soit cet adversaire*/
-              creer_dragon(&(*monstre));
-
-          else if (chance_vs_advers > 60)
-              creer_wolf(&(*monstre));/*  strcpy(monstre->name, "Manticore");*/
-
-          else if  (chance_vs_advers > 40)
-                creer_wolf(&(*monstre));/*  strcpy(monstre->name,"Terrible r");*/
-
-          else if  (chance_vs_advers > 20)
-                  creer_wolf(&(*monstre));/*      strcpy(monstre->name,"Gryffin");*/
-
-          else
-                creer_wolf(&(*monstre));/*    strcpy(monstre->name,"Minotaur");*/
-
-     }else if((*monstre)->level  > 4){
-
-          if (chance_vs_advers > 80)
-                  creer_wolf(&(*monstre));/*      strcpy(monstre->name,"Dark troll");*/
-
-          else if (chance_vs_advers > 60)
-                  creer_wolf(&(*monstre));/*        strcpy(monstre->name,"Dark elf");*/
-
-          else if  (chance_vs_advers > 40)
-                  creer_wolf(&(*monstre));/*            strcpy(monstre->name,"Black wizard");*/
-
-          else if  (chance_vs_advers > 20)
-              creer_wolf(&(*monstre));
-      /*      strcpy(monstre->name,"Oger");*/
-
-          else
-              creer_wolf(&(*monstre));
-          /*  strcpy(monstre->name,"Your angry mom");*/
-
-      }else{
-          if(chance_vs_advers > 80)
-              creer_wolf(&(*monstre));
-
-          else if(chance_vs_advers > 60)
-              creer_snake(&(*monstre));
-
-          else if(chance_vs_advers > 40)
-              creer_skeleton(&(*monstre));
-
-          else if  (chance_vs_advers > 20)
-              creer_goblin(&(*monstre));
-
-          else
-              creer_thief(&(*monstre));
-         }
-
-         printf("\t\t\t monstre %s a %d \n",(*monstre)->name, (*monstre)->level );
+         */
+         printf("\t\t\t monstre %s est niveau %d \n",(*monstre)->name, (*monstre)->level );
      return 1;
 }
 
@@ -184,10 +105,9 @@ static void init_stats_monstre(character_t* monstre){
 
     int niveau = monstre->level;
 
-    monstre->xp = 20*niveau;
+    monstre->xp = 20 * niveau;
 
-    monstre->max_health= monstre->health = 40*niveau;
-    printf("%d /%d\n",monstre->health ,monstre->max_health);
+    monstre->max_health= monstre->health = 50*niveau;
     monstre->max_mana = monstre->mana = 40*niveau;
 
     int i;
@@ -220,14 +140,26 @@ static void bestiaire_haut_gauche(character_t** monster){
     int niveau = entier_aleatoire(7,10); /*monstres de niv 7 à 10*/
 
     (*monster)->level = niveau;
+    (*monster)->accessory=contre_ice;  /*espace foudre en bas à droite*/
+
     init_stats_monstre(*monster);
 
+}
+void boss1(character_t** monster){
+
+    (*monster)->level = 8;
+    (*monster)->accessory=invicible;  /*espace foudre en bas à droite*/
+
+    init_stats_monstre(*monster);
 
 }
+
 static void bestiaire_haut_droite(character_t** monster){
 
     int niveau = entier_aleatoire(5,7); /*monstres de niv5-7*/
     (*monster)->level=niveau;
+    (*monster)->accessory=contre_air;  /*espace foudre en bas à droite*/
+
     init_stats_monstre(*monster);
 
 }
@@ -237,6 +169,7 @@ static void bestiaire_bas_gauche(character_t** monster){
     int niveau = entier_aleatoire(5,7); /**/
 
     (*monster)->level=niveau;
+    (*monster)->accessory=contre_thunder;  /*espace foudre en bas à droite*/
     init_stats_monstre(*monster);
 
 }
@@ -247,6 +180,7 @@ static void bestiaire_bas_droite(character_t** monster){
     int niveau = entier_aleatoire(1,4); /*monstres de niv 1 à 4*/
     printf("on est la niv %d\n",niveau );
     (*monster)->level=niveau;
+    (*monster)->accessory=contre_fire;
     init_stats_monstre(*monster);
     /*name_and_spells(*monster);*/
 
@@ -265,7 +199,7 @@ character_t* monster_creation(){
      }else
         bestiaire_bas_gauche(&monster);
 
-    printf("LE MONSTRE A %d niv %d /%d\n",monster->level,monster->health,monster->max_health );
+   /* printf("LE MONSTRE A %d niv %d /%d\n",monster->level,monster->health,monster->max_health );*/
     return monster;
 }
 
@@ -295,7 +229,7 @@ character_t* creation_char(){
       player->state[i] = 0;
 
     }
-    player->spell= NULL;  /*faut il faire autrement?*/
+    /* player->spell= NULL; faut il faire autrement?*/
 
     player->stat_intelligence = 10;
     player->stat_stamina = 10;
@@ -319,7 +253,7 @@ void delete_player(character_t** player){
    }
 }
 
-void affich(character_t* perso){
+void affich_stats(character_t* perso){
    printf("nom perso %s\n", perso->name);
    printf("xp = %d\n", perso->xp);
    printf("level = %d\n", perso->level);

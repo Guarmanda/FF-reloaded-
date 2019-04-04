@@ -30,12 +30,13 @@ typedef struct character_s{
   enum accessories_e accessory;
 }character_t;
 
+character_t* Personnage;
 character_t* creation_char();
 /*int name_and_spells(character_t*);*/
 character_t* monster_creation();
 void delete_player(character_t**);
-void affich(character_t*); /*fonction d'affichage des details du joueur*/
-void attribution_sort(character_t*, spell_t*, int);/*gerer les sorts pendant toute la partie*/
+void affich_stats(character_t*); /*fonction d'affichage des details du joueur*/
+/*void attribution_sort(character_t*, spell_t*, int);gerer les sorts pendant toute la partie*/
 void init_tab_sort(spell_t* tab_sort);
 int detruire_tab_sort(spell_t** tab_sort);
 /*--- combat monstre
