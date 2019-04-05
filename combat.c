@@ -1,12 +1,13 @@
 
 #include <combat.h>
+#include <map.h>
 
 /*menu principal du combat*/
 
 int combat_on(character_t **player, inventory_t *inventory){
 
    int monster_number = entier_aleatoire(1,4); /*nb de monstre qui fera partie du combat*/
-   printf("vous êtes aux coordonnees %d et %d\n", position_x, position_y);
+   printf("vous êtes aux coordonnees %.0f et %.0f\n", X, Y);
 
    character_t * monster[monster_number];   /*tableau de monstre généré*/
 
@@ -184,17 +185,15 @@ int xp_points(character_t* player, character_t monster){
 
 
 int fight_rand(){
-
    int trap=0;
-   if (Personnage->accessory != evite_combats){
+   if (PLAYER->accessory != evite_combats){
       trap= entier_aleatoire(1,100);
    }else
       trap= entier_aleatoire(51,100);
-
-   int chances= map_threat[position_x][position_y];
+   int chances= map_threat[(int)Y][(int)X];
    printf("chances de la map %d, trap random %d \n",chances, trap );
    if(trap <= chances){
-      combat_on(&Personnage,Inventaire);
+      combat_on(&PLAYER,Inventaire);
       return EN_COMBAT;
    }
    return FAUX;

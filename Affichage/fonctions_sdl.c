@@ -42,7 +42,8 @@ void loadImages(){
 
 	d = opendir("./IMG/");
 	for (int i=0;(dir = readdir(d)) != NULL; i++){
-		noms[i] = malloc(sizeof(char)*strlen(dir->d_name));
+		noms[i] = malloc(sizeof(char)*strlen(dir->d_name)+1);
+		printf("\tRéussi\n");
 		strcpy(noms[i], dir->d_name);
 	}
 	closedir(d);

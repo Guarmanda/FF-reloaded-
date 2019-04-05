@@ -31,7 +31,7 @@ typedef struct character_s{
   enum accessories_e accessory;
 }character_t;
 
-character_t* Personnage;
+character_t* PLAYER;
 character_t* creation_char();
 /*int name_and_spells(character_t*);*/
 character_t* monster_creation();

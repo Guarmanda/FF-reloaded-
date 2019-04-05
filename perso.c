@@ -1,5 +1,6 @@
 #include <perso.h>
 #include <commun.h>
+#include <map.h>
 
 /*partie des tests de l inventaire*/
 
@@ -190,11 +191,11 @@ character_t* monster_creation(){
      character_t* monster = NULL;
      monster= malloc(sizeof(character_t*));
 
-     if (position_x > 500 && position_y < 500){  /*en bas à droite*/
+     if (X > 500 && Y < 500){  /*en bas à droite*/
         bestiaire_bas_droite(&monster);
-     }else if( position_x > 500 && position_y > 500){
+     }else if( X > 500 && Y > 500){
         bestiaire_haut_droite(&monster);
-     }else if(position_x < 500 && position_y > 500){
+     }else if(X < 500 && Y > 500){
        bestiaire_haut_gauche(&monster);
      }else
         bestiaire_bas_gauche(&monster);
@@ -214,7 +215,8 @@ character_t* creation_char(){
     printf("Bienvenue %s!\n",player->name);
     printf("Choose a class for your character : \n");
     printf("warrior, wizard, hunter, priest \n");
-    lire(player->class_char,8);
+    strcpy(player->class_char, "warrior");
+    //lire(player->class_char,8);
     strcpy(player->gender, "man");
 
     player->xp=0;

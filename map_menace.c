@@ -13,16 +13,16 @@ int est_dans_village(int x, int y) {
    return ( (x >= borne_min_village && x <= borne_max_village) && (y >= borne_min_village &&  y <= borne_max_village));
 }
 int est_dans__biome_terre(int x, int y) {    /* partie en bas à droite */
-   return ( x > borne_max_village &&  y <= 500);
+   return ( x >= 500 &&  y >= 500);
 }
 int est_dans__biome_neige(int x, int y){
-   return ( x < borne_min_village &&  y <= 500);
+   return ( x < 500 &&  y >= 500);
 }
 int est_dans__biome_foudre(int x, int y) {
-   return ( x > borne_max_village &&  y > 500);
+   return ( x < 500 &&  y < 500);
 }
 int est_dans__biome_feu(int x, int y) {
-   return ( x < borne_min_village &&  y > 500);
+   return ( x >= 500 &&  y < 500);
 }
 
 /**

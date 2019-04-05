@@ -16,7 +16,8 @@
 #include <menu_principal.h>
 #include <math.h>
 #include <quete.h>
-#include <ncurses.h>
+#include <combat.h>
+#include <map_menace.h>
 
 
 /**
@@ -26,6 +27,7 @@
  * \param[in] Ordonnée du début de partie
  */
 void startGame(float x, float y){
+  init_menaces();
   //si on est à des coordonnées trop petites pour l'écran, on adapte
   int nbSpriteX = SCREEN_WIDTH/125;
   int nbSpriteY = SCREEN_HEIGHT/125;
@@ -48,6 +50,12 @@ void startGame(float x, float y){
     //un caractère en continu)
     //Donc, si on a un mouvement du joueur, on affiche à nouveau la map et les quêtes
     if(detecter_mouvement(&x, &y)){
+      //X et Y sont modifiés au moment du chargement de la map, avant cela ils désignes les anciennes coordonnées
+      //On peut donc voir si le joueur a changé de case, et vérifier s'il rencontre un monstres
+      if(fabs(floor(X)-floor(x)) > 0 || fabs(floor(Y)-floor(y)) > 0){ //si le joueur change de case
+        fight_rand();
+
+      }
       //chargement de la map
       afficher_Map( x, y);
       afficher_quetes();

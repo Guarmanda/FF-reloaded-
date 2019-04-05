@@ -22,9 +22,6 @@ const err_t KO_state;
 #define map_size_x 1000
 #define map_size_y 1000
 
-int position_x;
-int position_y;
-
 #define TAILLE_STR 40 /*taille par défaut des chaines de char */
 #define TAILLE_TAB_SORT 20
 #define MAX_SORTS 7
