@@ -6,8 +6,6 @@ int main(){
    /*  spell_t *sorts = malloc(sizeof(*sorts)*TAILLE_TAB_SORT);
        */
        int i;
-       etat_jeu=1;
-
 
        Personnage= creation_char();
        srand(time(NULL));
@@ -27,7 +25,7 @@ int main(){
           printf("\t\t\tobjet %d %s\n",i, nom_obj);
           fill_up_inventory(Inventaire,tab_objet[i]);
        }
-      
+
        init_menaces();/*initialise une seule fois les menaces*/
 
        do{
@@ -37,13 +35,9 @@ int main(){
           scanf("%d", &position_y);
           int menaceeee=map_threat[position_x][position_y];
           printf("il y a une menace de %d\n",menaceeee );
-          int res=fight_rand();
-          if(res);
-          else{
-             printf("vous l avez echappé belle\n");
-          }
+         
           i--;
-       }while(i<5);
+       }while(i < 5);
 
        for(i=0; i<5;i++ ){
           delete_object(&(tab_objet[i]));

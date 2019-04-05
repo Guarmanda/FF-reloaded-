@@ -1,7 +1,7 @@
 #include <commun.h>
 /* Definition du type string */
 
-int map_threat[1000][1000]; /* Matrice de la map, contenant les pourcentages de chance de tomber dans un combat*/
+int map_threat[map_size_x][map_size_y]; /* Matrice de la map, contenant les pourcentages de chance de tomber dans un combat*/
 
 
 #define borne_max_village 525

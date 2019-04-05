@@ -6,7 +6,6 @@
 #include <unistd.h>  /*fonction sleep nécessaire*/
 #include <string.h>
 #include <time.h>
-#include <ncurses.h>
 
 /* Definition du type string */
 typedef char* string;
@@ -26,7 +25,7 @@ int position_x;
 int position_y;
 
 #define TAILLE_STR 40 /*taille par défaut des chaines de char */
-#define TAILLE_TAB_SORT 20
+#define TAILLE_TAB_SORT 23
 #define MAX_SORTS 7
 #define MAX_ETATS 7
 

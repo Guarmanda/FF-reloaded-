@@ -1,14 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "commun.h"
 
-void afficher_map(){
+#include <combat.h>
+
+static void afficher_map(){
 	int i;
 	int j;
 	printf("X : vous etes ici (x : %i y : %i) : \n", position_x, position_y);
 	printf("village : ...\n");
-	
+
 	/*j represente l'axe x*/
 	for(j = 0;j<102;j++){
 		printf("-");
@@ -39,9 +40,9 @@ void afficher_map(){
 		printf("-");
 	}
 	printf("\n");
-} 
+}
 
-void deplacement_joueur(){
+static void deplacement_joueur(){
 	int x;
 	int y;
 	int i;
@@ -50,14 +51,14 @@ void deplacement_joueur(){
 	do{
 		printf("x : ");
 		scanf("%i",&x);
-	}while(x < 0 && x > 1000);
+	}while(x < 0 || x > 1000);
 	do{
 		printf("y : ");
 		scanf("%i", &y);
-	}while(y < 0 && y > 1000);
+	}while(y < 0 || y > 1000);
 
 	/*deplacement sur l'axe x*/
-	
+
 	for(i = position_x;i != x;i++){
 		system("clear");
 		sleep(0.2);
@@ -73,7 +74,7 @@ void deplacement_joueur(){
 
 	for(i = position_y;i != y;i++){
 		system("clear");
-		sleep(0.2);	
+		sleep(0.2);
 		afficher_map();
 		if(position_y < y){
 			position_y++;
@@ -85,31 +86,32 @@ void deplacement_joueur(){
 	}
 }
 
-void afficher_inventaire(){
+static void afficher_inventaire(){
 	int i;
 	printf("votre inventaire contient :\n");
-	for(i = 0;i<Inventaire->nb_objects;i++){
+	for(i = 0; i< Inventaire->nb_objects ;i++){
 		printf("%i : %s valeur : %i\n", i+1, display_object(*Inventaire->object[i]),Inventaire->object[i]->value_object);
 	}
 }
 
-int en_jeu(){
+static int en_jeu(){
 
 	/*etat_jeu*/
 	while(etat_jeu != END_OF_GAME ){
-		
+
 	}
+	return 1;
 }
 
-void quitter_jeu(){
+static void quitter_jeu(){
 	exit(1);
 }
 
-void nouvelle_partie(){
+static void nouvelle_partie(){
 	en_jeu();
 }
 
-void continuer_partie(){
+static void continuer_partie(){
 	/*charger_partie();*/
 	en_jeu();
 }
@@ -120,7 +122,7 @@ int menu(){
 	printf("1 : Lancer une nouvelle partie\n");
 	printf("2 : Charger une partie\n");
 	printf("3 : Quitter le jeu\n");
-	
+
 	do{
 		printf("Votre choix : ");
 		scanf("%i", &choix);
@@ -129,13 +131,31 @@ int menu(){
 }
 
 int main (int argc, char**argv){
-
+	position_x = 0;
+	position_y =40;	/*prob de 0à 39*/
 	afficher_map();
 	/*int choix = menu();
 	switch(choix){
-		case 1 : nouvelle_partie(); 
+		case 1 : nouvelle_partie();
 		case 2 : continuer_partie();
 		case 3 : quitter_jeu();
-	}
-	return EXIT_SUCCESS;*/
+	}*/
+	/*
+
+	printf("HELLO!\n");
+
+	Personnage=creation_char();
+	Inventaire =create_or_delete_inventory();
+	object_t *obj1= create_object(3);
+	fill_up_inventory(Inventaire,obj1);
+	display_object(*obj1);
+	sauvegarde_partie(Personnage,"caca.txt");
+
+
+
+	return EXIT_SUCCESS;
+
+	}*/
+	return EXIT_SUCCESS;
+
 }

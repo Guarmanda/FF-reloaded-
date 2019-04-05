@@ -13,11 +13,11 @@ int combat_on(character_t **player, inventory_t *inventory){
    int i;
    for( i = 0; i < monster_number;i++){
       monster[i] = NULL;
-      monster[i] = monster_creation();/* faut mettre les coordonnees */
+      monster[i] = monster_creation();
    }
 
-   int etat=1;
-   int xp_temp=0;
+   int etat=1; /*variable qui récupère l option choisie par le joueur lorsqu'il est tombé en combat */
+   int xp_temp=0; /*les xp qui sont récupérés lors du combat si le joueur a gagné*/
 
    do{
       printf("\n\tjoueur %s (%d/%d)\n",(*player)->name, (*player)->health,(*player)->max_health);
@@ -32,7 +32,7 @@ int combat_on(character_t **player, inventory_t *inventory){
 
       switch (etat) {
          case 1: attaque_joueur(*player,monster,monster_number); break;  /*afficher les monstres à chaque tour*/
-         case 2: retour = taking_potion(&(*player),inventory); break;  /*afficher les monstres à chaque tour*/
+         case 2: retour = taking_potion(&(*player)); break;  /*afficher les monstres à chaque tour*/
          case 3: /*casting_spell() ;*/break;
          case 4: etat = running_away(player);break;
          case 5: exit(1);  /*on ne sauvegarde rien sauf si l utilisateur l a fait avant*/
@@ -90,7 +90,7 @@ void attaque_joueur(character_t* player,character_t* tab_monstre[], int nb_monst
          printf("\n");
       }
       scanf("%d",&choix_j);   /*faire une fonction qui fasse la saisie et verifie si le choix est correct?*/
-   }while (choix_j > nb_monstre || choix_j<1);
+   }while (choix_j > nb_monstre || choix_j< 1);
 
    choix_j--;
 
@@ -145,7 +145,6 @@ int affich_choix(){
 void update_tab_monster(character_t *monster_array[],int index, int nb_monstre){ /* swap monster place in an array*/
 
   for( ; index < (nb_monstre-1) ; index++){
-
     *monster_array[index] = *monster_array[index+1];
   }
 }
@@ -183,21 +182,21 @@ int xp_points(character_t* player, character_t monster){
 /*fight chance change selon l emplacement du joueur sur la map*/
 
 
-int fight_rand(){
+void fight_rand(){
 
    int trap=0;
    if (Personnage->accessory != evite_combats){
       trap= entier_aleatoire(1,100);
    }else
-      trap= entier_aleatoire(1,50);
+      trap= entier_aleatoire(51,100);
 
    int chances= map_threat[position_x][position_y];
    printf("chances de la map %d, trap random %d \n",chances, trap );
    if(trap <= chances){
+      etat_jeu = EN_COMBAT;
       combat_on(&Personnage,Inventaire);
-      return EN_COMBAT;
    }
-   return FAUX;
+
 
 }
 
@@ -224,77 +223,17 @@ void casting_spell(character_t* perso, character_t **target){
 }
 
 
-void apply_state_modifier(character_t **target, int value, int off_or_on){
+void apply_state_modifier(character_t **target, int indice, int off_or_on){
 
   if(off_or_on == VRAI){
-    (*target)->state[value] = FAUX;
+    (*target)->state[indice] = FAUX;
   }else{
 
-    (*target)->state[value] = VRAI;
+    (*target)->state[indice] = VRAI;
   }
 }
 
 
-int taking_potion(character_t **player,inventory_t* inventaire){
-   int choix;
-   char* temp;
-   do{
-      int i;
-      for( i =0; i< inventaire->nb_objects ; i++){
-          temp=display_object(*inventaire->object[i]);
-         printf("objet %d => %s\n",i+1, temp );
-      }
-      printf("quel objet voulez-vous prendre? [0 pour retourner au menu précédent]\n");
-      scanf("%d", &choix);
-   }while (choix > inventaire->nb_objects || choix<0 );
-
-   while(choix != 0 && choix!= -1){
-      /*if(choix > 0){*/
-         choix--;
-         printf("vous avez choisi\n" );
-         temp =display_object(*inventaire->object[choix]);
-         printf("objet %d => %s\n",choix+1, temp );
-
-         if(inventaire->object[choix]->type_object == potion){ /*on ne rentre QUE si c est un
-            objet de type potion ou similaire*/
-
-            object_t* choix_potion= inventaire->object[choix];
-            printf("\n\t\tvotre mana est de %d/%d \n",  (*player)->mana,(*player)->max_mana);
-            printf("\n\t\tvotre vie est de %d/%d \n",  (*player)->health, (*player)->max_health);
-
-            float pourcentage = choix_potion->value_object/10.0;
-
-            if(choix_potion->state_object <= 1){  /*on rentre dans le cas où c est une potion mana: 0 à 1*/
-               (*player)->mana += (*player)->max_mana * pourcentage;
-               (*player)->mana = ((*player)->mana  > (*player)->max_mana)? (*player)->max_mana: (*player)->mana;
-
-            }else if(choix_potion->state_object <= 3){ /*potion de vie: 2 à3*/
-
-               (*player)->health += (*player)->max_health * pourcentage ;
-               (*player)->health = ((*player)->health > (*player)->max_health)? (*player)->max_health:(*player)->health ;
-
-
-            }else if(choix_potion->state_object <= 5){
-
-               apply_state_modifier(player,choix_potion->value_object,VRAI);
-
-            }else if(choix_potion->state_object <= 13){
-               apply_state_modifier(player,choix_potion->value_object,VRAI);
-            }
-            printf("\n\t\tvotre mana est de %d/%d\n",  (*player)->mana,(*player)->max_mana);
-            printf("\n\t\tvotre vie est de %d/%d\n",  (*player)->health, (*player)->max_health);
-
-            choix = -1;
-
-            }else{
-                  printf("l objet choisi n'est pas une potion ou un objet qui peut être utilisé maintenant...\n");
-            }
-
-   }
-   if(!choix)
-      printf("Retour au menu précédent...\n" );
-   return choix;
-}
 
 int is_dead(character_t *target){ /* rip :(*/
 

@@ -8,6 +8,9 @@
  * \date 3 avril 2019
  */
 
+/*changer param car perso est en global*/
+#include <commun_perso.h>
+
 character_t* charger_partie(char *nom_fichier_sauvegarde){
 
     int i;
@@ -22,14 +25,14 @@ character_t* charger_partie(char *nom_fichier_sauvegarde){
     fscanf(fichier, "%i;", &perso->mana);
     fscanf(fichier, "%i;", &perso->max_health);
     fscanf(fichier, "%i;", &perso->max_mana);
-    fscanf(fichier, "%i;", &perso->spell[0]);
+   /* fscanf(fichier, "%i;", &perso->spell[0]);
     fscanf(fichier, "%i;", &perso->spell[1]);
     fscanf(fichier, "%i;", &perso->spell[2]);
     fscanf(fichier, "%i;", &perso->spell[3]);
     fscanf(fichier, "%i;", &perso->spell[4]);
     fscanf(fichier, "%i;", &perso->spell[5]);
     fscanf(fichier, "%i;", &perso->spell[6]);
-    fscanf(fichier, "%i;", &perso->state[0]);
+*/  fscanf(fichier, "%i;", &perso->state[0]);
     fscanf(fichier, "%i;", &perso->state[1]);
     fscanf(fichier, "%i;", &perso->state[2]);
     fscanf(fichier, "%i;", &perso->state[3]);
@@ -73,11 +76,11 @@ character_t* charger_partie(char *nom_fichier_sauvegarde){
  * \brief Fonctions de sauvegarde de la partie
  * \author Karman Nathalie; Papot Alexandre
  * \date 3 avril 2019
- * Ecrit dans un fichier sauvegarde.txt les statistiques du joueur, les objets de l'inventaire et la position du joueur
+ * Ecrit dans un fichier sauvegarde.txt les statistiques du joueur, les objets de l'inventaire et la position du joueur dans le jeu
  */
 
 void sauvegarde_partie(character_t *perso,char *nom_fichier_sauvegarde){
-    
+
     int i;
     FILE * fichier = fopen(nom_fichier_sauvegarde, "w");
 
@@ -88,10 +91,10 @@ void sauvegarde_partie(character_t *perso,char *nom_fichier_sauvegarde){
     fprintf(fichier, "%i;",perso->mana);
     fprintf(fichier, "%i;",perso->max_health);
     fprintf(fichier, "%i;",perso->max_mana);
-    for(i= 0; i<7 ;i++){
+   /* for(i= 0; i<7 ;i++){
       fprintf(fichier, "%i;",perso->state[i]);
       fprintf(fichier, "%i;",perso->spell[i]);
-    }  
+   }*/
     fprintf(fichier, "%i;",perso->stat_intelligence);
     fprintf(fichier, "%i;",perso->stat_stamina);
     fprintf(fichier, "%i;",perso->stat_strength);

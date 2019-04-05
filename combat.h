@@ -2,17 +2,17 @@
 #define _COMBAT_H_
 
 #include <commun.h>
-#include <perso.h>
+#include <commun_perso.h>
 #include <map_menace.h>
 
 /*-------------------------------------------------------------*/
 void casting_spell(character_t* wizard,character_t **target);  /*à implémenter */
-/*Attaque sur un des monstres*/
+
 void attaque_joueur(character_t* player,character_t* tab_monstre[], int nb_monstre);
 void attack(character_t* attacker,character_t **target); /*fonction auxiliaire pour l attaque*/
 
 /*Modifier etat du joueur */
-int taking_potion(character_t **player,inventory_t* inventaire);
+
 void apply_state_modifier(character_t **target, int value, int off_or_on);
 
 /*Renvoie vrai si le joueur/monstre est mort*/
@@ -37,7 +37,7 @@ int combat_on(character_t **player, inventory_t *inventory);
 
 /*Affichage du menu combat*/
 int affich_choix(void);
-int fight_rand(void);
+void fight_rand(void);
 
 
 #endif

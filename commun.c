@@ -11,6 +11,7 @@ const err_t KO_state = 0;
  * \param[in] int, valeur maximum de l'entier aléatoire (borne max)
  * \return (int) ou ERR_RAND (-110)
  */
+
 int entier_aleatoire(int min, int max){
 	if(min >= max){
 		return ERR_RAND;	/*retourne -110 si erreur */
