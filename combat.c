@@ -102,32 +102,31 @@ void attaque_joueur(character_t* player,character_t* tab_monstre[], int nb_monst
    /* affich(tab_monstre[choix_j-1]);*/
 
 }
-/*
-void sort_joueur(character_t* player,character_t* tab_monstre[], int nb_monstre){
+
+void sort_joueur(character_t* player,character_t* tab_monstre[]){
 
    int i;
    int choix_j;
-   printf("Appliquer quoi à qui?\n");
 
-   for( i = 0; i < nb_monstre;i++){
-      printf("\t adversaire %d : %s (vie: %d/%d)\t",i+1, tab_monstre[i]->name,tab_monstre[i]->health, tab_monstre[i]->max_health);
-      printf("\n");
-   }
+  int nb_monstre;
+
    do{
-      printf("\nnombre de monstre %d\n",nb_monstre );
+      for( i = 0; i < nb_monstre;i++){
+        printf("\tadversaire %d : %s (vie: %d/%d)\n",i+1, tab_monstre[i]->name,tab_monstre[i]->health, tab_monstre[i]->max_health);
+      }
+      printf("Appliquer quoi à qui?\n");
       scanf("%d",&choix_j );
-
+      viderBuffer();
    }while((choix_j-1) > nb_monstre || (choix_j-1) <0);
 
-   printf("monstre %s choisi\n", tab_monstre[choix_j-1]->name);
-    affich(tab_monstre[choix_j-1]);
-    casting_spell(player,&tab_monstre[choix_j-1],);
-    affich(tab_monstre[choix_j-1]);
+    printf("monstre %s choisi\n", tab_monstre[choix_j-1]->name);
+    casting_spell(player,&tab_monstre[choix_j-1]);
+
 }
-*/
+
 int affich_choix(){
 
-         int player_choice = 0; /* voir plus tard pour que le joueur puisse selectionner dans le menu */
+         int player_choice = 0;
 
          do{
               printf("Vous êtes en combat, choisir entre les actions ci-dessous:\n" );
@@ -153,7 +152,7 @@ void attack(character_t* attacker,character_t **target){
 
    printf("\t%s ATTAQUE ==> %s ...\n",attacker->name,(*target)->name);
    sleep(2);
-   int degat = (attacker->stat_strength) * (attacker->char_weapon.value_object);
+   int degat = (attacker->stat_strength) * (attacker->char_weapon->value_object);
 
    ((*target)->health) -= degat;
 
@@ -223,14 +222,10 @@ void casting_spell(character_t* perso, character_t **target){
 }
 
 
-void apply_state_modifier(character_t **target, int indice, int off_or_on){
+void apply_state_modifier(character_t ** target, int indice, int ind){
 
-  if(off_or_on == VRAI){
-    (*target)->state[indice] = FAUX;
-  }else{
+    (*target)->state[indice] = (*target)->state[indice] == FAUX ? VRAI: FAUX ;
 
-    (*target)->state[indice] = VRAI;
-  }
 }
 
 

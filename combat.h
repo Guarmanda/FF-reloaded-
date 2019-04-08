@@ -11,9 +11,9 @@ void casting_spell(character_t* wizard,character_t **target);  /*à implémenter
 void attaque_joueur(character_t* player,character_t* tab_monstre[], int nb_monstre);
 void attack(character_t* attacker,character_t **target); /*fonction auxiliaire pour l attaque*/
 
-/*Modifier etat du joueur */
+/*Modifier etat du joueur
 
-void apply_state_modifier(character_t **target, int value, int off_or_on);
+void apply_state_modifier(character_t **target); */
 
 /*Renvoie vrai si le joueur/monstre est mort*/
 int is_dead(character_t *target);

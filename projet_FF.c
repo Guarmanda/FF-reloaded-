@@ -86,13 +86,7 @@ static void deplacement_joueur(){
 	}
 }
 
-static void afficher_inventaire(){
-	int i;
-	printf("votre inventaire contient :\n");
-	for(i = 0; i< Inventaire->nb_objects ;i++){
-		printf("%i : %s valeur : %i\n", i+1, display_object(*Inventaire->object[i]),Inventaire->object[i]->value_object);
-	}
-}
+
 
 static int en_jeu(){
 
