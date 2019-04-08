@@ -1,63 +1,18 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include <inventaire.h>
-/**
- * \file test_inventaire.c
- * \brief jeux de tests pour les fonctions qui manipulent l'inventaire global du joueur
- * \author Karman Nathalie; Papot Alexandre
- * \date 6 avril 2019
- */
+
 
 int main(){
-    srand(time(NULL));
+   printf("hi hi\n" );
+    inventory_t* inventaire = create_or_delete_inventory();
 
-    create_inventory();
-    int i;
-    for(i = 0; i< 10; i++){
-      object_t* obj1= create_loot(4);
+    object_t* objet = create_object(2);
+    fill_up_inventory(inventaire, objet);
 
-      if(fill_up_inventory(obj1) != KO_state);
-      else{   /*il faut vérifier que l objet rejeté soit supprimé*/
-          delete_object(&obj1);
-
-      }
-      obj1=NULL;
-    }
-    for(i = 0; i< 10; i++){
-      object_t* obj1= create_loot(3);
-
-
-      if(fill_up_inventory(obj1) != KO_state);
-      else{   /*il faut vérifier que l objet rejeté soit supprimé*/
-          delete_object(&obj1);
-
-      }
-      obj1=NULL;
-    }
-    for(i = 0; i< 10; i++){
-      object_t* obj1= create_loot(2);
-
-
-      if(fill_up_inventory(obj1) != KO_state);
-      else{   /*il faut vérifier que l objet rejeté soit supprimé*/
-          delete_object(&obj1);
-
-      }
-      obj1=NULL;
-    }
-    for(i = 0; i< 10; i++){
-      object_t* obj1= create_loot(1);
-
-
-      if(fill_up_inventory(obj1) != KO_state);
-      else{   /*il faut vérifier que l objet rejeté soit supprimé*/
-          delete_object(&obj1);
-
-      }
-      obj1=NULL;
-    }
-
-
-    afficher_inventaire();
-    delete_inventory();
-
+    char *test;
+    printf("\n\n\n\n");
+    test = display_object(*objet);
+    printf("la chaine est %s\n", test);
     return 0;
 }

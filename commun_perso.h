@@ -34,9 +34,9 @@ typedef struct character_s{
   int stat_strength;
   int stat_intelligence;
   int stat_stamina;
-  char* class_char;
-  object_t* char_armor;  /*type = 0*/
-  object_t* char_weapon;  /*type = 1*/
+  char * class_char;
+  object_t char_armor;  /*type = 0*/
+  object_t char_weapon;  /*type = 1*/
   enum accessories_e accessory;
   char* gender;
 }character_t;
@@ -46,10 +46,9 @@ character_t* creation_char();
 
 void init_tab_sort(void);
 void affich_tab_sort(void);
-void afficher_sorts(character_t*);
-err_t suppr_tab_sort();
+err_t suppr_tab_sort(spell_t*);
 character_t* creation_char();
-void delete_player(character_t** player);
+void delete_player(character_t**);
 void affich_stats(character_t*); /*fonction d'affichage des details du joueur*/
 /*--*/
 character_t* monster_creation();

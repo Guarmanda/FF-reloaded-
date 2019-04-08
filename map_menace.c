@@ -18,17 +18,17 @@ int est_dans__biome_terre(int x, int y) {    /* partie en bas à droite */
 int est_dans__biome_neige(int x, int y){  /* partie en bas à gauche */
    return ( x < 500 &&  y >= 500);
 }
-int est_dans__biome_feu(int x, int y) { /*en haut à droite*/
+int est_dans__biome_feu(int x, int y) {
    return ( x >= 500 &&  y < 500);
 }
-int est_dans__biome_foudre(int x, int y) {  /*en haute à gauche*/
+int est_dans__biome_foudre(int x, int y) {
    return ( x < 500 &&  y < 500);
 }
 
 
 /**
  * \fn void init_menaces()
- * \brief initialise le tableau global des menaces en pourcentage
+ * \brief initialise le tableau général des menaces en pourcentage
  * \param[in] void
  */
 void init_menaces(){

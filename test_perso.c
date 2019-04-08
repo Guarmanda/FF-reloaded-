@@ -4,28 +4,21 @@
 
 
 int main(){
-    init_tab_sort();
+
     character_t* perso = creation_char();
-
-
-
-  /*
+    init_tab_sort();
     printf("entrez les coordonnees souhaitées pour x: ");
     scanf("%d", &position_x);
     printf("entrez les coordonnees souhaitées pour y: ");
     scanf("%d", &position_y);
- character_t* monstre2= monster_creation();   meme niveau que le joueur
-
+    character_t* monstre= monster_creation();   /*meme niveau que le joueur*/
+    character_t* monstre2= monster_creation();   /*meme niveau que le joueur*/
+    printf("vous jouez contre :\n");
     affich_stats(monstre);
-      delete_adversaire(&monstre);*/
-      perso->liste_spell=perso->liste_spell->debut_liste;
-      do{
-
-      free(&perso->liste_spell);
-      perso->liste_spell=perso->liste_spell->sort_suivant;
-    }while(perso->liste_spell != NULL);
+    affich_stats(monstre2);
     delete_player(&perso);
-    suppr_tab_sort();
+    delete_player(&monstre2);
+    delete_player(&monstre);
 
     return 0;
 }
