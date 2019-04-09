@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-
 #include <combat.h>
 
 static void afficher_map(){
@@ -69,7 +65,7 @@ static void deplacement_joueur(){
 		else{
 			position_x--;
 		}
-		/*fight_rand();*/
+		fight_rand();
 	}
 
 	for(i = position_y;i != y;i++){
@@ -82,19 +78,8 @@ static void deplacement_joueur(){
 		else{
 			position_y--;
 		}
-		/*fight_rand();*/
+		fight_rand();
 	}
-}
-
-
-
-static int en_jeu(){
-
-	/*etat_jeu*/
-	while(etat_jeu != END_OF_GAME ){
-
-	}
-	return 1;
 }
 
 static void quitter_jeu(){
@@ -102,12 +87,34 @@ static void quitter_jeu(){
 }
 
 static void nouvelle_partie(){
+	Personnage = creation_char();	
+	create_inventory();
 	en_jeu();
 }
 
 static void continuer_partie(){
-	/*charger_partie();*/
+	create_inventory();
+	charger_partie();
 	en_jeu();
+}
+
+int menu_en_jeu(){
+	int choix;
+	printf("Menu :\n");
+	printf("1 : Se deplacer\n");
+	printf("2 : Sauvegarder la partie\n");
+	printf("3 : Voir l'inventaire\n");
+	printf("4 : Voir la fiche personnage\n");
+	printf("5 : Voir mission en cours\n");
+	printf("6 : Voir la map\n");
+	printf("7 : Quitter le jeu\n");
+
+	do{
+		printf("Votre choix : ");
+		scanf("%i", &choix);
+		viderBuffer();
+	}while(choix < 1 || choix > 7);
+	return choix;
 }
 
 int menu(){
@@ -120,40 +127,52 @@ int menu(){
 	do{
 		printf("Votre choix : ");
 		scanf("%i", &choix);
+		viderBuffer();
 	}while(choix < 1 || choix > 3);
 	return choix;
+}
+
+int en_jeu(){
+
+	int choix_joueur;
+
+	/*etat_jeu*/
+	while(etat_jeu != END_OF_GAME ){
+		choix_joueur = menu_en_jeu();
+		switch(choix_joueur){
+			case 1 : deplacement_joueur();break;
+			case 2 : sauvegarde_partie(Personnage);break;
+			case 3 : afficher_inventaire();break;
+			case 4 : affich_stats(Personnage);break;
+			case 5 : printf("affichage des quetes ici\n");break;
+			case 6 : afficher_map();break;
+			case 7 : quitter_jeu();break;
+		};
+	}
+	return 1;
 }
 
 int main (int argc, char**argv){
 	position_x = 0;
 	position_y =40;	/*prob de 0à 39*/
-	afficher_map();
-	create_inventory();
-	afficher_inventaire();
-	/*int choix = menu();
+	int choix = menu();
 	switch(choix){
 		case 1 : nouvelle_partie();
 		case 2 : continuer_partie();
 		case 3 : quitter_jeu();
-	}*/
+	};
+	
+	afficher_inventaire();
+	en_jeu();
+	
 	/*
-
-	printf("HELLO!\n");
-
-	Personnage=creation_char();
-	Inventaire =create_or_delete_inventory();
 	object_t *obj1= create_object(3);
 	fill_up_inventory(Inventaire,obj1);
 	display_object(*obj1);
 	sauvegarde_partie(Personnage,"caca.txt");
-
+	*/
 
 
 	return EXIT_SUCCESS;
 
-	}*/
-	delete_inventory();
-
-	return EXIT_SUCCESS;
-
-}
+	}
