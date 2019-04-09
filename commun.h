@@ -26,13 +26,15 @@ int position_y;
 
 #define TAILLE_STR 40 /*taille par défaut des chaines de char */
 #define TAILLE_TAB_SORT 23
-#define MAX_SORTS 7
-#define MAX_ETATS 7
+
+#define MAX_ETATS 8
+
 
 int entier_aleatoire(int min, int max);
-string creer_string(string string_param);
+void clear_screen(void);
+err_t creer_string(string* , string);
 err_t supprimer_string(string *string_param);
-void modifier_string(string *string_old, string string_new);
+/*void modifier_string(string *string_old, string string_new);*/
 void viderBuffer();
 int lire(char *chaine, int longueur);
 /* Definition du type booleen */

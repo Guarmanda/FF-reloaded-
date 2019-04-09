@@ -1,7 +1,9 @@
+#ifndef _MAPMENACE_H_
+#define _MAPMENACE_H_
 #include <commun.h>
-/* Definition du type string */
 
-int map_threat[map_size_x][map_size_y]; /* Matrice de la map, contenant les pourcentages de chance de tomber dans un combat*/
+/* Matrice de la map, contenant les pourcentages de chance de tomber dans un combat*/
+int map_threat[map_size_x][map_size_y];
 
 
 #define borne_max_village 525
@@ -13,3 +15,5 @@ int est_dans__biome_terre(int , int ) ;
 int est_dans__biome_neige(int , int );
 int est_dans__biome_foudre(int , int ) ;
 int est_dans__biome_feu(int , int );
+
+#endif

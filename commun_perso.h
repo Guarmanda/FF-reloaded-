@@ -3,7 +3,7 @@
 
 #include <inventaire.h>
 
-enum type{ offensif=0, defensif, modifie_etat};
+enum type{offensif=0, defensif, modifie_etat};
 
 typedef struct spell_s{
    char* nom_sort;
@@ -42,13 +42,13 @@ typedef struct character_s{
 }character_t;
 
 character_t* Personnage;
-character_t* creation_char();
 
 void init_tab_sort(void);
 void affich_tab_sort(void);
 void afficher_sorts(character_t*);
 err_t suppr_tab_sort();
-character_t* creation_char();
+/*-------------- manipulation des stats/attributs des personnages ----------------------*/
+character_t* creation_char(void);
 void delete_player(character_t** player);
 void supprimer_sorts(character_t* perso);
 void affich_stats(character_t*); /*fonction d'affichage des details du joueur*/
@@ -61,8 +61,8 @@ void apply_state_modifier(character_t **, int , int );
 /*--*/
 void attribution_sort(int,character_t*);
 
-
 /*sauvegarde*/
 character_t* charger_partie(char *);
 void sauvegarde_partie(character_t *,char *);
+
 #endif

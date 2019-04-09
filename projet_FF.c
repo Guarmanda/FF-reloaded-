@@ -86,13 +86,7 @@ static void deplacement_joueur(){
 	}
 }
 
-static void afficher_inventaire(){
-	int i;
-	printf("votre inventaire contient :\n");
-	for(i = 0; i< Inventaire->nb_objects ;i++){
-		printf("%i : %s valeur : %i\n", i+1, display_object(*Inventaire->object[i]),Inventaire->object[i]->value_object);
-	}
-}
+
 
 static int en_jeu(){
 
@@ -134,6 +128,8 @@ int main (int argc, char**argv){
 	position_x = 0;
 	position_y =40;	/*prob de 0à 39*/
 	afficher_map();
+	create_inventory();
+	afficher_inventaire();
 	/*int choix = menu();
 	switch(choix){
 		case 1 : nouvelle_partie();
@@ -156,6 +152,8 @@ int main (int argc, char**argv){
 	return EXIT_SUCCESS;
 
 	}*/
+	delete_inventory();
+
 	return EXIT_SUCCESS;
 
 }

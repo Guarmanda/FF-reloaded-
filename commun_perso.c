@@ -36,7 +36,6 @@ void supprimer_sorts(character_t* perso){
          free(perso->liste_spell);
          perso->liste_spell=temp;
       }while( perso->liste_spell != NULL);
-
    }
 
 }
@@ -94,9 +93,7 @@ void init_tab_sort(){ /*à initialiser au début de la partie*/
      tab_sort[i].type_sort = modifie_etat;
      tab_sort[i].valeur_sort = j ;
    }
-   printf("\t\taffichage des sorts\n");
-   /*affich_tab_sort();
-*/
+
 }
 
 void affich_tab_sort(){
@@ -123,7 +120,6 @@ err_t suppr_tab_sort(){
   for (i = 0; i< TAILLE_TAB_SORT ; i++){
       supprimer_string(&tab_sort[i].nom_sort);
   }
-
   return OK_state;
 }
 void delete_player(character_t** player){
