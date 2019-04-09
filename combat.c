@@ -1,4 +1,3 @@
-
 #include <combat.h>
 
 /*menu principal du combat*/
@@ -102,43 +101,42 @@ void attaque_joueur(character_t* player,character_t* tab_monstre[], int nb_monst
    /* affich(tab_monstre[choix_j-1]);*/
 
 }
-/*
-void sort_joueur(character_t* player,character_t* tab_monstre[], int nb_monstre){
+
+void sort_joueur(character_t* player,character_t* tab_monstre[],int nb_monstre){
 
    int i;
    int choix_j;
-   printf("Appliquer quoi à qui?\n");
 
-   for( i = 0; i < nb_monstre;i++){
-      printf("\t adversaire %d : %s (vie: %d/%d)\t",i+1, tab_monstre[i]->name,tab_monstre[i]->health, tab_monstre[i]->max_health);
-      printf("\n");
-   }
    do{
-      printf("\nnombre de monstre %d\n",nb_monstre );
+      for( i = 0; i < nb_monstre;i++){
+        printf("\tadversaire %d : %s (vie: %d/%d)\n",i+1, tab_monstre[i]->name,tab_monstre[i]->health, tab_monstre[i]->max_health);
+      }
+      printf("Appliquer quoi à qui?\n");
       scanf("%d",&choix_j );
-
+      viderBuffer();
    }while((choix_j-1) > nb_monstre || (choix_j-1) <0);
 
-   printf("monstre %s choisi\n", tab_monstre[choix_j-1]->name);
-    affich(tab_monstre[choix_j-1]);
-    casting_spell(player,&tab_monstre[choix_j-1],);
-    affich(tab_monstre[choix_j-1]);
+    printf("monstre %s choisi\n", tab_monstre[choix_j-1]->name);
+    casting_spell(player,&tab_monstre[choix_j-1]);
+
 }
-*/
+
 int affich_choix(){
 
-         int player_choice = 0; /* voir plus tard pour que le joueur puisse selectionner dans le menu */
+         int player_choice = 0;
 
          do{
               printf("Vous êtes en combat, choisir entre les actions ci-dessous:\n" );
               printf(" 1 - Attaquer l'adversaire\n");
               printf(" 2 - Prendre une potion\n");
-              printf(" 3 - Appliquer un sort (à faire)\n");
+              printf(" 3 - Appliquer un sort\n");
               printf(" 4 - S'évader\n");
               printf(" 5 - Quitter le jeu\n");
               printf("Votre choix : ");
               scanf(" %i",&player_choice);
+              viderBuffer();
          }while(player_choice > 5 || player_choice <1);
+
          return player_choice;
 }
 
@@ -153,7 +151,7 @@ void attack(character_t* attacker,character_t **target){
 
    printf("\t%s ATTAQUE ==> %s ...\n",attacker->name,(*target)->name);
    sleep(2);
-   int degat = (attacker->stat_strength) * (attacker->char_weapon.value_object);
+   int degat = (attacker->stat_strength) * (attacker->char_weapon->value_object);
 
    ((*target)->health) -= degat;
 
@@ -161,6 +159,12 @@ void attack(character_t* attacker,character_t **target){
       ((*target)->health)=0;
    }
    printf("\t%d de dégats causés à %s (%d/%d)\n", degat,(*target)->name,(*target)->health, (*target)->max_health );
+
+}
+
+int is_dead(character_t *target){ /* rip :(*/
+
+  return (target->health <= 0); /*retourne 0 = il est vivant*/
 
 }
 int levelling(character_t* player){
@@ -179,8 +183,8 @@ int xp_points(character_t* player, character_t monster){
       return (xp_par_niveau * monster.level);
 
 }
-/*fight chance change selon l emplacement du joueur sur la map*/
 
+/*fight chance change selon l emplacement du joueur sur la map*/
 
 void fight_rand(){
 
@@ -203,40 +207,32 @@ void fight_rand(){
 
 
 
-/*-------------------------------------------------------------*/
-
-int running_away(character_t** player){ /* true => successful*/
-  /* 15% chance to flee */
-
-  if( entier_aleatoire(1,100) < 15){
-    printf("Vous arrivez à vous échapper...\n" );
-    (*player)->xp-=10;
-    return 0;
-  }
-   printf("\n\n\n\n\nSorry, you have to fight...\n\n\n\n" );
-   return 1;
-}
-
 void casting_spell(character_t* perso, character_t **target){
 
 
 }
 
 
-void apply_state_modifier(character_t **target, int indice, int off_or_on){
+void apply_state_modifier(character_t ** target, int indice, int ind){
 
-  if(off_or_on == VRAI){
-    (*target)->state[indice] = FAUX;
-  }else{
+    (*target)->state[indice] = (*target)->state[indice] == FAUX ? VRAI: FAUX ;
 
-    (*target)->state[indice] = VRAI;
-  }
 }
 
 
 
-int is_dead(character_t *target){ /* rip :(*/
 
-  return (target->health <= 0); /*retourne 0 = il est vivant*/
+/*-------------------------------------------------------------*/
 
+int running_away(character_t** player){ /* true => successful*/
+  /* 15% chance to flee */
+
+  if( entier_aleatoire(1,100) < 15){
+    printf("Vous arrivez à vous échapper...(-10 xp)\n" );
+    (*player)->xp-=10;
+    return 0;
+  }
+   clear_screen();
+   printf("\n\n\n\n\nSorry, you have to fight...\n\n\n\n" );
+   return 1;
 }
