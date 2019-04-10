@@ -30,6 +30,7 @@ typedef struct inventory_s{
 inventory_t* Inventaire;
 /*creation des objets*/
 object_t* create_loot(int);
+object_t* create_object(int, int);
 void delete_object(object_t **);
 void affectation_object(object_t* );
 /*definition des objets*/

@@ -82,55 +82,64 @@ character_t* creation_char(){
     return player;
 }
 
+
 int taking_potion(character_t **player){
 
-   int choix;
+   int choix=1;
 
    do{
       afficher_inventaire();
       printf("Quel objet voulez-vous prendre? [0 pour retourner au menu précédent]\n");
       scanf("%d", &choix);
       viderBuffer();  /*éviter que le joueur ne saisisse autre chose que des entiers*/
-   }while(choix > Inventaire->nb_objects|| choix<0);
+   }while(choix > Inventaire->nb_objects || choix < 0);
 
-   while(choix != 0 && choix!= -1){
+   if(choix){
          choix--;
          printf("Vous avez choisi l'objet %d => %s\n",choix+1, Inventaire->object[choix]->name_object );
 
          /*on ne fait le traitement QUE SI c est un
            objet de type potion ou similaire (pas d armure par exemple)*/
          if(Inventaire->object[choix]->type_object == potion){
-/*
+             affich_stats(*player);
+              /*
               printf("\n\t\tvotre mana est de %d/%d \n",  (*player)->mana,(*player)->max_mana);
               printf("\n\t\tvotre vie est de %d/%d \n",  (*player)->health, (*player)->max_health);
-*/
+              */
               float pourcentage =  Inventaire->object[choix]->value_object/10.0;
 
               if(est_mana(Inventaire->object[choix])){  /*on rentre dans le cas où c est une potion de mana*/
-                 (*player)->mana += (*player)->max_mana * pourcentage;
-                 (*player)->mana = ((*player)->mana  > (*player)->max_mana)? (*player)->max_mana : (*player)->mana;
+
+              (*player)->mana += (*player)->max_mana * pourcentage;
+              (*player)->mana = ((*player)->mana  > (*player)->max_mana)? (*player)->max_mana : (*player)->mana;
 
               }else if(est_cure(Inventaire->object[choix])){ /*potion de vie*/
 
-                 (*player)->health += (*player)->max_health * pourcentage ;
-                 (*player)->health = ((*player)->health > (*player)->max_health)? (*player)->max_health:(*player)->health ;
+
+              (*player)->health += (*player)->max_health * pourcentage ;
+              (*player)->health = ((*player)->health > (*player)->max_health)? (*player)->max_health:(*player)->health ;
 
               }else if(est_phoenix(Inventaire->object[choix])){
-                  /*à faire si le joueur veut faire une équipe de 2 ou 3 personnages pour faire ses quetes*/
+              /*à faire si le joueur veut faire une équipe de 2 ou 3 personnages pour faire ses quetes*/
 
               }else{
-                /* à faire ^^ */
+              /* à faire ^^ */
               }
 
               choix = -1; /* on a appliqué la potion ou autre*/
-
+              affich_stats(*player);
               }else{
                   printf("L' objet choisi n'est pas une potion ou un objet qui peut être utilisé maintenant...\n");
+                  choix=0;
+
             }
 
    }
-   if(!choix)
-      printf("Retour au menu précédent...\n" );
+   if(!choix){
+     clear_screen();
+     printf("Retour au menu précédent...\n" );
+   }
+
    return choix;
 }
 

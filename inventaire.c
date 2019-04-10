@@ -113,6 +113,15 @@ object_t* create_loot(int niv_monstre){ /*va vérifier la valeur de l objet */
    affectation_object(new_item);
    return new_item;
 }
+object_t* create_object(int type, int etat){ /*va vérifier la valeur de l objet */
+   /* state sera donne par un rand dans une range selon la difficulte du mob monstre->level*/
+   object_t * new_item = malloc(sizeof(object_t));
+   new_item->type_object = type;
+   new_item->state_object = etat;
+   new_item->value_object = value(new_item->type_object, new_item->state_object);
+   affectation_object(new_item);
+   return new_item;
+}
 
 
 void create_inventory(){
