@@ -3,15 +3,16 @@
 
 /*partie des tests sur perso*/
 void debut_liste(character_t** perso){
-
    (*perso)->liste_spell=(*perso)->liste_spell->debut_liste;
 }
+
 void attribution_sort(int indice,character_t* perso){
 
    if(perso->liste_spell->debut_liste == NULL){
       perso->liste_spell->debut_liste = perso->liste_spell;
       perso->liste_spell->sort= &tab_sort[indice];
-   }else{
+
+    }else{
       liste_sort_t* new= malloc(sizeof(liste_sort_t));
       new->debut_liste = perso->liste_spell->debut_liste;
       while(perso->liste_spell->sort_suivant!= NULL){
@@ -20,26 +21,29 @@ void attribution_sort(int indice,character_t* perso){
       new->sort=&tab_sort[indice];
       new->sort_suivant= NULL;
       perso->liste_spell->sort_suivant= new;
-      debut_liste(&perso);
+
    }
+   debut_liste(&perso);
 
 }
 
-void supprimer_sorts(character_t* perso){
+
+void supprimer_sorts(character_t** perso){
 
    liste_sort_t* temp;
 
-   if(perso->liste_spell->sort_suivant != NULL){
+   if((*perso)->liste_spell->sort_suivant != NULL){
       do{
 
-         temp = perso->liste_spell->sort_suivant;
-         free(perso->liste_spell);
-         perso->liste_spell=temp;
-      }while( perso->liste_spell != NULL);
+         temp = (*perso)->liste_spell->sort_suivant;
+         free((*perso)->liste_spell);
+         (*perso)->liste_spell=temp;
+      }while( (*perso)->liste_spell != NULL);
    }
 
 }
-
+/*initialisation d un tableau statique  = tableau global de sorts
+*/
 void init_tab_sort(){ /*à initialiser au début de la partie*/
    int i;
 
@@ -73,23 +77,24 @@ void init_tab_sort(){ /*à initialiser au début de la partie*/
      tab_sort[i].type_sort = offensif;
    }
 
-   creer_string(&tab_sort[11].nom_sort,"Blind"); /*gerer avec aleatoire + chance  + level du lanceur de sort*/
-   creer_string(&tab_sort[12].nom_sort,"Sleep");
+   creer_string(&tab_sort[11].nom_sort,"Stunt"); /*gerer avec aleatoire + chance  + level du lanceur de sort*/
+   creer_string(&tab_sort[12].nom_sort,"Bleed");
    creer_string(&tab_sort[13].nom_sort,"Slow");
-   creer_string(&tab_sort[14].nom_sort,"Stunt");
-   creer_string(&tab_sort[15].nom_sort,"Bleed");
-   creer_string(&tab_sort[16].nom_sort,"Berserk");
-   creer_string(&tab_sort[17].nom_sort,"Poison");
+   creer_string(&tab_sort[14].nom_sort,"Silence");
+   creer_string(&tab_sort[15].nom_sort,"Poison");
+   creer_string(&tab_sort[16].nom_sort,"Blind");
+   creer_string(&tab_sort[17].nom_sort,"Speed");
+  creer_string(&tab_sort[18].nom_sort,"Sleep");
 
    /*sorts de type magie blanche */
-   creer_string(&tab_sort[18].nom_sort,"Red Bull");
-   creer_string(&tab_sort[19].nom_sort,"Anti Blind");
+
+   creer_string(&tab_sort[19].nom_sort,"Bouclier");
    creer_string(&tab_sort[20].nom_sort,"Antidote");  /*enleve un etat */
-   creer_string(&tab_sort[21].nom_sort,"Poudre de perlimpinpin");
-   creer_string(&tab_sort[22].nom_sort,"Hologramme");
+   creer_string(&tab_sort[21].nom_sort,"Poudre de Perlimpinpin"); /*enleve le maximum d etat qu il peut, pseudo aléatoire*/
+   creer_string(&tab_sort[22].nom_sort,"Hologramme Mélenchon"); /*fait en sorte de disparaître du champ de vision des monstres pendant un tour*/
 
    int j;
-   for(j=1 ; i < TAILLE_TAB_SORT ; i++,j++){
+   for(j= Stunt ; i < TAILLE_TAB_SORT ; i++,j++){
      tab_sort[i].type_sort = modifie_etat;
      tab_sort[i].valeur_sort = j ;
    }
@@ -122,6 +127,7 @@ err_t suppr_tab_sort(){
   }
   return OK_state;
 }
+
 void delete_player(character_t** player){
 
     if(*player != NULL){
@@ -132,7 +138,7 @@ void delete_player(character_t** player){
       delete_object(&(*player)->char_armor);
       delete_object(&(*player)->char_weapon);
       supprimer_string(&(*player)->name);
-      supprimer_sorts(*player);
+      supprimer_sorts(player);
       free((*player)->liste_spell);
       free(*player);
       *player=NULL;
@@ -149,18 +155,55 @@ int chercher_sort(char* nom_sort){
 }
 void afficher_sorts(character_t* perso){
 
-   while( perso->liste_spell->sort_suivant  != NULL){
-      printf("sort %s  et valeur= %d \n", perso->liste_spell->sort->nom_sort,perso->liste_spell->sort->valeur_sort  );
-      perso->liste_spell = perso->liste_spell->sort_suivant ;
-   }
-   debut_liste(&perso);
+  liste_sort_t* temp;
+
+  if(perso->liste_spell != NULL){
+      temp=perso->liste_spell;
+      do{
+
+        printf(" sort %s (coût : %d de mana)\n", temp->sort->nom_sort, temp->sort->valeur_sort);
+        temp=temp->sort_suivant;
+      }while(temp != NULL);
+  }
+  debut_liste(&perso);
 
 }
 
+/*fonction qui va permettre au joueur de choisir un sort, on garde en paramètre
+un joueur, puisque après, le joueur aura 4 personnages à gérer dans son équipe*/
+
+int choisir_sort_joueur(character_t* perso){
+
+  int choix=1;
+  afficher_sorts(perso);
+  printf("\tQuel sort appliquer [y/n] ?\nObs: si vous voulez sortir, entrez 'e' de exit");
+
+  liste_sort_t* temp;
+
+  if(perso->liste_spell != NULL){
+      temp=perso->liste_spell;
+      do{
+        printf("\nsort %s (coût : %d de mana)\nVotre choix : ", temp->sort->nom_sort, temp->sort->valeur_sort);
+        scanf("%d",&choix);
+        viderBuffer();
+        temp=temp->sort_suivant;
+        if(temp == NULL)
+          debut_liste(&perso);
+      }while( choix != 0 || choix > 2);
+  }
+
+  debut_liste(&perso);
+
+  if(choix == 'y')
+    return 1;
+  return 0;
+
+}
 
 void affich_stats(character_t* perso){
-   printf("\tnom du joueur : %s\nPoints d'expérience : %d\nNiveau : %d\nVie : %d/%d\nMana : %d/%d\nForce = %d \nIntelligence : %d\nStamina : %d\n",
+   printf("\tnom du joueur : %s\nPoints d'expérience : %d\nNiveau : %d\nVie : %d/%d\nMana : %d/%d\nForce : %d \nIntelligence : %d\nStamina : %d\n",
    perso->name, perso->xp,perso->level,perso-> health, perso-> max_health,
    perso->mana,perso->max_mana,perso->stat_strength, perso->stat_intelligence,perso->stat_stamina);
+   printf("équipé d'une %s et %s\n", perso->char_armor->name_object,perso->char_weapon->name_object );
 
 }

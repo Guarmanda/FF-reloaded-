@@ -2,11 +2,14 @@
 
 static int loot_type(int niveau_adversaire){
 
-     int type_random = entier_aleatoire(1,100); /*pourcentage */
-     if(type_random <15){              /* 15% de chance d avoir une armure */
+     int type_random = entier_aleatoire(1,100);
+
+     if(type_random <5){              /* 5% de chance d avoir une armure */
        return armor;
-     }else if(type_random < 30){        /* 30% de chance d avoir une arme*/
+     }else if(type_random < 15){        /* 15% de chance d avoir une arme*/
        return weapon;
+     }else if(type_random < 30){        /* 30% de chance d avoir une arme*/
+       return tente;
      }else{
        return potion;        /* type potion a 70% d etre lootée */
      }
@@ -28,13 +31,11 @@ static int loot_state(int type, int niveau_adversaire){
       case potion : {
                      if(niveau_adversaire < 3){
                        int rand=entier_aleatoire(0,2);
-                /*       printf("%d (0 à 2) entier tiré\n",rand );
-                  */     return rand ;/*voir si ok*/
+                       return rand ;
                      }
                      else if(niveau_adversaire < 8){
                        int rand=entier_aleatoire(3,13);
-                    /*   printf("%d (3-13)entier tiré\n",rand );
-                      */ return rand ;/*voir si ok*/
+                       return rand ;/*voir si ok*/
 
                      }
                     /* else{
@@ -42,6 +43,7 @@ static int loot_state(int type, int niveau_adversaire){
                        return (rand() % 12) + 2;
                      }*/
       }break;
+      case tente: return 0; break;
      }
      return KO_state ;
 }
@@ -50,11 +52,13 @@ int value(int type, int state){
   int tab_armor[4] = {10,20,30,40}; /*les valeurs sont des pourcentages*/
   int tab_weapon[5] = {3,5,7,7,10};
   int tab_potion[14] = {30,70,30,70,30,70,Stunt,Bleed,Slow,Silence,Poison,Blind,Speed,Sleep};
+  int tab_objet[1]={100}; /*pour la tente*/
 
   switch(type){
        case armor: return tab_armor[state];break;
        case weapon: return tab_weapon[state];break;
        case potion: return tab_potion[state];break;
+       case tente: return tab_objet[state]; break;
   }
   return KO_state;   /*code d erreur*/
 }
@@ -82,6 +86,10 @@ void affectation_object(object_t* object){
             case 3:  creer_string(&object->name_object,"bow"); break;
             case 4:  creer_string(&object->name_object,"sword"); break;
          }
+      }else if(object->type_object == tente){ /*pour la tente qui fait la sauvegarde */
+
+          creer_string(&object->name_object,"tent");
+
       }else{
 
             switch (object->state_object) {
@@ -99,6 +107,7 @@ void affectation_object(object_t* object){
                case 11: creer_string(&object->name_object,"anti blind potion"); break;
                case 12: creer_string(&object->name_object,"speed potion"); break;
                case 13: creer_string(&object->name_object,"lucidity potion"); break;
+
             }
       }
 
@@ -165,10 +174,11 @@ err_t fill_up_inventory(object_t* object) {
 }
 
 
+/*faire une fonction qui lise un fichier avec les descriptions des objets*/
 
 static void affichage_type(object_t* objet, string* type_affich){
 
-    switch (objet->type_object) {
+    switch (objet->type_object){
       case weapon: creer_string(type_affich,"%% de dégats"); break;
       case armor: creer_string(type_affich,"%% de défense"); break;
       case potion:{
@@ -177,24 +187,38 @@ static void affichage_type(object_t* objet, string* type_affich){
         }else
           creer_string(type_affich, "%%");
         }; break;
-  }
+      case tente: creer_string(type_affich,"Passer une nuit au calme et reprendre ses esprits..."); break;
+
+    }
 }
+
 void afficher_inventaire(){
 
 	int i;
    if (Inventaire->nb_objects >0){
-      string type_affich;
+    string affiche_le_type;
    	printf("Votre inventaire contient :\n");
    	for(i = 0; i< Inventaire->nb_objects ;i++){
-         affichage_type(Inventaire->object[i],&type_affich);
-         printf("\titem %i : %s (%d%s)\n",i+1,Inventaire->object[i]->name_object, Inventaire->object[i]->value_object,type_affich);
-         supprimer_string(&type_affich);
+         affichage_type(Inventaire->object[i],&affiche_le_type);
+         printf("\titem %i : %s (%d %s)\n",i+1,Inventaire->object[i]->name_object, Inventaire->object[i]->value_object,affiche_le_type);
+         supprimer_string(&affiche_le_type);
    	}
    }else
-      printf("l' inventaire est vide\n" );
+      printf("L' inventaire est vide\n");
 
 }
 
+void deleteFrom_inventaire(int indice){
+  int i;
+
+  delete_object(&Inventaire->object[indice-1]);
+
+  for( i = (indice-1); i < Inventaire->nb_objects-1; i++){
+      Inventaire->object[i]=Inventaire->object[i+1];
+  }
+  Inventaire->nb_objects--;
+
+}
 int est_mana(object_t* obj){
   return obj->type_object == potion && (obj->state_object <= 1);
 }

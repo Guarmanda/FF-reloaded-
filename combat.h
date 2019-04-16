@@ -3,13 +3,11 @@
 
 #include <commun.h>
 #include <commun_perso.h>
-#include <map_menace.h>
+
 
 /*-------------------------------------------------------------*/
+int tour_joueur(character_t*,character_t* [] , int, void (*)(character_t* ,character_t **));
 void casting_spell(character_t* wizard,character_t **target);  /*à implémenter */
-
-void attaque_joueur(character_t* player,character_t* tab_monstre[], int nb_monstre);
-void sort_joueur(character_t* player,character_t* tab_monstre[],int nb_monstre);
 void attack(character_t* attacker,character_t **target); /*fonction auxiliaire pour l attaque*/
 
 /*Modifier etat du joueur
@@ -28,6 +26,8 @@ int running_away(character_t player,character_t monster);
 /*----Creation et manipulation du/des monstre(s)----*/
 char* allocating_monster_name(int level);
 void update_tab_monster(character_t *monster_array[],int index, int nb_monstre);
+
+/*-----manipulation de l inventaire lors du combat ------*/
 
 /*Ajout de la fonction qui augmentera le niveau du joueur*/
 int xp_points(character_t* player, character_t monster);

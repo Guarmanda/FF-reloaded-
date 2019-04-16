@@ -2,6 +2,7 @@
 #define _PERSO_H_
 
 #include <inventaire.h>
+#include <map_menace.h>
 
 enum type{offensif=0, defensif, modifie_etat};
 
@@ -29,7 +30,7 @@ typedef struct character_s{
   int mana;
   int max_health;       /*vie maximum que peut avoir le joueur selon son niveau*/
   int max_mana;
-  liste_sort_t* liste_spell;           /* structure chainée qui pointera sur le tableau global de sort*/
+  liste_sort_t* liste_spell;      /*   structure chainée qui pointera sur le tableau global de sort*/
   int state[MAX_ETATS];
   int stat_strength;
   int stat_intelligence;
@@ -45,18 +46,18 @@ character_t* Personnage;
 
 void init_tab_sort(void);
 void affich_tab_sort(void);
-void afficher_sorts(character_t*);
+int choisir_sort_joueur(character_t*);
 err_t suppr_tab_sort();
 /*-------------- manipulation des stats/attributs des personnages ----------------------*/
 character_t* creation_char(void);
 void delete_player(character_t** player);
-void supprimer_sorts(character_t* perso);
+void supprimer_sorts(character_t** perso);
 void affich_stats(character_t*); /*fonction d'affichage des details du joueur*/
 /*--*/
 character_t* monster_creation();
 
 /*--*/
-int taking_potion(character_t **player);
+int taking_potion(void);
 void apply_state_modifier(character_t **, int , int );
 /*--*/
 void attribution_sort(int,character_t*);

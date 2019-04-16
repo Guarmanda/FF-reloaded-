@@ -21,41 +21,9 @@ int main(){
       }
       obj1=NULL;
     }
-    for(i = 0; i< 10; i++){
-      object_t* obj1= create_loot(3);
+    afficher_inventaire();
 
-
-      if(fill_up_inventory(obj1) != KO_state);
-      else{   /*il faut vérifier que l objet rejeté soit supprimé*/
-          delete_object(&obj1);
-
-      }
-      obj1=NULL;
-    }
-    for(i = 0; i< 10; i++){
-      object_t* obj1= create_loot(2);
-
-
-      if(fill_up_inventory(obj1) != KO_state);
-      else{   /*il faut vérifier que l objet rejeté soit supprimé*/
-          delete_object(&obj1);
-
-      }
-      obj1=NULL;
-    }
-    for(i = 0; i< 10; i++){
-      object_t* obj1= create_loot(1);
-
-
-      if(fill_up_inventory(obj1) != KO_state);
-      else{   /*il faut vérifier que l objet rejeté soit supprimé*/
-          delete_object(&obj1);
-
-      }
-      obj1=NULL;
-    }
-
-
+    deleteFrom_inventaire(9);
     afficher_inventaire();
     delete_inventory();
 

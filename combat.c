@@ -1,13 +1,16 @@
 
 #include <combat.h>
 
-/*menu principal du combat*/
+/*fonction principale du combat qui gère tous les interventants et leurs attributs*/
 
 int combat_on(character_t **player, inventory_t *inventory){
+   int etat=1; /*variable qui récupère l option choisie par le joueur lorsqu'il est tombé en combat */
+   int xp_temp=0; /*les xp qui sont récupérés lors du combat si le joueur a gagné*/
+   int retour_menu=0;  /*retour_menu sert à revenir au début du menu si le joueur a mal fait son choix
+   au contraire de "etat" qui lui va juste verifie l'etat du combat (si game over, si joueur s'évade, etc.)*/
 
+   /*définition des participants du combat*/
    int monster_number = entier_aleatoire(1,4); /*nb de monstre qui fera partie du combat*/
-   printf("vous êtes aux coordonnees %d et %d\n", position_x, position_y);
-
    character_t * monster[monster_number];   /*tableau de monstre généré*/
 
    int i;
@@ -16,47 +19,44 @@ int combat_on(character_t **player, inventory_t *inventory){
       monster[i] = monster_creation();
    }
 
-   int etat=1; /*variable qui récupère l option choisie par le joueur lorsqu'il est tombé en combat */
-   int xp_temp=0; /*les xp qui sont récupérés lors du combat si le joueur a gagné*/
-
+   /*début des actions qui s'enchaîneront*/
    do{
       printf("\n\tjoueur %s (%d/%d)\n",(*player)->name, (*player)->health,(*player)->max_health);
-      printf("\nil y a %d monstres\n",monster_number );
 
       for( i = 0; i < monster_number;i++){
-         printf("\tadversaire %d : %s (vie: %d/%d ; niveau : %d)\n",i+1, monster[i]->name,monster[i]->health, monster[i]->max_health, monster[i]->level);
+         printf("\tAdversaire %d : %s (vie: %d/%d ; niveau : %d)\n",i+1, monster[i]->name,monster[i]->health, monster[i]->max_health, monster[i]->level);
       }
-      etat= affich_choix();
-      int retour=1;  /*retour sert à revenir au menu lorsque le joueur a mal fait son choix
-      au contraire de "etat" qui lui va juste verifier si il continue le combat ou pas (cf. running_away qui peut ne pas aboutir)*/
 
-      switch (etat) {
-         case 1: attaque_joueur(*player,monster,monster_number); break;  /*afficher les monstres à chaque tour*/
-         case 2: retour = taking_potion(&(*player)); break;  /*afficher les monstres à chaque tour*/
-         case 3: /*casting_spell() ;*/break;
+      etat= affich_choix();
+
+      switch (etat){
+         case 1: retour_menu= tour_joueur(*player,monster,monster_number,attack); break;  /*le personnage a toujours le droit d attaquer*/
+         case 2: retour_menu = taking_potion(); break;
+         case 3: retour_menu = tour_joueur(*player,monster,monster_number,casting_spell) ;break; /*si retour, c est que le joueur n a pas encore de sort*/
          case 4: etat = running_away(player);break;
-         case 5: exit(1);  /*on ne sauvegarde rien sauf si l utilisateur l a fait avant*/
+         case 5: exit(1);  /*on ne sauvegarde rien, l'utilisateur sait qu il ne peut sauvegarder sa partie QUE quand il est hors combat*/
       }
-      if(retour){              /*au cas où l utilisateur a fait le mauvais choix et a changé d'idée*/
+
+      if(retour_menu != 0 ){
 
          for( i = 0; i < monster_number; i++){
 
             if(is_dead (monster[i]) ){
-               printf("\n\n\t\t%s est mort...\n\n", monster[i]->name);
-               int check_xp= xp_points((*player),*monster[i]);
-               printf("\tvous avez gagné %d d' xp\n", check_xp);
-               xp_temp += check_xp; /*ajout des points d experience au joueur = effectif QUE si on gagne le combat*/
+               printf("\n\t%s meurt...", monster[i]->name);
+               clear_screen();
 
+               int check_xp= xp_points((*player),*monster[i]);
+               /*ajout des points d experience au joueur = effectif QUE si on gagne le combat*/
+               xp_temp += check_xp;
                update_tab_monster(monster ,i , monster_number);
-               delete_player(&monster[monster_number-1]);
                monster_number--;
             }
          }
-         for( i = 0; i < monster_number;i++){
+ /*à changer pour faire en sorte que il y ait une fonction qui fasse jouer le monstre*/
+         for( i = 0; i < monster_number;i++)
             attack(monster[i], player);
-         }
 
-         /*printf("etat %d\n",etat );*/
+
       }
 
    }while(etat != 0 && monster_number >0 && !is_dead(*player));
@@ -64,61 +64,49 @@ int combat_on(character_t **player, inventory_t *inventory){
    if(!monster_number){
 
       (*player)->xp += xp_temp;
-      printf("vos nouveaux points d 'xp = %d\nvous avez le niveau %d\n",(*player)->xp,(*player)->level);
+      printf("Vous avez gagné %d d'XP...\nVotre nouvel xp : %d\n",xp_temp,(*player)->xp);
 
       if(levelling(*player)){
-         printf("vous avez atteint le niveau %d \n",(*player)->level);
+         sleep(1);
+         clear_screen();
+         printf("\t\tVous avez atteint le niveau %d \n",(*player)->level);
       }
-   }else{
-      printf("GAME OVER...\n" );
+
+   }else if(etat){
+      printf("GAME OVER...\n");
       etat_jeu=END_OF_GAME;
    }
 
-   printf("\t\tfin du combat ^^\n" );
-   return 1;
+   for(i =0; i <monster_number ; i++){
+     delete_player(&monster[i]);
+   }
+
+   return etat_jeu;
 }
 
-void attaque_joueur(character_t* player,character_t* tab_monstre[], int nb_monstre){ /*tableau de monstre en param*/
+int tour_joueur(character_t* player,character_t* tab_monstre[], int nb_monstre, void (*ptr_type_attack)(character_t* wizard,character_t **target)){
    int i;
    int choix_j;
 
    do{
-      printf("Quel adversaire choisissez-vous?\n");
-
+      printf("Quel adversaire choisissez-vous? [0 pour retourner au menu précédent]\n");
       for( i = 0; i < nb_monstre;i++){
-         printf("\tadversaire %d : %s (vie: %d/%d)\t",i+1, tab_monstre[i]->name,tab_monstre[i]->health, tab_monstre[i]->max_health);
-         printf("\n");
+         printf("\tAdversaire %d : %s (vie: %d/%d)\n",i+1, tab_monstre[i]->name,tab_monstre[i]->health, tab_monstre[i]->max_health);
+
       }
-      scanf("%d",&choix_j);   /*faire une fonction qui fasse la saisie et verifie si le choix est correct?*/
-   }while (choix_j > nb_monstre || choix_j< 1);
-
-   choix_j--;
-
-
-   printf("Vous avez choisi %s (adv %d)!\n", tab_monstre[choix_j]->name,choix_j+1);
-/*   affich(tab_monstre[choix_j-1]);*/
-   attack(player,&tab_monstre[choix_j]);
-
-   /* affich(tab_monstre[choix_j-1]);*/
-
-}
-
-void sort_joueur(character_t* player,character_t* tab_monstre[],int nb_monstre){
-
-   int i;
-   int choix_j;
-
-   do{
-      for( i = 0; i < nb_monstre;i++){
-        printf("\tadversaire %d : %s (vie: %d/%d)\n",i+1, tab_monstre[i]->name,tab_monstre[i]->health, tab_monstre[i]->max_health);
-      }
-      printf("Appliquer quoi à qui?\n");
-      scanf("%d",&choix_j );
+      scanf("%d",&choix_j);
       viderBuffer();
-   }while((choix_j-1) > nb_monstre || (choix_j-1) <0);
+   }while (choix_j > nb_monstre || choix_j< 0);
 
-    printf("monstre %s choisi\n", tab_monstre[choix_j-1]->name);
-    casting_spell(player,&tab_monstre[choix_j-1]);
+   if(choix_j){
+
+
+     printf("Adversaire %s (%d/%d) choisi\n", tab_monstre[choix_j-1]->name,tab_monstre[choix_j-1]->health,tab_monstre[choix_j-1]->max_health);
+     ptr_type_attack(player,&tab_monstre[choix_j-1]);
+   }
+
+   printf("\n\nle choix est de %d (devrait etre dif de 0) \n",choix_j );
+   return choix_j;
 
 }
 
@@ -126,26 +114,25 @@ int affich_choix(){
 
          int player_choice = 0;
 
-         do{
-              printf("Vous êtes en combat, choisir entre les actions ci-dessous:\n" );
-              printf(" 1 - Attaquer l'adversaire\n");
-              printf(" 2 - Prendre une potion\n");
-              printf(" 3 - Appliquer un sort\n");
-              printf(" 4 - S'évader\n");
-              printf(" 5 - Quitter le jeu\n");
-              printf("Votre choix : ");
-              scanf(" %i",&player_choice);
+         do{  sleep(2);
+              printf("Vous êtes en combat, choisir entre les actions ci-dessous:\n\t1 - Attaquer l'adversaire\n\t2 - Prendre une potion\n\t3 - Appliquer un sort\n\t4 - S'évader\n\t5 - Quitter le jeu\nVotre choix : ");
+              scanf(" %d",&player_choice);
               viderBuffer();
          }while(player_choice > 5 || player_choice <1);
 
          return player_choice;
 }
+/*si un monstre est mort pendant le combat, on va devoir faire en sorte qu il soit supprimé du tableau*/
+void update_tab_monster(character_t *monster_array[],int index, int nb_monstre){
 
-void update_tab_monster(character_t *monster_array[],int index, int nb_monstre){ /* swap monster place in an array*/
+  int i;
 
-  for( ; index < (nb_monstre-1) ; index++){
-    *monster_array[index] = *monster_array[index+1];
+  delete_player(&monster_array[index]);
+  for( i = (index-1); i <  (nb_monstre-1); i++){
+      monster_array[index] = monster_array[index+1];
   }
+  nb_monstre--;
+
 }
 
 void attack(character_t* attacker,character_t **target){
@@ -179,13 +166,10 @@ int levelling(character_t* player){
 }
 int xp_points(character_t* player, character_t monster){
 
-      printf("monstre level %d \n", monster.level);
-      int xp_par_niveau = 10;
+      int xp_par_niveau = 10; /*variable qui peut definir l evolution du perso dans tout le jeu*/
       return (xp_par_niveau * monster.level);
 
 }
-
-/*fight chance change selon l emplacement du joueur sur la map*/
 
 void fight_rand(){
 
@@ -202,24 +186,28 @@ void fight_rand(){
       combat_on(&Personnage,Inventaire);
    }
 
+  suppr_tab_sort();
 
 }
 
 
-
-
 void casting_spell(character_t* perso, character_t **target){
+  int choix_sort;
+  if(perso->liste_spell->debut_liste != NULL){
+      choix_sort=choisir_sort_joueur(perso);
 
+  }else{
+    printf("Vous n' avez pas de sorts\n" );
+  }
 
 }
 
 
 void apply_state_modifier(character_t ** target, int indice, int ind){
 
-    (*target)->state[indice] = (*target)->state[indice] == FAUX ? VRAI: FAUX ;
+    (*target)->state[indice] = ( (*target)->state[indice] == FAUX ? VRAI : FAUX ) ;
 
 }
-
 
 
 

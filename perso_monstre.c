@@ -3,35 +3,36 @@
 static void creer_dragon(character_t** monstre){
    creer_string(&(*monstre)->name,"Dragon");
    attribution_sort(4,(*monstre));  /*deferencement du sort*/
-   attribution_sort(9,(*monstre));
 
 }
 static void creer_wolf(character_t** monstre){
   creer_string(&(*monstre)->name,"Wolf");
-  attribution_sort(15,(*monstre));
   attribution_sort(9,(*monstre));
+
 
 }
 static void creer_snake(character_t** monstre){
   creer_string(&(*monstre)->name,"Snake");
-  attribution_sort(15,(*monstre));
   attribution_sort(17,(*monstre));
+  attribution_sort(10,(*monstre));
+
 }
 static void creer_skeleton(character_t** monstre){
   creer_string(&(*monstre)->name,"Skeleton");
-  attribution_sort(15,(*monstre));
-  attribution_sort(17,(*monstre));
+  attribution_sort(18,(*monstre));
+  attribution_sort(10,(*monstre));
+
 }
 static void creer_goblin(character_t** monstre){
 
   creer_string(&(*monstre)->name,"Goblin");
-  attribution_sort(15,(*monstre));
-  attribution_sort(17,(*monstre));
+  attribution_sort(10,(*monstre));
+
 
 }
 static void creer_thief(character_t** monstre){
     creer_string(&(*monstre)->name,"Thief");
-    attribution_sort(15,(*monstre));
+    attribution_sort(7,(*monstre));
 
 }
 
@@ -44,54 +45,41 @@ static int name_and_details(character_t** monstre){
 
        if (chance_vs_advers > 80)          /*20% de chance que ce soit cet adversaire*/
            creer_dragon(monstre);
-
        else if (chance_vs_advers > 60)
-           creer_wolf(monstre);/*  strcpy(monstre->name, "Manticore");*/
-
+           creer_dragon(monstre);/*  strcpy(monstre->name, "Manticore");*/
        else if  (chance_vs_advers > 40)
-             creer_wolf(monstre);/*  strcpy(monstre->name,"Terrible r");*/
-
+             creer_dragon(monstre);/*  strcpy(monstre->name,"Terrible r");*/
        else if  (chance_vs_advers > 20)
-               creer_wolf(monstre);/*  strcpy(monstre->name,"Gryffin");*/
-
+               creer_dragon(monstre);/*  strcpy(monstre->name,"Gryffin");*/
        else
-             creer_wolf(monstre); /*  strcpy(monstre->name,"Minotaur");*/
+             creer_dragon(monstre); /*  strcpy(monstre->name,"Minotaur");*/
 
    }else if((*monstre)->level  > 4){
 
        if (chance_vs_advers > 80)
-               creer_wolf(monstre);/*      strcpy(monstre->name,"Dark troll");*/
-
+               creer_wolf(monstre);
        else if (chance_vs_advers > 60)
-               creer_goblin(monstre);
-
+               creer_wolf(monstre);
        else if  (chance_vs_advers > 40)
-               creer_wolf(monstre);/*            strcpy(monstre->name,"Black wizard");*/
-
+               creer_wolf(monstre);
        else if  (chance_vs_advers > 20)
-            creer_snake(monstre);
-   /*      strcpy(monstre->name,"Oger");*/
-
+            creer_wolf(monstre);
        else
            creer_wolf(monstre);
-       /*  strcpy(monstre->name,"Your angry mom");*/
 
    }else{
-       if(chance_vs_advers > 80)
-           creer_wolf(monstre);
 
+       if(chance_vs_advers > 80)
+           creer_snake(monstre);
        else if(chance_vs_advers > 60)
            creer_snake(monstre);
-
        else if(chance_vs_advers > 40)
-           creer_skeleton(monstre);
-
+           creer_snake(monstre);
        else if  (chance_vs_advers > 20)
-           creer_goblin(monstre);
-
+           creer_snake(monstre);
        else
-           creer_thief(monstre);
-      }
+           creer_snake(monstre);
+    }
 
       return 1;
 
@@ -114,6 +102,7 @@ static void init_stats_monstre(character_t** monstre){
     (*monstre)->max_mana = (*monstre)->mana = 40*niveau;
 
     for(i= 0; i<MAX_ETATS;i++){
+    
       (*monstre)->state[i] = FAUX;
     }
 
@@ -135,34 +124,21 @@ static void init_stats_monstre(character_t** monstre){
     name_and_details(monstre);
 
 }
-void boss1(character_t* monster){
-
-    (monster)->level = 8;
-    (monster)->accessory= est_monstre;  /*espace foudre en bas à droite*/
-
-    /* init_stats_monstre(monster);*/
-
-}
 
 static void bestiaire_foudre(character_t** monster){
 
-    int niveau = entier_aleatoire(7,10); /*monstres de niv 7 à 10*/
-
-    (*monster)->level = niveau;
-    (*monster)->accessory=est_monstre;  /*espace foudre en bas à droite*/
-
-   /*  init_stats_monstre(monster);*/
+    (*monster)->level= entier_aleatoire(7,10); /**/
+    (*monster)->accessory=est_monstre;  /*espace foudre en haut à gauche*/
+    init_stats_monstre(monster);
 
 }
 
 
 static void bestiaire_feu(character_t** monster){
 
-    int niveau = entier_aleatoire(5,7); /*monstres de niv5-7*/
-    (*monster)->level=niveau;
-    (*monster)->accessory=est_monstre;  /*espace foudre en bas à droite*/
-
-   /*  init_stats_monstre(monster);*/
+    (*monster)->level= entier_aleatoire(5,7); /*en haut à droite*/
+    (*monster)->accessory=est_monstre;
+    init_stats_monstre(monster);
 
 }
 
@@ -174,11 +150,9 @@ static void bestiaire_neige(character_t** monster){
 
 static void bestiaire_terre(character_t** monster){
 
-    int niveau = entier_aleatoire(1,4); /*monstres de niv 1 à 4*/
-
-    (*monster)->level=niveau;
-    (*monster)->accessory=est_monstre;
-    init_stats_monstre(monster);
+  (*monster)->level= entier_aleatoire(1,4); /**/
+  (*monster)->accessory=est_monstre;  /*espace terre en bas à droite*/
+  init_stats_monstre(monster);
 
 }
 
@@ -186,12 +160,11 @@ character_t* monster_creation(){
 
    character_t* monster=NULL;
    monster = malloc(sizeof(character_t));
-
    monster->liste_spell= malloc(sizeof(liste_sort_t));
 
       if (position_x > 500 && position_y < 500){  /*en bas à droite*/
         bestiaire_terre(&monster);
-      }else if( position_x > 500 && position_y > 500){
+      }else if(position_x > 500 && position_y > 500){
         bestiaire_feu(&monster);
       }else if(position_x < 500 && position_y > 500){
        bestiaire_foudre(&monster);

@@ -70,7 +70,7 @@ inventaire.h : commun.h
 commun_perso.h : inventaire.h
 	touch commun_perso.h
 combat.h : commun_perso.h
-	touch commun_perso.h
+	touch combat.h
 
 #
 #

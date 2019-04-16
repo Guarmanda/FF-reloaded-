@@ -6,9 +6,7 @@
 int main(){
     init_tab_sort();
     affich_tab_sort();
-    character_t* perso = creation_char();
-    printf("les stats du perso\n" );
-    affich_stats(perso);
+    Personnage=creation_char();
     printf("entrez les coordonnees souhaitées pour x: ");
     scanf("%d", &position_x);
     printf("entrez les coordonnees souhaitées pour y: ");
@@ -17,8 +15,13 @@ int main(){
     character_t* monstre2= monster_creation();
     printf("sorts du monstre\n" );
     afficher_sorts(monstre2);
+
+    affich_stats(Personnage);
+    printf("sorts du Personnage\n" );
+    afficher_sorts(Personnage);
     delete_player(&monstre2);
-    delete_player(&perso);
+
+    delete_player(&Personnage);
     suppr_tab_sort();
 
     return 0;
