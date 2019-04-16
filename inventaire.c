@@ -60,7 +60,7 @@ int value(int type, int state){
        case potion: return tab_potion[state];break;
        case tente: return tab_objet[state]; break;
   }
-  return KO_state;   /*code d erreur*/
+  return KO_state;   /*code d erreur si aucun cas de type connu*/
 }
 
 void affectation_object(object_t* object){
@@ -122,6 +122,7 @@ object_t* create_loot(int niv_monstre){ /*va vérifier la valeur de l objet */
    affectation_object(new_item);
    return new_item;
 }
+
 object_t* create_object(int type, int etat){ /*va vérifier la valeur de l objet */
    /* state sera donne par un rand dans une range selon la difficulte du mob monstre->level*/
    object_t * new_item = malloc(sizeof(object_t));
@@ -182,10 +183,10 @@ static void affichage_type(object_t* objet, string* type_affich){
       case weapon: creer_string(type_affich,"%% de dégats"); break;
       case armor: creer_string(type_affich,"%% de défense"); break;
       case potion:{
-        if(objet->state_object >= 0 && objet->state_object <= 5 ){
-          creer_string(type_affich, "%% de l'effet indiqué");
-        }else
-          creer_string(type_affich, "%%");
+                    if(objet->state_object >= 0 && objet->state_object <= 5 ){
+                      creer_string(type_affich, "%% de l'effet indiqué");
+                    }else
+                      creer_string(type_affich, "%%");
         }; break;
       case tente: creer_string(type_affich,"Passer une nuit au calme et reprendre ses esprits..."); break;
 

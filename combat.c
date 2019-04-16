@@ -33,7 +33,7 @@ int combat_on(character_t **player, inventory_t *inventory){
          case 1: retour_menu= tour_joueur(*player,monster,monster_number,attack); break;  /*le personnage a toujours le droit d attaquer*/
          case 2: retour_menu = taking_potion(); break;
          case 3: retour_menu = tour_joueur(*player,monster,monster_number,casting_spell) ;break; /*si retour, c est que le joueur n a pas encore de sort*/
-         case 4: etat = running_away(player);break;
+         case 4: etat = running_away();break; /*renvoie 0 si il arrive à s echapper*/
          case 5: exit(1);  /*on ne sauvegarde rien, l'utilisateur sait qu il ne peut sauvegarder sa partie QUE quand il est hors combat*/
       }
 
@@ -43,7 +43,6 @@ int combat_on(character_t **player, inventory_t *inventory){
 
             if(is_dead (monster[i]) ){
                printf("\n\t%s meurt...", monster[i]->name);
-               clear_screen();
 
                int check_xp= xp_points((*player),*monster[i]);
                /*ajout des points d experience au joueur = effectif QUE si on gagne le combat*/
@@ -82,6 +81,7 @@ int combat_on(character_t **player, inventory_t *inventory){
    }
 
    return etat_jeu;
+
 }
 
 int tour_joueur(character_t* player,character_t* tab_monstre[], int nb_monstre, void (*ptr_type_attack)(character_t* wizard,character_t **target)){
@@ -105,7 +105,7 @@ int tour_joueur(character_t* player,character_t* tab_monstre[], int nb_monstre, 
      ptr_type_attack(player,&tab_monstre[choix_j-1]);
    }
 
-   printf("\n\nle choix est de %d (devrait etre dif de 0) \n",choix_j );
+
    return choix_j;
 
 }
@@ -186,8 +186,6 @@ void fight_rand(){
       combat_on(&Personnage,Inventaire);
    }
 
-  suppr_tab_sort();
-
 }
 
 
@@ -210,15 +208,15 @@ void apply_state_modifier(character_t ** target, int indice, int ind){
 }
 
 
-
 /*-------------------------------------------------------------*/
 
-int running_away(character_t** player){ /* true => successful*/
+int running_away(){ /* true => successful*/
   /* 15% chance to flee */
-
-  if( entier_aleatoire(1,100) < 15){
+  int chance=entier_aleatoire(1,100);
+  printf("%d chance\n",chance );
+  if(  chance < 15){
     printf("Vous arrivez à vous échapper...(-10 xp)\n" );
-    (*player)->xp-=10;
+    Personnage->xp-=10;
     return 0;
   }
    clear_screen();

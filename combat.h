@@ -18,7 +18,7 @@ void apply_state_modifier(character_t **target); */
 int is_dead(character_t *target);
 
 /*Essaie d'eviter le combat*/
-int running_away(character_t** player);
+int running_away(void);
 /*sauvegarde de la fonction originale au cas où :
 int running_away(character_t player,character_t monster);
 */

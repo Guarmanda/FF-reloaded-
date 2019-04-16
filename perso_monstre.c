@@ -102,7 +102,7 @@ static void init_stats_monstre(character_t** monstre){
     (*monstre)->max_mana = (*monstre)->mana = 40*niveau;
 
     for(i= 0; i<MAX_ETATS;i++){
-    
+
       (*monstre)->state[i] = FAUX;
     }
 
@@ -113,11 +113,13 @@ static void init_stats_monstre(character_t** monstre){
     (*monstre)->char_armor=malloc(sizeof(object_t));
     (*monstre)->char_armor->type_object = armor;   /*armure*/
     (*monstre)->char_armor->state_object=0;
+    (*monstre)->char_armor->value_object= value((*monstre)->char_armor->type_object, (*monstre)->char_armor->state_object);
     affectation_object((*monstre)->char_armor);
 
     (*monstre)->char_weapon=malloc(sizeof(object_t));
     (*monstre)->char_weapon->type_object = weapon; /*arme*/
     (*monstre)->char_weapon->state_object= 0;   /*pas d arme*/
+    (*monstre)->char_weapon->value_object= value((*monstre)->char_weapon->type_object, (*monstre)->char_weapon->state_object);
     affectation_object((*monstre)->char_weapon);
 
     (*monstre)->accessory = est_monstre;

@@ -24,7 +24,7 @@ const err_t KO_state;
 int position_x;
 int position_y;
 
-#define TAILLE_STR 40 /*taille par défaut des chaines de char */
+#define TAILLE_STR 50 /*taille par défaut des chaines de char */
 #define TAILLE_TAB_SORT 23
 
 #define MAX_ETATS 8
