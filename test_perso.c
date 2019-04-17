@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <commun_perso.h>
+#include <perso_commun.h>
 
 
 int main(){
