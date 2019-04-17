@@ -1,4 +1,4 @@
-#include <commun_perso.h>
+#include <perso_commun.h>
 
 static void creer_dragon(character_t** monstre){
    creer_string(&(*monstre)->name,"Dragon");

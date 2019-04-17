@@ -3,6 +3,7 @@
 
 #include <commun.h>
 
+/*-------------------------------------------------------------*/
 enum etatPerso{Stunt=0,Bleed,Slow,Silence,Poison,Blind,Speed,Sleep};
 enum type_obj { armor=0, weapon, potion , tente};
 /*evite_combats sert à baisser les chances de tomber sur des monstres lorsqu le joueur se balade sur la carte*/

@@ -1,9 +1,10 @@
-#include <commun_perso.h>
+#include <perso_commun.h>
 /**
  * \file perso_joueur.c
  * \brief Fonctions qui sont rattachées au joueur principal
  * \author Karman Nathalie; Papot Alexandre
  * \date 3 avril 2019
+ * \ Ce fichier englobe les fonctions propres à la structure du Personnage que le joueur incarne
  */
 
 static void affectation_classe(int choix, character_t* player){
@@ -16,12 +17,59 @@ static void affectation_classe(int choix, character_t* player){
    }
 }
 
+/**
+*	\fn static void affectation_genre(int choix, character_t* player);
+*	\brief crée une chaîne de caracteres au champ gender
+*	\param choix du joueur qui va de 1 à 4
+*	\param player pour lui affecter les statistiques selon le choix
+* \return void
+*/
+
 static void affectation_genre(int choix,character_t* player){
 
    switch (choix){
       case 1: creer_string(&player->gender,"man") ; break;
       case 2: creer_string(&player->gender,"woman") ; break;
    }
+}
+
+/**
+*	\fn static void check_classe(int choix, character_t* player);
+*	\brief sauvegarde les statistiques en accord avec la classe choisie par le joueur
+*	\param choix du joueur qui va de 1 à 4
+*	\param player pour lui affecter les statistiques selon le choix
+* \return void
+*/
+
+static void check_classe(int choix, character_t* player){
+
+    switch (choix) {
+      case 1:{
+                      player->stat_intelligence = 5;
+                      player->stat_strength = 10;
+                      player->stat_stamina = 10;
+
+                      }break;
+      case 2:{
+                      player->stat_intelligence = 14;
+                      player->stat_strength = 1;
+                      player->stat_stamina = 10;
+
+                      attribution_sort(entier_aleatoire(0,3),player); /* on lui donne un sort aléatoire*/
+
+                      }break;
+      case 3:{
+                      player->stat_intelligence = 10;
+                      player->stat_strength = 8;
+                      player->stat_stamina = 7;
+                      }break;
+      case 4:{
+                      player->stat_intelligence = 14;
+                      player->stat_strength = 1;
+                      player->stat_stamina = 10;
+                      attribution_sort(19,player);  /*lui donne l'habileté de se protéger*/
+                      }break;
+    }
 }
 
 character_t* creation_char(){
@@ -44,7 +92,7 @@ character_t* creation_char(){
    }while (choix <1 || choix >4);
 
    affectation_classe(choix,player);
-
+   check_classe(choix,player);
    do{
        printf("Choose a gender for your character \n\t1: man \n\t2: woman\n");
        scanf("%d",&choix);
@@ -64,9 +112,6 @@ character_t* creation_char(){
       player->state[i] = FAUX;
     }
 
-
-    player->stat_intelligence = player->stat_stamina = player->stat_strength = 10;
-
     player->accessory=  green_amulet; /*green_amulet = protège de 10% le joueur si il a une "cloth armure"*/
 
     player->char_armor=malloc(sizeof(object_t));
@@ -78,11 +123,13 @@ character_t* creation_char(){
     player->char_weapon->type_object = weapon; /*arme*/
     player->char_weapon->state_object= 0;   /*pas d arme*/
     affectation_object(player->char_weapon);
-    attribution_sort(1,player);
-    attribution_sort(2,player);
+
+
+
 
     return player;
 }
+
 
 /*renvoie 1 pour retourner au menu principal, sinon il renvoie 0*/
 int taking_potion(){
@@ -105,10 +152,10 @@ int taking_potion(){
            objet de type potion ou similaire (pas d armure par exemple)*/
          if(Inventaire->object[choix-1]->type_object == potion){
 
-              /*
-              printf("\n\t\tvotre mana est de %d/%d \n",  (*player)->mana,(*player)->max_mana);
-              printf("\n\t\tvotre vie est de %d/%d \n",  (*player)->health, (*player)->max_health);
-              */
+
+              printf("\n\t\tvotre mana est de %d/%d \n",  Personnage->mana, Personnage->max_mana);
+              printf("\n\t\tvotre vie est de %d/%d \n",  Personnage->health, Personnage->max_health);
+
               float pourcentage =  Inventaire->object[choix-1]->value_object/10.0;
 
               if(est_mana(Inventaire->object[choix-1])){  /*on rentre dans le cas où c est une potion de mana*/
@@ -136,12 +183,13 @@ int taking_potion(){
           }
 
    }
-   printf("Votre mana est de: %d/%d et votre vie est de %d/%d)\n", Personnage->mana, Personnage->max_mana,  Personnage->health,  Personnage->max_health);
+   sleep(1);
+
 
    if(choix==0){
+     sleep(1);
      clear_screen();
      printf("Retour au menu précédent...\n" );
-     sleep(1);
    }
 
    return choix;

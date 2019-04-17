@@ -2,11 +2,11 @@
 #define _COMBAT_H_
 
 #include <commun.h>
-#include <commun_perso.h>
+#include <perso_commun.h>
 
 
 /*-------------------------------------------------------------*/
-int tour_joueur(character_t*,character_t* [] , int, void (*)(character_t* ,character_t **));
+int tour_joueur(character_t* [] , int, void (*)(character_t*, character_t **));
 void casting_spell(character_t* wizard,character_t **target);  /*à implémenter */
 void attack(character_t* attacker,character_t **target); /*fonction auxiliaire pour l attaque*/
 

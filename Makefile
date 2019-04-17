@@ -2,10 +2,10 @@ include Makefile.compilation
 #make file pour les tests et prog principal
 
 fichier_inventaire_test=test_inventaire.o inventaire.o commun.o
-fichier_perso_test=test_perso.o commun_perso.o inventaire.o commun.o perso_monstre.o perso_joueur.o
-fichier_combat_test=test_combat.o combat.o commun_perso.o inventaire.o commun.o map_menace.o perso_monstre.o perso_joueur.o
+fichier_perso_test=test_perso.o perso_commun.o inventaire.o commun.o perso_monstre.o perso_joueur.o
+fichier_combat_test=test_combat.o combat.o perso_commun.o inventaire.o commun.o map_menace.o perso_monstre.o perso_joueur.o
 
-fichier_projet_FF= projet_FF.o combat.o commun_perso.o inventaire.o commun.o map_menace.o perso_monstre.o perso_joueur.o sauvegarde.o
+fichier_projet_FF= projet_FF.o combat.o perso_commun.o inventaire.o commun.o map_menace.o perso_monstre.o perso_joueur.o sauvegarde.o
 #
 # Tests + fichier principal
 #
@@ -35,15 +35,15 @@ projet_FF.o : projet_FF.c combat.h	#voir si il faut changer le .h plus tard !!!!
 # Modules(objets)
 #
 
-OBJ =  commun.o inventaire.o commun_perso.o map_menace.o combat.o	perso_monstre.o perso_joueur.o sauvegarde.o
+OBJ =  commun.o inventaire.o perso_commun.o map_menace.o combat.o	perso_monstre.o perso_joueur.o sauvegarde.o
 
 commun.o : commun.c commun.h
 	$(CCOBJ) $(CFLAGS) $(LIBMATH) commun.c -o commun.o -I./
 
-perso_monstre.o : perso_monstre.c commun_perso.h
+perso_monstre.o : perso_monstre.c perso_commun.h
 	$(CCOBJ) $(CFLAGS) $(LIBMATH) perso_monstre.c -o perso_monstre.o -I./
 
-perso_joueur.o : perso_joueur.c commun_perso.h
+perso_joueur.o : perso_joueur.c perso_commun.h
 	$(CCOBJ) $(CFLAGS) $(LIBMATH) perso_joueur.c -o perso_joueur.o -I./
 
 map_menace.o : map_menace.c map_menace.h
@@ -52,10 +52,10 @@ map_menace.o : map_menace.c map_menace.h
 inventaire.o : inventaire.c inventaire.h
 	$(CCOBJ) $(CFLAGS) $(LIBMATH) inventaire.c -o inventaire.o -I./
 
-commun_perso.o : commun_perso.c commun_perso.h
-	$(CCOBJ) $(CFLAGS) $(LIBMATH) commun_perso.c -o commun_perso.o -I./
+perso_commun.o : perso_commun.c perso_commun.h
+	$(CCOBJ) $(CFLAGS) $(LIBMATH) perso_commun.c -o perso_commun.o -I./
 
-sauvegarde.o : sauvegarde.c commun_perso.h
+sauvegarde.o : sauvegarde.c perso_commun.h
 	$(CCOBJ) $(CFLAGS) $(LIBMATH) sauvegarde.c -o sauvegarde.o -I./
 
 combat.o : combat.c combat.h
@@ -67,9 +67,9 @@ combat.o : combat.c combat.h
 
 inventaire.h : commun.h
 	touch inventaire.h
-commun_perso.h : inventaire.h
-	touch commun_perso.h
-combat.h : commun_perso.h
+perso_commun.h : inventaire.h
+	touch perso_commun.h
+combat.h : perso_commun.h
 	touch combat.h
 
 #
@@ -85,6 +85,7 @@ clean :
 	- rm test_combat
 	- rm projet_FF
 
+#pour garder les fichiers de tests
 clean2 :
 	- rm  *.o
 
