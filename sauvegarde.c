@@ -6,7 +6,7 @@
  */
 
 /*changer param car perso est en global*/
-#include <commun_perso.h>
+#include <perso_commun.h>
 
 character_t* charger_partie(){
 
