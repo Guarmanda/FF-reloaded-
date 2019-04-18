@@ -6,6 +6,45 @@
 #include <math.h>
 #include <inventaire.h>
 #include <creationPerso.h>
+#include <unistd.h>
+
+void afficher_combat(character_t* monster[], int nb_monstres){}
+
+int affich_choix(){
+
+         char player_choice = '9'; /* voir plus tard pour que le joueur puisse selectionner dans le menu */
+         do{
+              box( fenetre, 0, 0 );
+              fond_blanc();
+              mvwprintw( fenetre,7, 10, "Vous êtes en combat, choisir entre les actions ci-dessous:" );
+              mvwprintw( fenetre, 8, 10, " 1 - Attaquer l'adversaire\n");
+              mvwprintw( fenetre, 9, 10, " 2 - Prendre une potion\n");
+              mvwprintw( fenetre, 10, 10, " 3 - Appliquer un sort (à faire)\n");
+              mvwprintw( fenetre, 11, 10, " 4 - S'évader\n");
+              mvwprintw( fenetre, 12, 10, " 5 - Quitter le jeu\n");
+              mvwprintw( fenetre, 13, 10, "Votre choix : ");
+              mvwscanw(fenetre, 13, 27, " %c\n",&player_choice);
+              sleep(2);
+              faire_rendu();
+              player_choice -= '0';
+              viderBuffer();
+              mvwprintw( fenetre,6, 10, "Votre choix est: %c", player_choice);
+         }while(player_choice > 5 || player_choice <1);
+         return player_choice;
+}
+int choisir_ennemi(character_t * monstre[], int nb_monster){
+  int choix = -1;
+  do{
+     printf("Quel adversaire choisissez-vous? [0 pour retourner au menu précédent]\n");
+     for( int i = 0; i < nb_monster;i++){
+        printf("\tAdversaire %d : %s (vie: %d/%d)\n",i+1, monstre[i]->name,monstre[i]->health, monstre[i]->max_health);
+
+     }
+     scanf("%d",&choix);
+     viderBuffer();
+  }while (choix > nb_monster || choix< 0);
+  return choix;
+}
 
 void gestion_editeur(float* x, float* y, int *selected, int *running){}
 void detecter_touches(int*running){
@@ -96,6 +135,7 @@ void afficher_creation(char*name, char*class_char, char*gender){
 					mvwprintw( fenetre, 13, 10, "Classe: %s     ", class_char);
 					mvwprintw( fenetre, 14, 10, "Genre: %s      ", gender);
 	}
+    mvwscanw(fenetre, 13, 27, " %s\n", name);
 }
 
 
@@ -139,6 +179,7 @@ void afficher_Map(float x, float y){
 }
 
 
+
 int afficher_menu(char list[4][30]){
 	int ch, i = 0, width = 30;
 	box( fenetre, 0, 0 ); //initialisation des bordures
@@ -180,7 +221,7 @@ void showInventory(){
   int running = -1; //la variable qui gère le choix du menu
   char classe[Inventaire->nb_objects][30];
   for(int i=0; i<Inventaire->nb_objects; i++){
-    strcpy(classe[i], display_object(*(Inventaire->object[i])));
+    strcpy(classe[i], Inventaire->object[i]->name_object);
   }
   char item[30];
   int ch, i = 0, width = 30;

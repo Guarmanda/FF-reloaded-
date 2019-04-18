@@ -18,6 +18,8 @@
 #include <quete.h>
 #include <combat.h>
 #include <map_menace.h>
+#include <commun.h>
+
 
 
 /**
@@ -27,6 +29,7 @@
  * \param[in] Ordonnée du début de partie
  */
 void startGame(float x, float y){
+  etat_jeu = VRAI;
   init_menaces();
   //si on est à des coordonnées trop petites pour l'écran, on adapte
   int nbSpriteX = SCREEN_WIDTH/125;
@@ -54,7 +57,9 @@ void startGame(float x, float y){
       //On peut donc voir si le joueur a changé de case, et vérifier s'il rencontre un monstres
       if(fabs(floor(X)-floor(x)) > 0 || fabs(floor(Y)-floor(y)) > 0){ //si le joueur change de case
         fight_rand();
-
+        if(etat_jeu == END_OF_GAME){
+          running = 0;
+        }
       }
       //chargement de la map
       afficher_Map( x, y);

@@ -3,13 +3,165 @@
 #include <quete.h>
 #include <fonctions_affichage.h>
 #include <SDL2/SDL.h>
-#include <perso.h>
+#include <commun_perso.h>
 #include <creationPerso.h>
+#include <map_menace.h>
+
+void afficher_combat(character_t* monster[], int nb_monstres){
+  //printf("image\n");
+  drawImage(0,0, "interface_combat", SCREEN_WIDTH, SCREEN_HEIGHT);
+  char sprite[30] = "";
+	strcat(sprite, PLAYER->class_char);
+	strcat(sprite, "_");
+	strcat(sprite, PLAYER->gender);
+	strcat(sprite, "_right");
+  char niveau[20];
+  sprintf(niveau, "Niveau: %d", PLAYER->level);
+  char vie[20];
+  sprintf(vie, "Vie: %d/%d", PLAYER->health, PLAYER->max_health);
+  char mana[20];
+  sprintf(mana, "Mana: %d/%d", PLAYER->mana, PLAYER->max_mana);
+  drawText(SCREEN_WIDTH/100*15, SCREEN_HEIGHT/100*(25-10),niveau ,25,9);
+  drawText(SCREEN_WIDTH/100*15, SCREEN_HEIGHT/100*(25-7),vie ,25,9);
+  drawText(SCREEN_WIDTH/100*15, SCREEN_HEIGHT/100*(25-4),mana ,25,9);
+  drawImage(SCREEN_WIDTH/100*15, SCREEN_HEIGHT/100*25, sprite,60,60);
+  for(int i=0; i<nb_monstres; i++){
+    char niveau[20];
+    sprintf(niveau, "Niveau: %d", monster[i]->level);
+    char vie[20];
+    sprintf(vie, "Vie: %d/%d", monster[i]->health, monster[i]->max_health);
+    char mana[20];
+    sprintf(mana, "Mana: %d/%d", monster[i]->mana, monster[i]->max_mana);
+    drawText(SCREEN_WIDTH/100*85, SCREEN_HEIGHT/100*(25*(i+1)-10),niveau ,25,9);
+    drawText(SCREEN_WIDTH/100*85, SCREEN_HEIGHT/100*(25*(i+1)-7),vie ,25,9);
+    drawText(SCREEN_WIDTH/100*85, SCREEN_HEIGHT/100*(25*(i+1)-4),mana ,25,9);
+    drawImage(SCREEN_WIDTH/100*85, SCREEN_HEIGHT/100*(25*(i+1)), monster[i]->name,120,120);
+  }
+  faire_rendu();
+
+}
+
+
+int affich_choix(){
+         int player_choice = 0; /* voir plus tard pour que le joueur puisse selectionner dans le menu */
+
+         do{
+           SDL_Event e;
+           while(SDL_PollEvent(&e)) {
+             switch(e.type) {
+               case SDL_MOUSEBUTTONDOWN:
+               //quand on clique, si on clique au dessus du sélecteur, on va choisir un monstre.
+               //Sinon, on regarde si on a cliqué dans une case du sélecteur.
+               {
+                 int mouse_x, mouse_y;
+                 SDL_GetMouseState(&mouse_x, &mouse_y);
+                 //si on est dans le sélecteur
+                 if(mouse_y>SCREEN_HEIGHT-150){
+                   printf("%d, %d\n", mouse_x, mouse_y);
+                   //si on est à la hauteur d'une case du sélecteur
+                   if(mouse_y>SCREEN_HEIGHT-100 && mouse_y<SCREEN_HEIGHT){
+                     //la position de x sur l'image
+                     int pos = mouse_x;
+                     for(int j=20.7*SCREEN_WIDTH/100,i = 1; j<pos+6.7*SCREEN_WIDTH/100 ;i++, j+=6.7*SCREEN_WIDTH/100){
+                       if(pos >= j && pos <= j+8.27*SCREEN_WIDTH/100){
+                         //i corresponds au numéro de la case du sprite sélectionné,
+                         printf("%d\n", i);
+                         player_choice = i;
+                       }
+                     }
+                   }
+                 }
+               break;
+              }
+             }
+           }
+           SDL_Delay(5);
+            /*  printf("Vous êtes en combat, choisir entre les actions ci-dessous:\n" );
+              printf(" 1 - Attaquer l'adversaire\n");
+              printf(" 2 - Prendre une potion\n");
+              printf(" 3 - Appliquer un sort (à faire)\n");
+              printf(" 4 - S'évader\n");
+              printf(" 5 - Quitter le jeu\n");
+              printf("Votre choix : ");
+              scanf("%d\n",&player_choice);
+              printf("choix %d\n", player_choice);
+              viderBuffer();*/
+         }while(player_choice > 5 || player_choice <1);
+         return player_choice;
+  }
+
+int choisir_ennemi(character_t * monster[], int nb_monster){
+  int choix = 0;
+  do{
+      SDL_Event e;
+      while(SDL_PollEvent(&e) && choix == 0) {
+        switch(e.type) {
+          case SDL_MOUSEBUTTONDOWN:
+          //quand on clique, si on clique au dessus du sélecteur, on va choisir un monstre.
+          //Sinon, on regarde si on a cliqué dans une case du sélecteur.
+          {
+            int mouse_x, mouse_y;
+            SDL_GetMouseState(&mouse_x, &mouse_y);
+            //si on est dans la colonne des monstres
+            if(mouse_x>=SCREEN_WIDTH/100*85 && mouse_x <=SCREEN_WIDTH/100*85+120){
+              //si on est à la hauteur d'un monstre
+                int pos = mouse_y;
+                for(int i = 0, j=SCREEN_HEIGHT/100*(25*(i+1)); j<pos+120 ;i++, j=SCREEN_HEIGHT/100*(25*(i+1))){
+                  if(pos >= j && pos <= j+120){
+                    //i corresponds au numéro de la case du sprite sélectionné,
+                    printf("%d\n", i);
+                    choix = i+1;
+                  }
+                }
+              }
+            }
+          break;
+          case SDL_MOUSEMOTION:
+          //quand on clique, si on clique au dessus du sélecteur, on va choisir un monstre.
+          //Sinon, on regarde si on a cliqué dans une case du sélecteur.
+          {
+            int mouse_x, mouse_y;
+            SDL_GetMouseState(&mouse_x, &mouse_y);
+            //si on est dans la colonne des monstres
+            if(mouse_x>=SCREEN_WIDTH/100*85 && mouse_x <=SCREEN_WIDTH/100*85+120){
+              //printf("%d, %d\n", mouse_x, mouse_y);
+              //si on est à la hauteur d'un monstre
+                int pos = mouse_y;
+                for(int i = 0, j=SCREEN_HEIGHT/100*(25*(i+1)); j<pos+120 ;i++, j=SCREEN_HEIGHT/100*(25*(i+1))){
+                  if(pos >= j && pos <= j+120){
+                    //i corresponds au numéro de la case du sprite sélectionné,
+                    afficher_combat(monster, nb_monster);
+                    SDL_ShowCursor(SDL_DISABLE);
+                    drawImage(mouse_x-20, mouse_y-20, "sword", 40, 40);
+                    faire_rendu();
+                  }
+                  else{
+                      afficher_combat(monster, nb_monster);
+                      SDL_ShowCursor(SDL_ENABLE);
+                      faire_rendu();
+                  }
+                }
+            }
+              else{
+                afficher_combat(monster, nb_monster);
+                SDL_ShowCursor(SDL_ENABLE);
+                faire_rendu();
+              }
+            }
+          break;
+        }
+      }
+      SDL_Delay(5);
+  }while (choix > nb_monster || choix< 1);
+  SDL_ShowCursor(SDL_ENABLE);
+  return choix;
+}
+
+
 /**
  * \fn void showInventory()
  * \brief Affichage de l'inventaire du joueur
  */
-
 void afficher_inv(int PH, int PW, int H, int W, int PSH, int PSW, int partie_items){
   //la longueur des barres de vie/mana/xp est de 8.54% de l'image, suivie d'une autre barre de 8.54% de l'image d'une autre couleur pour la barre vide
   //Il faut (pour l'instant) 100xp par niveau, 100hp en tout,
@@ -29,6 +181,12 @@ void afficher_inv(int PH, int PW, int H, int W, int PSH, int PSW, int partie_ite
   int textH = 55;
   int textW = 35;
 
+  //affichage des barres
+  drawImage( (PLAYER->health*pixels/100)-pixels+PSW, PSH, "life_bar.png", W, H);
+  drawImage( actual_xp*pixels/100-pixels+PSW, PSH, "xp_bar.png", W, H);
+  drawImage( PLAYER->mana*pixels/100-pixels+PSW, PSH, "mana_bar.png", W, H);
+  drawImage( PSW, PSH, "inventory.png", W, H);
+
   //affichage du level
   float PxTextXlevel = ((SCREEN_WIDTH/100)*47);
   float PxTextYlevel = ((SCREEN_WIDTH/100)*2.8);
@@ -41,11 +199,6 @@ void afficher_inv(int PH, int PW, int H, int W, int PSH, int PSW, int partie_ite
   float PxTextYXP = ((SCREEN_WIDTH/100)*11.2);
   float PxTextYMana = ((SCREEN_WIDTH/100)*15.2);
 
-  //affichage des barres
-  drawImage( (PLAYER->health*pixels/100)-pixels+PSW, PSH, "life_bar.png", W, H);
-  drawImage( actual_xp*pixels/100-pixels+PSW, PSH, "xp_bar.png", W, H);
-  drawImage( PLAYER->mana*pixels/100-pixels+PSW, PSH, "mana_bar.png", W, H);
-  drawImage( PSW, PSH, "inventory.png", W, H);
   //affichage des valeurs des barres
   sprintf(num,"%d",PLAYER->health);
   drawText( PxTextXActuel, PxTextYVie, num, textH, textW);
@@ -64,8 +217,8 @@ void afficher_inv(int PH, int PW, int H, int W, int PSH, int PSW, int partie_ite
   //affichage des items équipés
   //Les images des items ont les mêmes noms que les items eux-même, cela facilite leur affichage graçe à la fonction
   //display_object dans perso.c
-  drawImage( (SCREEN_WIDTH/100)*75.75, (SCREEN_HEIGHT/100)*37, display_object(PLAYER->char_armor), 110, 110);
-  drawImage( (SCREEN_WIDTH/100)*60.75, (SCREEN_HEIGHT/100)*37, display_object(PLAYER->char_weapon), 110, 110);
+  drawImage( (SCREEN_WIDTH/100)*75.75, (SCREEN_HEIGHT/100)*37, PLAYER->char_armor->name_object, 110, 110);
+  drawImage( (SCREEN_WIDTH/100)*60.75, (SCREEN_HEIGHT/100)*37, PLAYER->char_weapon->name_object, 110, 110);
 
   //affichage de l'accessoire
   char accessory[20];
@@ -82,7 +235,7 @@ void afficher_inv(int PH, int PW, int H, int W, int PSH, int PSW, int partie_ite
       j=0;
       k++;
     }
-    drawImage( (j*9.25+3.05)*PW+PSW, (k*14+58)*PH+PSH, display_object(*(Inventaire->object[i])), 60, 60);
+    drawImage( (j*9.25+3.05)*PW+PSW, (k*15.25+61)*PH+PSH, Inventaire->object[i]->name_object, 60, 60);
     //strcpy(item[i], display_object(*(Inventaire->object[i])));
   }
   faire_rendu();
@@ -91,13 +244,13 @@ void afficher_inv(int PH, int PW, int H, int W, int PSH, int PSW, int partie_ite
 void showInventory(){
   //les pixels de l'image
   int W = 95*SCREEN_WIDTH/100;
-  int H = 95*SCREEN_HEIGHT/100;
+  int H = SCREEN_HEIGHT;
 
   //les pixels qui représentent 1% de l'image
   int PW = W/100;
   int PH = H/100;
 
-  //les pixels qui représentent 2.5% de l'écran, donc les coordonnées de l'image
+  //les pixels qui représentent les coordonnées de l'image
   int PSW = 2.5*SCREEN_WIDTH/100;
   int PSH = 0;
   //l'inventaire est séparé en deux parties étant donné que l'image contient 15 cases d'inventaire
@@ -129,14 +282,14 @@ void showInventory(){
           int mouse_x, mouse_y;
           SDL_GetMouseState(&mouse_x, &mouse_y);
           //si on est sur la fleche vers le bas
-          printf("souris %d %d\n", mouse_x, mouse_y);
-          printf("coordonnées: %.2f, %.2f, %.2f, %.2f\n", 74.7*PH, 93.66*PH, 43.82*PW+PSW, 51.6*PW+PSW);
-          if(mouse_y > 74.7*PH && mouse_y < 93.66*PH && mouse_x > 43.82*PW+PSW && mouse_x < 51.6*PW+PSW){
+          printf("souris y: %d x: %d, y: %d%% x: %d%% \n", mouse_y, mouse_x, mouse_y/PH, (mouse_x-PSW)/PW);
+          printf("coordonnées: y: %.2f, %.2f, x: %.2f, %.2f\n", 74.7*PH, 93.66*PH, 43.82*PW+PSW, 51.6*PW+PSW);
+          if(mouse_y > 82.7*PH && mouse_y < 102.66*PH && mouse_x > 47.82*PW+PSW && mouse_x < 55.6*PW+PSW){
             partie_items = 1;
             printf("partieitem %d\n", partie_items);
             afficher_inv(PH, PW, H, W, PSH, PSW, partie_items);
           }
-          else if(mouse_y < 73.66*PH && mouse_y > 53.55*PH && mouse_x > 43.82*PW+PSW && mouse_x < 51.6*PW+PSW){
+          else if(mouse_y < 80.66*PH && mouse_y > 59.55*PH && mouse_x > 47.82*PW+PSW && mouse_x < 55.6*PW+PSW){
             partie_items = 0;
             printf("partieitem %d\n", partie_items);
             afficher_inv(PH, PW, H, W, PSH, PSW, partie_items);
@@ -154,7 +307,7 @@ void showInventory(){
 void afficher_selecteur(int x, int y){
   int x_select = (SCREEN_WIDTH-1200)/2;
   afficher_Map( x, y);
-  drawImage( x_select, SCREEN_HEIGHT-250, "item_selector.png", 1200, 150);
+  drawImage( x_select, SCREEN_HEIGHT-150, "item_selector.png", 1200, 150);
   faire_rendu();
 }
 
@@ -205,15 +358,15 @@ void afficher_Map(float x, float y){
       char sprite2[40] = ""; //et celui de couche supérieure
       switch(map[i][j]){
         //avant d'afficher le joueur, on gère tout ce qui passe sous ses pieds
-        case 5: sprintf(sprite1, "map_grass.png"); break;
-        case 1: sprintf(sprite1, "map_grass.png");
-                sprintf(sprite2, "map_tree1.png"); break;
-        case 3: sprintf(sprite1, "map_grass.png");
-                sprintf(sprite2, "map_tree2.png"); break;
-        case 6: sprintf(sprite1, "map_grass.png");
-                sprintf(sprite2, "map_house.png"); break;
-        case 2: sprintf(sprite1, "map_water.png");
-                sprintf(sprite2, "map_grass_water.png"); break;
+        case 5: sprintf(sprite1, "map_grass"); break;
+        case 1: sprintf(sprite1, "map_grass");
+                sprintf(sprite2, "map_tree1"); break;
+        case 3: sprintf(sprite1, "map_grass");
+                sprintf(sprite2, "map_tree2"); break;
+        case 6: sprintf(sprite1, "map_grass");
+                sprintf(sprite2, "map_house"); break;
+        case 2: sprintf(sprite1, "map_water");
+                sprintf(sprite2, "map_grass_water"); break;
         //gestion des routes et virages
         case 4: sprintf(sprite1, "map_path.png");
                 char path = 'x';
@@ -246,7 +399,14 @@ void afficher_Map(float x, float y){
                 }
                 break;
       }
-      
+      //on gère les biomes
+      if(!est_dans_village(j, i)){
+        if(i>500 && j<500){
+           strcat(sprite1, "_snow");
+           if(sprite2[0]) strcat(sprite2, "_snow");
+        }
+      }
+
       //on affiche les sprites
       drawImage( x2*SPRITE_W, y2*SPRITE_W, sprite1, SPRITE_W, SPRITE_W);
       if(sprite2[0]){
@@ -408,31 +568,38 @@ void afficher_quete(float x, float y, int id, char etat){
   int char_par_ligne = 90;
   int num_lignes;
   int pixels_bulle;
+  char nom[30];
   switch(etat){
     case 'P':
       drawImage( x, y, quetes[id]->pnj_img, 60, 60);
       break;
     case 'F':
-      long_message = strlen(quetes[id]->phrase_fin)*Tw;
+      long_message = strlen(quetes[id]->phrase_fin);
       //le numéro de lignes est égal à la taille du texte divisé, + 1 ligne pour le nom du pnj
-      num_lignes = (long_message/char_par_ligne)+1;
+      num_lignes = (long_message/char_par_ligne)+2;
+
       //si le messae est petit, la bulle fait la longueur du message
       if(num_lignes == 2){
-        drawImage( x-long_message/4, y-110, "bulle.png", long_message+40, 120);
-        drawText(x-long_message/4+20, y-67, quetes[id]->phrase_fin, 25, Tw);
+        pixels_bulle = long_message*Tw;
+        drawImage( x-pixels_bulle/4, y-110, "bulle.png", pixels_bulle+40, 120);
+        drawText(x-pixels_bulle/4+20, y-70, quetes[id]->phrase_fin, 25, Tw);
       }else{ //sinon elle fait la longueur d'une ligne, et on affiche le texte ligne par ligne
-        drawImage( x-long_message/4, y-110, "bulle.png", char_par_ligne+40, 120);
+        pixels_bulle = 90*Tw;
+        drawImage( x-pixels_bulle/4, y-(60*num_lignes-10), "bulle.png", char_par_ligne*Tw+40, 60*num_lignes);
         for(int j = 0, i = 1; i<num_lignes; i++){
           char ligne[91];
           int k;
           for(k=0; j<i*90 && j<long_message; j++, k++){
             ligne[k] = quetes[id]->phrase_fin[j];
+            ligne[k+1] = '\0';
           }
-          ligne[k] = '\0';
-          drawText(x-long_message/4+20, y-67, ligne, 25, Tw);
+          int pixel_y = y-(25*(num_lignes-i))-25*num_lignes;
+          drawText(x-pixels_bulle/4+20, pixel_y, ligne, 25, Tw);
         }
       }
-      drawText(x-long_message/4+20, y-100, quetes[id]->pnj_nom, 25, Tw);
+      sprintf(nom, "%s", quetes[id]->pnj_nom);
+      strcat(nom, " :");
+      drawText(x-pixels_bulle/4+20, y-60*num_lignes+30, nom, 25, Tw);
       break;
     case 'D':
       long_message = strlen(quetes[id]->phrase_debut);
@@ -458,10 +625,9 @@ void afficher_quete(float x, float y, int id, char etat){
           drawText(x-pixels_bulle/4+20, pixel_y, ligne, 25, Tw);
         }
       }
-      char nom[30];
       sprintf(nom, "%s", quetes[id]->pnj_nom);
       strcat(nom, " :");
-      drawText(x-pixels_bulle/4+20, y-(60*num_lignes-10)+30, nom, 25, Tw);
+      drawText(x-pixels_bulle/4+20, y-60*num_lignes+30, nom, 25, Tw);
       break;
     case 'B':
       drawImage( x, y, quetes[id]->nom_img, 60, 60);
@@ -552,10 +718,10 @@ void gestion_editeur(float * x, float * y, int* selected, int *running){
         int mouse_x, mouse_y;
         SDL_GetMouseState(&mouse_x, &mouse_y);
         //si on est dans le sélecteur
-        if(mouse_y>SCREEN_HEIGHT-215){
+        if(mouse_y>SCREEN_HEIGHT-150){
           printf("%d, %d\n", mouse_x, mouse_y);
           //si on est à la hauteur d'une case du sélecteur
-          if(mouse_y>SCREEN_HEIGHT-200 && mouse_y<SCREEN_HEIGHT){
+          if(mouse_y>SCREEN_HEIGHT-100 && mouse_y<SCREEN_HEIGHT){
             //la position de x sur l'image
             int pos = mouse_x-((SCREEN_WIDTH-1200)/2+245);
             for(int j=0,i = 1; j<pos+85 ;i++, j+=100){

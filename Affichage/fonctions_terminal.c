@@ -76,12 +76,14 @@ void setcolor(int fg, int bg)
 
 void faire_rendu(){
 		refresh();
+    wrefresh( fenetre );
 }
 
 void quitter_affichage(){
   curs_set(1);
   clear();
   endwin();
+
 }
 
 void init_affichage(){
@@ -98,14 +100,15 @@ void init_affichage(){
   SCREEN_WIDTH = 80;
   SCREEN_HEIGHT = 24;
   SPRITE_W = 1;
-  VITESSE_PERSO = 0.4; //on est en terminal, le perso sera plus rapide qu'en sdl
+  VITESSE_PERSO = 0.8; //on est en terminal, le perso sera plus rapide qu'en sdl
 }
 
 void fond_blanc(){
   setcolor(7, 7);
   for(int i=0; i<=SCREEN_HEIGHT; i++){
     for(int j=0; j<=SCREEN_WIDTH; j++){
-      mvaddstr( i, j, "0" );
+      mvwprintw( fenetre,i, j, " " );
+      mvaddstr( i, j, " " );
     }
   }
 }

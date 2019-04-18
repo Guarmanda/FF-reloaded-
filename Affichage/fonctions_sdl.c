@@ -31,6 +31,7 @@ char ** noms; /*!< Tableau des noms d'images */
  * \brief Chargement de toutes les textures du jeu dans la mémoire
  */
 void loadImages(){
+	printf("Chargement des images...\n");
 	DIR *d;
 	struct dirent *dir;
 
@@ -43,7 +44,6 @@ void loadImages(){
 	d = opendir("./IMG/");
 	for (int i=0;(dir = readdir(d)) != NULL; i++){
 		noms[i] = malloc(sizeof(char)*strlen(dir->d_name)+1);
-		printf("\tRéussi\n");
 		strcpy(noms[i], dir->d_name);
 	}
 	closedir(d);
@@ -51,7 +51,11 @@ void loadImages(){
 		char nom[50] = "./IMG/";
 		strcat(nom, noms[i]);
 		images[i] = IMG_LoadTexture(renderer, nom);
+		if(i==22){
+			printf("%s\n", nom);
+		}
 	}
+	printf("Images chargées: %d\n", nb_images);
 }
 
 /**
@@ -96,6 +100,7 @@ void quitter_affichage(){
 	unloadImages();
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(fenetre);
+	TTF_CloseFont(police);
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
@@ -112,7 +117,6 @@ void quitter_affichage(){
  */
 void drawText (int x, int y, char * string, int h, int w){
 	SDL_Surface *texte = TTF_RenderUTF8_Blended(police, string, couleurDoree);
-
 	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_Texture *texte_tex = SDL_CreateTextureFromSurface(renderer, texte);
 	SDL_FreeSurface(texte); /* on a la texture, plus besoin du texte */
@@ -169,7 +173,7 @@ void init_affichage(){
 	//mieux adapter chaque élément de l'affichage dans les autres fonctions
 	SDL_DisplayMode dm;
 	SDL_GetCurrentDisplayMode(0, &dm);
-	police = TTF_OpenFont("editundo.ttf", 20);
+	police = TTF_OpenFont("editundo.ttf", 25);
 	SCREEN_HEIGHT = dm.h;
 	SCREEN_WIDTH = dm.w;
 	/* Création de la fenêtre */
@@ -178,8 +182,10 @@ void init_affichage(){
 													SCREEN_WIDTH,
 													SCREEN_HEIGHT,
 													SDL_WINDOW_SHOWN);
+
 	renderer=SDL_CreateRenderer(fenetre, -1, SDL_RENDERER_ACCELERATED);
+	SDL_SetWindowFullscreen(fenetre, SDL_WINDOW_FULLSCREEN);
 	loadImages();
 	SPRITE_W = 125;
-	VITESSE_PERSO = 0.015; //on est en sdl, le perso sera plus lent qu'en terminal
+	VITESSE_PERSO = 0.025; //on est en sdl, le perso sera plus lent qu'en terminal
 }
