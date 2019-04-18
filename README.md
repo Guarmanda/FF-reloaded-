@@ -14,7 +14,7 @@ A final-fantasy-like 2d game by Nathalie Karman, Alexandre Papot, Valentin Girod
 Chronologie du projet
 
 1) premières séances 
-- Nathalie, Alexandre => fichiers perso.c/perso.h (aujourd'hui perso_commun.c et autres)
+- Nathalie, Alexandre => fichiers perso.c/perso.h (aujourd'hui perso_commun.c et autres) \n
                    => fichiers inventaire.c/inventaire.h
                    => boîte à outils (commun.c/commun.h)
                    => fichier test_inventaire.c qui à priori n'était basé que sur les fichiers inventaire.[hc]
