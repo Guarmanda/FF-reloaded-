@@ -2,36 +2,30 @@
 
 static void creer_dragon(character_t** monstre){
    creer_string(&(*monstre)->name,"Dragon");
-   attribution_sort(8,(*monstre));  /*deferencement du sort*/
-   attribution_sort(9,(*monstre));  /*deferencement du sort*/
+
 
 }
 static void creer_wolf(character_t** monstre){
     creer_string(&(*monstre)->name,"Wolf");
-    attribution_sort(9,(*monstre));
+
 
 }
 static void creer_snake(character_t** monstre){
-  creer_string(&(*monstre)->name,"Snake");
-  attribution_sort(17,(*monstre));
-  attribution_sort(10,(*monstre));
+    creer_string(&(*monstre)->name,"Snake");
 
 }
 static void creer_skeleton(character_t** monstre){
-  creer_string(&(*monstre)->name,"Skeleton");
-  attribution_sort(18,(*monstre));
-  attribution_sort(10,(*monstre));
+    creer_string(&(*monstre)->name,"Skeleton");
 
 }
 static void creer_goblin(character_t** monstre){
 
-  creer_string(&(*monstre)->name,"Goblin");
-  attribution_sort(10,(*monstre));
+    creer_string(&(*monstre)->name,"Goblin");
 
 }
+
 static void creer_thief(character_t** monstre){
     creer_string(&(*monstre)->name,"Thief");
-
 }
 
 static void name_and_details(character_t** monstre){
@@ -68,13 +62,13 @@ static void name_and_details(character_t** monstre){
    }else{
 
        if(chance_vs_advers > 80)
-           creer_snake(monstre);
-       else if(chance_vs_advers > 60)
-           creer_wolf(monstre);
-       else if(chance_vs_advers > 40)
            creer_skeleton(monstre);
-       else if  (chance_vs_advers > 20)
+       else if(chance_vs_advers > 60)
            creer_goblin(monstre);
+       else if(chance_vs_advers > 40)
+           creer_snake(monstre);
+       else if  (chance_vs_advers > 20)
+           creer_wolf(monstre);
        else
            creer_thief(monstre);
     }

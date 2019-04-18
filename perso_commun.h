@@ -18,7 +18,7 @@ typedef struct spell_s{
 typedef struct liste_sort_s liste_sort_t;
 struct liste_sort_s{
    liste_sort_t* debut_liste;
-   spell_t* sort;
+   int indice_tab_sorts;
    liste_sort_t* sort_suivant;
 };
 
@@ -52,7 +52,7 @@ spell_t tab_sort[TAILLE_TAB_SORT]; /*tableau global à usage commun entre les pe
 
 void init_tab_sort(void);
 void affich_tab_sort(void);
-int choisir_sort_joueur( character_t * , int* );
+int joueur_sort(character_t* );
 err_t suppr_tab_sort();
 /*-------------- manipulation des stats/attributs des personnages ----------------------*/
 character_t* creation_char(void);
@@ -64,12 +64,12 @@ character_t* monster_creation();
 
 /*--*/
 int taking_potion(void);
-void apply_state_modifier(character_t **, int , int );
+void apply_state_modifier(character_t **, int );
 /*--*/
 void attribution_sort(int,character_t*);
 
 /*sauvegarde*/
-character_t* charger_partie();
-void sauvegarde_partie();
+character_t* charger_partie(char *);
+void sauvegarde_partie(character_t *,char *);
 
 #endif

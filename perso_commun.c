@@ -10,7 +10,7 @@ void attribution_sort(int indice,character_t* perso){
 
    if(perso->liste_spell->debut_liste == NULL){
       perso->liste_spell->debut_liste = perso->liste_spell;
-      perso->liste_spell->sort= &tab_sort[indice];
+      perso->liste_spell->indice_tab_sorts= indice;
 
     }else{
       liste_sort_t* new= malloc(sizeof(liste_sort_t));
@@ -18,7 +18,7 @@ void attribution_sort(int indice,character_t* perso){
       while(perso->liste_spell->sort_suivant!= NULL){
          perso->liste_spell= perso->liste_spell->sort_suivant;
       }
-      new->sort=&tab_sort[indice];
+      new->indice_tab_sorts=indice;
       new->sort_suivant= NULL;
       perso->liste_spell->sort_suivant= new;
 
@@ -26,7 +26,6 @@ void attribution_sort(int indice,character_t* perso){
    debut_liste(&perso);
 
 }
-
 
 void supprimer_sorts(character_t** perso){
 
@@ -53,7 +52,7 @@ void init_tab_sort(){ /*à initialiser au début de la partie*/
    creer_string(&tab_sort[3].nom_sort,"Ice 1");
 
    for(i = 0; i < 4; i++){
-     tab_sort[i].valeur_sort = 20;  /*coût mana et influe de 20% l attaque magique*/
+     tab_sort[i].valeur_sort = 10;  /*coût mana et influe de 20% l attaque magique*/
    }
 
    creer_string(&tab_sort[4].nom_sort,"Double Feu");
@@ -62,7 +61,7 @@ void init_tab_sort(){ /*à initialiser au début de la partie*/
    creer_string(&tab_sort[7].nom_sort,"Double Ice");
 
    for( ; i < 8; i++){
-     tab_sort[i].valeur_sort = 40;
+     tab_sort[i].valeur_sort = 20;
    }
 
    creer_string(&tab_sort[8].nom_sort,"Demi");   /*si niveau du target <= niv lanceur de sort + gerer aleatoire comme "evader"*/
@@ -82,31 +81,33 @@ void init_tab_sort(){ /*à initialiser au début de la partie*/
    creer_string(&tab_sort[12].nom_sort,"Antidote");  /*enleve un etat */
    creer_string(&tab_sort[13].nom_sort,"Poudre de Perlimpinpin"); /*enleve le maximum d etat qu il peut*/
    creer_string(&tab_sort[14].nom_sort,"Hologramme Mélenchon"); /*fait en sorte de disparaître du champ de vision des monstres pendant un tour*/
+   creer_string(&tab_sort[15].nom_sort,"Speed");
 
    /*valeurs symboliques et aussi utiles pour le coût de mana*/
    tab_sort[11].valeur_sort =20 ;     /*bouclier augmente de 20% la vie au prochain tour */
    tab_sort[12].valeur_sort =30 ;  /*Antidote soigne n importe quel etat */
    tab_sort[13].valeur_sort = 50 ;  /*Antidote soigne tous les etats sous lesquels le perso se trouve*/
    tab_sort[14].valeur_sort =30 ;
-
+   tab_sort[15].valeur_sort =20 ;
+   for ( ; i < 16 ; i++){
+     tab_sort[i].type_sort = defensif;
+   }
    /*sorts de type state_modifier*/
-   creer_string(&tab_sort[15].nom_sort,"Stunt"); /*gérer avec aleatoire + chance/accuracy de celui qui applique le sort + level du lanceur de sort*/
-   creer_string(&tab_sort[16].nom_sort,"Bleed");
-   creer_string(&tab_sort[17].nom_sort,"Slow");
-   creer_string(&tab_sort[18].nom_sort,"Silence");
-   creer_string(&tab_sort[19].nom_sort,"Poison");
-   creer_string(&tab_sort[20].nom_sort,"Blind");
-   creer_string(&tab_sort[21].nom_sort,"Speed");
+   creer_string(&tab_sort[16].nom_sort,"Stunt"); /*gérer avec aleatoire + chance/accuracy de celui qui applique le sort + level du lanceur de sort*/
+   creer_string(&tab_sort[17].nom_sort,"Bleed");
+   creer_string(&tab_sort[18].nom_sort,"Slow");
+   creer_string(&tab_sort[19].nom_sort,"Silence");
+   creer_string(&tab_sort[20].nom_sort,"Poison");
+   creer_string(&tab_sort[21].nom_sort,"Blind");
    creer_string(&tab_sort[22].nom_sort,"Sleep");
 
-
-   for ( ; i < TAILLE_TAB_SORT ; i++){
-     tab_sort[i].type_sort = modifie_etat;
-   }
    int j;
-   for (j=Stunt ; j < TAILLE_TAB_SORT ; j++){
-     tab_sort[i].valeur_sort = j ;
+   for (j=Stunt ; i < TAILLE_TAB_SORT ; i++){
+     tab_sort[i].type_sort = modifie_etat;
+     tab_sort[i].valeur_sort = j ;  /*de 0 à 6 voir tableau dans inventaire.h*/
+
    }
+
 
 }
 
@@ -160,11 +161,11 @@ void afficher_sorts(character_t* perso){
 
   liste_sort_t* temp;
 
-  if(perso->liste_spell != NULL){
+  if(perso->liste_spell->debut_liste != NULL){
       temp=perso->liste_spell;
       do{
 
-        printf("%s (coût : %d de mana)\n", temp->sort->nom_sort, temp->sort->valeur_sort);
+        printf("%s (%d)\n", tab_sort[temp->indice_tab_sorts].nom_sort, tab_sort[temp->indice_tab_sorts].valeur_sort);
         temp=temp->sort_suivant;
       }while(temp != NULL);
   }
@@ -172,8 +173,6 @@ void afficher_sorts(character_t* perso){
 
 }
 
-/*fonction qui va permettre au joueur de choisir un sort, on garde en paramètre
-un joueur, puisque après, le joueur aura 4 personnages à gérer dans son équipe*/
 
 int chercher_sort(char* nom_sort){
    int i;
@@ -183,42 +182,60 @@ int chercher_sort(char* nom_sort){
 
 }
 
-int choisir_sort_joueur(character_t* perso, int* sort_choisi){
-
-  char choix;
-
+static void ia_sort(character_t* adv){
   liste_sort_t* temp;
-  temp=perso->liste_spell;
 
-  printf("Voici la liste des sorts...\n" );
-  sleep(1);
+  if(adv->liste_spell != NULL){
+      temp=adv->liste_spell;
+      do{
 
-  int compt=1;
+        temp=temp->sort_suivant;
+      }while(temp != NULL);
+      if(temp == NULL)
+        temp= adv->liste_spell;
+  }
+}
 
-  do{
+static int recup_sort(character_t* perso, int compteur){
+      liste_sort_t* temp;
+      temp=perso->liste_spell;
+      int cpt=1;
+      while(cpt!=compteur){
+        cpt++;
+        temp=temp->sort_suivant;
+        printf("%s\n",tab_sort[temp->indice_tab_sorts].nom_sort );
+      }
+      printf("%s\n",tab_sort[temp->indice_tab_sorts].nom_sort );
+      debut_liste(&perso);
+      return temp->indice_tab_sorts;
+}
+int joueur_sort(character_t* perso){
 
-    if(temp == NULL){
+    if(perso->liste_spell!= NULL){
+        liste_sort_t* temp;
         temp=perso->liste_spell;
-        compt=1;
-        printf("Vous revoici au début de la liste des sorts...\n" );
-        sleep(1);
-    }
+        int cpt=1;
+        do{
+          printf("%d : %s (%d)\n",cpt, tab_sort[temp->indice_tab_sorts].nom_sort, tab_sort[temp->indice_tab_sorts].valeur_sort);
+          cpt++;
+          temp=temp->sort_suivant;
+        }while(temp != NULL);
+        debut_liste(&perso);
+        do{
+          printf("Quel sort voulez-vous? [0 pour retourner au menu précédent]\nVotre choix : " );
+          scanf("%d",&cpt );
+        }while(cpt < 0);
 
-    printf("%d : %s (%d)\n",compt, temp->sort->nom_sort, temp->sort->valeur_sort);
-    printf("\nVoulez-vous appliquer ce sort [y/n] ? Tapez [e] pour retourner au menu précédent...\nVotre choix : ");
-    scanf("%c",&choix );
-    viderBuffer();
-    if(choix != 'y')
-      temp=temp->sort_suivant;
-    else
-      *sort_choisi = chercher_sort(temp->sort->nom_sort);
-  }while(choix != 'y' && choix != 'e');
+        return cpt == 0? -1 : recup_sort(perso,cpt);
 
-  debut_liste(&perso);
+    }else
+      printf("Vous n'avez pas de sort.\n");
 
-  return choix != 'e' ;  /* egale à 0 si on a choisi un sort*/
+    sleep(1);
+    return -1;
 
 }
+
 
 void affich_stats(character_t* perso){
    printf("\tnom du joueur : %s\nPoints d'expérience : %d\nNiveau : %d\nVie : %d/%d\nMana : %d/%d\nForce : %d \nIntelligence : %d\nStamina : %d\n",
