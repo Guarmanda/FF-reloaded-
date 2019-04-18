@@ -4,6 +4,7 @@
 #include <inventaire.h>
 #include <map_menace.h>
 #include <commun.h>
+int EVASION; /*taux de chance de pouvoir prendre fuite, il peut changer selon l endroit de la carte (par exemple, contre un boss, il sera de 0)*/
 
 /*----les différents types de sorts-----*/
 enum type{offensif=0, defensif, modifie_etat};

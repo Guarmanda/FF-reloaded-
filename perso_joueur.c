@@ -54,10 +54,9 @@ static void check_classe(int choix, character_t* player){
                       player->stat_intelligence = 14;
                       player->stat_strength = 1;
                       player->stat_stamina = 10;
-                      int temo=entier_aleatoire(0,3);
-                      printf("nb aleatoire %d\n",temo );
-                      attribution_sort(temo,player); /* on lui donne un sort aléatoire*/
-                      attribution_sort(temo+1,player); /* on lui donne un sort aléatoire*/
+                      int nb_al=entier_aleatoire(0,3);
+                      attribution_sort(nb_al,player); /* on lui donne un sort aléatoire*/
+                      attribution_sort(nb_al+1,player); /* on lui donne un sort aléatoire*/
 
                       }break;
       case 3:{
@@ -140,7 +139,6 @@ int taking_potion(){
 
    do{
       afficher_inventaire();
-      printf("Votre mana est de: %d/%d et votre vie est de %d/%d)\nQuel objet voulez-vous prendre? [0 pour retourner au menu précédent]\nVotre choix : ", Personnage->mana, Personnage->max_mana,  Personnage->health,  Personnage->max_health);
       scanf("%d", &choix);
       viderBuffer();
    }while(choix > Inventaire->nb_objects || choix < 0);
@@ -191,7 +189,9 @@ int taking_potion(){
    if(choix==0){
      sleep(1);
      clear_screen();
-   }
+   }else
+      printf("Votre mana est de: %d/%d et votre vie est de %d/%d)\nQuel objet voulez-vous prendre? [0 pour retourner au menu précédent]\nVotre choix : ", Personnage->mana, Personnage->max_mana,  Personnage->health,  Personnage->max_health);
+
 
    return choix;
 }

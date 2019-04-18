@@ -1,23 +1,25 @@
 #include <combat.h>
 
 int main(){
+    /*fichier de tests pour la simulation d'un combat dans la map*/
 
     init_tab_sort();
     init_menaces();
     create_inventory();
     srand(time(NULL));
 
+    /*la fonction de creation du personnage pourra être appliqué à 4 personnages, pour
+    que le jeu soit fidèle aux règles de rpg et que les classes des personnages s'entraident
+    */
     Personnage=creation_char();
-
+    /*au cas où l'on choisit un wizard, et non pas un warrior, il affichera les sorts attribués*/
     afficher_sorts(Personnage);
-
+    /*création d'objets pour que le joueur puisse s'en servir en combat*/
     object_t* obj2= create_object(potion,3);
     fill_up_inventory(obj2);
     object_t* obj1= create_object(potion,2);
     fill_up_inventory(obj1);
-
-
-
+   /*tests de positions de la map*/
     do{
        printf("entrez les coordonnees souhaitées pour x [0-999]: ");
        scanf("%d", &position_x);
@@ -32,7 +34,10 @@ int main(){
 
     fight_rand();
 
+    suppr_tab_sort();
+    delete_inventory();
 
+    delete_player(&Personnage);
 
     return 0;
 

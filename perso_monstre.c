@@ -3,7 +3,7 @@
 static void creer_dragon(character_t** monstre){
    creer_string(&(*monstre)->name,"Dragon");
 
-
+   EVASION = 0;
 }
 static void creer_wolf(character_t** monstre){
     creer_string(&(*monstre)->name,"Wolf");
@@ -149,7 +149,7 @@ static void bestiaire_terre(character_t** monster){
 }
 
 character_t* monster_creation(){
-
+    EVASION = 15;
    character_t* monster=NULL;
    monster = malloc(sizeof(character_t));
    monster->liste_spell= malloc(sizeof(liste_sort_t));
