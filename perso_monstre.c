@@ -2,13 +2,13 @@
 
 static void creer_dragon(character_t** monstre){
    creer_string(&(*monstre)->name,"Dragon");
-   attribution_sort(4,(*monstre));  /*deferencement du sort*/
+   attribution_sort(8,(*monstre));  /*deferencement du sort*/
+   attribution_sort(9,(*monstre));  /*deferencement du sort*/
 
 }
 static void creer_wolf(character_t** monstre){
-  creer_string(&(*monstre)->name,"Wolf");
-  attribution_sort(9,(*monstre));
-
+    creer_string(&(*monstre)->name,"Wolf");
+    attribution_sort(9,(*monstre));
 
 }
 static void creer_snake(character_t** monstre){
@@ -28,15 +28,13 @@ static void creer_goblin(character_t** monstre){
   creer_string(&(*monstre)->name,"Goblin");
   attribution_sort(10,(*monstre));
 
-
 }
 static void creer_thief(character_t** monstre){
     creer_string(&(*monstre)->name,"Thief");
-    attribution_sort(7,(*monstre));
 
 }
 
-static int name_and_details(character_t** monstre){
+static void name_and_details(character_t** monstre){
    int i;
 
    int chance_vs_advers= entier_aleatoire(1,100); /*pourcentage de chance de tomber sur un monstre spécifique*/
@@ -72,16 +70,14 @@ static int name_and_details(character_t** monstre){
        if(chance_vs_advers > 80)
            creer_snake(monstre);
        else if(chance_vs_advers > 60)
-           creer_snake(monstre);
+           creer_wolf(monstre);
        else if(chance_vs_advers > 40)
-           creer_snake(monstre);
+           creer_skeleton(monstre);
        else if  (chance_vs_advers > 20)
-           creer_snake(monstre);
+           creer_goblin(monstre);
        else
-           creer_snake(monstre);
+           creer_thief(monstre);
     }
-
-      return 1;
 
 }
 void delete_adversaire(character_t** player){
@@ -106,9 +102,9 @@ static void init_stats_monstre(character_t** monstre){
       (*monstre)->state[i] = FAUX;
     }
 
-    (*monstre)->stat_intelligence = 3*niveau;
-    (*monstre)->stat_stamina = 3*niveau;
-    (*monstre)->stat_strength = 3*niveau;
+    (*monstre)->stat_intelligence = 2*niveau;
+    (*monstre)->stat_stamina = 2*niveau;
+    (*monstre)->stat_strength = 2*niveau;
 
     (*monstre)->char_armor=malloc(sizeof(object_t));
     (*monstre)->char_armor->type_object = armor;   /*armure*/

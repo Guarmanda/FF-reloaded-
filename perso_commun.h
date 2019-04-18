@@ -52,7 +52,7 @@ spell_t tab_sort[TAILLE_TAB_SORT]; /*tableau global à usage commun entre les pe
 
 void init_tab_sort(void);
 void affich_tab_sort(void);
-int choisir_sort_joueur(character_t*);
+int choisir_sort_joueur( character_t * , int* );
 err_t suppr_tab_sort();
 /*-------------- manipulation des stats/attributs des personnages ----------------------*/
 character_t* creation_char(void);
@@ -69,7 +69,7 @@ void apply_state_modifier(character_t **, int , int );
 void attribution_sort(int,character_t*);
 
 /*sauvegarde*/
-character_t* charger_partie();
-void sauvegarde_partie();
+character_t* charger_partie(char *);
+void sauvegarde_partie(character_t *,char *);
 
 #endif

@@ -116,9 +116,9 @@ int affich_choix(){
 
          do{
 
-              sleep(2);
+              sleep(1);
               printf("Vous êtes en combat, choisir entre les actions ci-dessous:\n\t1 - Attaquer l'adversaire\n\t2 - Prendre une potion\n\t3 - Appliquer un sort\n\t4 - S'évader\n\t5 - Quitter le jeu\nVotre choix : ");
-              scanf(" %d",&player_choice);
+              scanf("%d",&player_choice);
               viderBuffer();
          }while(player_choice > 5 || player_choice <1);
 
@@ -141,9 +141,9 @@ void attack(character_t* attacker,character_t **target){
 
    printf("\t%s ATTAQUE ==============> %s ...\n",attacker->name,(*target)->name);
    sleep(2);
-   int degat = (attacker->stat_strength) * (attacker->char_weapon->value_object) * (attacker->stat_stamina) ;
+   int degat = (attacker->stat_strength) * (attacker->char_weapon->value_object) ;
 
-   ((*target)->health) -= degat;
+   ((*target)->health) -= degat + (*target)->accessory ;
 
    if(is_dead(*target)){
       ((*target)->health)=0;
@@ -194,10 +194,16 @@ void fight_rand(){
 
 
 void casting_spell(character_t* perso, character_t **target){
-  int choix_sort;
+  int choix_sort=0;
+  int retour=0;
   if(perso->liste_spell->debut_liste != NULL){
-      choix_sort=choisir_sort_joueur(perso);
-
+      retour=choisir_sort_joueur(perso,&choix_sort);
+      if(retour){
+          printf("vous avez bien choisi votre sort\n");
+          printf("sort choisi %s\n", tab_sort[choix_sort].nom_sort );
+      }else{
+          printf("vous avez choisi de revenir au menu precedent\n");
+      }
   }else{
     printf("Vous n' avez pas de sorts\n" );
   }

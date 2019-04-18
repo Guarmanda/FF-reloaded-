@@ -4,10 +4,11 @@ int main(){
     init_tab_sort();
     init_menaces();
     create_inventory();
+      srand(time(NULL));
 
     Personnage=creation_char();
 
-    srand(time(NULL));
+
     int i;
 
     for(i = 0; i< 10; i++){

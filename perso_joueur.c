@@ -54,8 +54,9 @@ static void check_classe(int choix, character_t* player){
                       player->stat_intelligence = 14;
                       player->stat_strength = 1;
                       player->stat_stamina = 10;
-
-                      attribution_sort(entier_aleatoire(0,3),player); /* on lui donne un sort aléatoire*/
+                      int temo=entier_aleatoire(0,3);
+                      printf("nb aleatoire %d\n",temo );
+                      attribution_sort(temo,player); /* on lui donne un sort aléatoire*/
 
                       }break;
       case 3:{
@@ -112,19 +113,19 @@ character_t* creation_char(){
       player->state[i] = FAUX;
     }
 
-    player->accessory=  green_amulet; /*green_amulet = protège de 10% le joueur si il a une "cloth armure"*/
+    player->accessory=  green_amulet; /*green_amulet = protège de 10% le joueur */
 
     player->char_armor=malloc(sizeof(object_t));
-    player->char_armor->type_object = armor;   /*armure*/
-    player->char_armor->state_object=0; /*type armure = cloth, la plus basique*/
+    player->char_armor->type_object = armor;
+    player->char_armor->state_object=1;
+    player->char_armor->value_object= value(player->char_armor->type_object, player->char_armor->state_object);
     affectation_object(player->char_armor);
 
     player->char_weapon=malloc(sizeof(object_t));
     player->char_weapon->type_object = weapon; /*arme*/
-    player->char_weapon->state_object= 0;   /*pas d arme*/
+    player->char_weapon->state_object= 1;   /*pas d arme*/
+    player->char_weapon->value_object= value(player->char_weapon->type_object, player->char_weapon->state_object);
     affectation_object(player->char_weapon);
-
-
 
 
     return player;
