@@ -13,8 +13,7 @@ int main(){
     scanf("%d", &position_y);
 
     character_t* monstre2= monster_creation();
-    printf("sorts du monstre\n" );
-    afficher_sorts(monstre2);
+  
 
     affich_stats(Personnage);
     printf("sorts du Personnage\n" );

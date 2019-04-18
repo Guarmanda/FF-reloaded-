@@ -5,14 +5,13 @@
  * \date 3 avril 2019
  */
 
-/*changer param car perso est en global*/
 #include <perso_commun.h>
 
 character_t* charger_partie(){
 
     FILE * fichier;
     char nom_fichier_sauvegarde[50];
-    
+
     do{
         printf("Entrer le nom du fichier de sauvegarde : ");
         scanf("%s", nom_fichier_sauvegarde);
@@ -23,7 +22,7 @@ character_t* charger_partie(){
     Personnage = malloc(sizeof(character_t));
     Personnage->name = malloc(sizeof(char) * TAILLE_STR);
     Personnage->liste_spell = malloc(sizeof(liste_sort_t));
-    
+
     fscanf(fichier, "%[^;];", Personnage->name);
     fscanf(fichier, "%i;", &Personnage->xp);
     fscanf(fichier, "%i;", &Personnage->level);
@@ -62,7 +61,7 @@ character_t* charger_partie(){
     fscanf(fichier, "%i;", &Personnage->char_weapon->value_object);
     affectation_object(Personnage->char_weapon);
     fscanf(fichier, "%[^;];", Personnage->gender);
-    
+
     int x;
     int y;
 
@@ -100,7 +99,7 @@ character_t* charger_partie(){
 
 void sauvegarde_partie(){
 
-    char nom_fichier_sauvegarde[50];    
+    char nom_fichier_sauvegarde[50];
     printf("Entrer un nom de fichier de sauvegarde : \n");
     scanf("%s", nom_fichier_sauvegarde);
 

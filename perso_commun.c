@@ -1,7 +1,8 @@
 #include <perso_commun.h>
 
 
-/*partie des tests sur perso*/
+/*manipulation du tableau global de sorts*/
+
 void debut_liste(character_t** perso){
    (*perso)->liste_spell=(*perso)->liste_spell->debut_liste;
 }
@@ -31,7 +32,7 @@ void supprimer_sorts(character_t** perso){
 
    liste_sort_t* temp;
 
-   if((*perso)->liste_spell->sort_suivant != NULL){
+   if((*perso)->liste_spell != NULL){
       do{
 
          temp = (*perso)->liste_spell->sort_suivant;
@@ -110,7 +111,7 @@ void init_tab_sort(){ /*à initialiser au début de la partie*/
 
 
 }
-
+/*uniquement pour jeux de tests dans test_combat.c*/
 void affich_tab_sort(){
    int i;
    char* etat;
@@ -162,11 +163,13 @@ void afficher_sorts(character_t* perso){
   liste_sort_t* temp;
 
   if(perso->liste_spell->debut_liste != NULL){
+      int cpt =1;
       temp=perso->liste_spell;
       do{
 
-        printf("%s (%d)\n", tab_sort[temp->indice_tab_sorts].nom_sort, tab_sort[temp->indice_tab_sorts].valeur_sort);
+        printf("%d : %s (%d)\n",cpt, tab_sort[temp->indice_tab_sorts].nom_sort, tab_sort[temp->indice_tab_sorts].valeur_sort);
         temp=temp->sort_suivant;
+        cpt++;
       }while(temp != NULL);
   }
   debut_liste(&perso);
@@ -198,29 +201,24 @@ static void ia_sort(character_t* adv){
 
 static int recup_sort(character_t* perso, int compteur){
       liste_sort_t* temp;
-      temp=perso->liste_spell;
+      temp = perso->liste_spell;
       int cpt=1;
-      while(cpt!=compteur){
-        cpt++;
-        temp=temp->sort_suivant;
-        printf("%s\n",tab_sort[temp->indice_tab_sorts].nom_sort );
+
+      while(temp!= NULL && cpt!=compteur){
+          temp=temp->sort_suivant;
+          cpt++;
       }
-      printf("%s\n",tab_sort[temp->indice_tab_sorts].nom_sort );
+
       debut_liste(&perso);
-      return temp->indice_tab_sorts;
+      return (compteur<= cpt && temp != NULL ) ? temp->indice_tab_sorts   : -2;
 }
+
+
 int joueur_sort(character_t* perso){
 
     if(perso->liste_spell!= NULL){
-        liste_sort_t* temp;
-        temp=perso->liste_spell;
-        int cpt=1;
-        do{
-          printf("%d : %s (%d)\n",cpt, tab_sort[temp->indice_tab_sorts].nom_sort, tab_sort[temp->indice_tab_sorts].valeur_sort);
-          cpt++;
-          temp=temp->sort_suivant;
-        }while(temp != NULL);
-        debut_liste(&perso);
+        afficher_sorts(perso);
+        int cpt;
         do{
           printf("Quel sort voulez-vous? [0 pour retourner au menu précédent]\nVotre choix : " );
           scanf("%d",&cpt );
@@ -243,4 +241,14 @@ void affich_stats(character_t* perso){
    perso->mana,perso->max_mana,perso->stat_strength, perso->stat_intelligence,perso->stat_stamina);
    printf("équipé d'une %s et %s\n", perso->char_armor->name_object,perso->char_weapon->name_object );
 
+}
+
+/*manipulation des sorts des personnages*/
+/*à faire plus tard*/
+void apply_auto_spell(character_t* perso){
+
+  int chance=entier_aleatoire(1,6);
+  int i;
+  for(i = 0 ; i <chance;i++ )
+     perso->state[i]=FAUX;
 }

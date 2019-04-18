@@ -98,14 +98,7 @@ static int choisir_monstre(character_t* tab_adv[], int nb_monstre){
 static void maj_mana(character_t* perso, int val_sort){
     perso->mana -= val_sort;
 }
-/*à faire*/
-static void apply_auto_spell(character_t* perso){
 
-  int chance=entier_aleatoire(1,6);
-  int i;
-  for(i = 0 ; i <chance;i++ )
-     perso->state[i]=FAUX;
-}
 static void affich_changement_etat(character_t* perso, int valeur_etat){
 
     switch (valeur_etat) {
@@ -129,19 +122,19 @@ void apply_spell(character_t* attacker,character_t **target, int sort_choisi){
 
     }else{
 
-      int degat = (attacker->stat_intelligence) * tab_sort[sort_choisi].valeur_sort;
+        int degat = (attacker->stat_intelligence) * tab_sort[sort_choisi].valeur_sort;
 
-      ((*target)->health) -= degat + (*target)->accessory ;
+        ((*target)->health) -= degat + (*target)->accessory ;
 
-      if(is_dead(*target)){
-         ((*target)->health)=0;
-      }
-      printf("\t%d de dégats causés à %s (%d/%d)\n\n", degat,(*target)->name,(*target)->health, (*target)->max_health );
+        if(is_dead(*target)){
+           ((*target)->health)=0;
+        }
+        printf("\t%d de dégats causés à %s (%d/%d)\n\n", degat,(*target)->name,(*target)->health, (*target)->max_health );
     }
     maj_mana(attacker, tab_sort[sort_choisi].valeur_sort);
 }
 
-int tour_joueur( int choix_j, character_t* tab_monstre[], int nb_monstre){
+int tour_joueur(int choix_j, character_t* tab_monstre[], int nb_monstre){
 
    int retour_menu=1;
 
@@ -154,7 +147,7 @@ int tour_joueur( int choix_j, character_t* tab_monstre[], int nb_monstre){
       case 2: retour_menu = taking_potion(); break;
       case 3: {
                 int sort_choisi;
-                sort_choisi=joueur_sort(Personnage);  /*renvoie -1 si le personnage n a pas de sort */
+                sort_choisi = joueur_sort(Personnage);  /*renvoie -1 si le personnage n a pas de sort ou a mal fait son choix */
 
                 if(sort_choisi > -1){
 
@@ -166,8 +159,10 @@ int tour_joueur( int choix_j, character_t* tab_monstre[], int nb_monstre){
                     }else
                         apply_auto_spell(Personnage);
 
-                }else
-                  retour_menu = 0;  /*on retourne au menu puisqu il a pas de sort*/
+                }else if(sort_choisi == -2)
+                  printf("Ce sort n'est pas dans la liste.\n" );
+
+                retour_menu = 0;  /*on retourne au menu puisqu il a pas de sort*/
 
               };break;
       case 4: retour_menu = running_away();break; /*renvoie FUITE (-10 )si on s echappe*/

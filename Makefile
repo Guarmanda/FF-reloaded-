@@ -5,7 +5,7 @@ fichier_inventaire_test=test_inventaire.o inventaire.o commun.o
 fichier_perso_test=test_perso.o perso_commun.o inventaire.o commun.o perso_monstre.o perso_joueur.o
 fichier_combat_test=test_combat.o combat.o perso_commun.o inventaire.o commun.o map_menace.o perso_monstre.o perso_joueur.o
 
-fichier_projet_FF= projet_FF.o combat.o perso_commun.o inventaire.o commun.o map_menace.o perso_monstre.o perso_joueur.o sauvegarde.o
+fichier_projet_FF= projet_FF.o combat.o perso_commun.o inventaire.o commun.o map_menace.o perso_monstre.o perso_joueur.o sauvegarde.o quete.o
 #
 # Tests + fichier principal
 #
@@ -27,15 +27,16 @@ test_combat : $(fichier_combat_test)
 test_combat.o : test_combat.c combat.h
 	$(CCOBJ) $(CFLAGS) $(LIBMATH) test_combat.c -o test_combat.o -I./
 
+
 projet_FF : $(fichier_projet_FF)
 	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fichier_projet_FF) -o projet_FF
-projet_FF.o : projet_FF.c combat.h	#voir si il faut changer le .h plus tard !!!!
+projet_FF.o : projet_FF.c quete.h	#voir si il faut changer le .h plus tard !!!!
 	$(CCOBJ) $(CFLAGS) $(LIBMATH) projet_FF.c -o projet_FF.o -I./
 #
 # Modules(objets)
 #
 
-OBJ =  commun.o inventaire.o perso_commun.o map_menace.o combat.o	perso_monstre.o perso_joueur.o sauvegarde.o
+OBJ =  commun.o inventaire.o perso_commun.o map_menace.o combat.o	perso_monstre.o perso_joueur.o sauvegarde.o quete.o
 
 commun.o : commun.c commun.h
 	$(CCOBJ) $(CFLAGS) $(LIBMATH) commun.c -o commun.o -I./
@@ -61,6 +62,8 @@ sauvegarde.o : sauvegarde.c perso_commun.h
 combat.o : combat.c combat.h
 	$(CCOBJ) $(CFLAGS) $(LIBMATH) combat.c -o combat.o -I./
 
+quete.o : quete.c quete.h
+	$(CCOBJ) $(CFLAGS) $(LIBMATH) quete.c -o quete.o -I./
 #
 # Headers
 #
@@ -71,7 +74,8 @@ perso_commun.h : inventaire.h
 	touch perso_commun.h
 combat.h : perso_commun.h
 	touch combat.h
-
+quete.h : combat.h
+	touch quete.h
 #
 #
 #

@@ -3,11 +3,10 @@
 static void creer_dragon(character_t** monstre){
    creer_string(&(*monstre)->name,"Dragon");
 
-   EVASION = 0;
+   EVASION = 0; /*boss*/
 }
 static void creer_wolf(character_t** monstre){
     creer_string(&(*monstre)->name,"Wolf");
-
 
 }
 static void creer_snake(character_t** monstre){
@@ -125,13 +124,11 @@ static void bestiaire_foudre(character_t** monster){
 
 }
 
-
 static void bestiaire_feu(character_t** monster){
 
     (*monster)->level= entier_aleatoire(5,7); /*en haut à droite*/
     (*monster)->accessory=est_monstre;
     init_stats_monstre(monster);
-
 }
 
 static void bestiaire_neige(character_t** monster){
@@ -149,10 +146,9 @@ static void bestiaire_terre(character_t** monster){
 }
 
 character_t* monster_creation(){
-    EVASION = 15;
+   EVASION = 15;
    character_t* monster=NULL;
    monster = malloc(sizeof(character_t));
-   monster->liste_spell= malloc(sizeof(liste_sort_t));
 
       if (position_x > 500 && position_y < 500){  /*en bas à droite*/
         bestiaire_terre(&monster);

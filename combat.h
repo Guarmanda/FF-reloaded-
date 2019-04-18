@@ -7,7 +7,6 @@
 #define MAX_NB_MONSTRE 4
 /*définit juste l'état du combat*/
 #define FUITE -10
-int EVASION; /*taux de chance de pouvoir prendre fuite, il peut changer selon l endroit de la carte (par exemple, contre un boss, il sera de 0)*/
 
 /*-------------------------------------------------------------*/
 int tour_joueur(int ,character_t* [], int );
@@ -41,6 +40,7 @@ int combat_on(character_t **player, inventory_t *inventory);
 
 /*Affichage du menu combat*/
 int affich_choix(void);
+/*fonction qui gère l'aléatoire sur la carte*/
 void fight_rand(void);
 
 

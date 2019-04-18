@@ -60,17 +60,21 @@ character_t* creation_char(void);
 void delete_player(character_t** player);
 void supprimer_sorts(character_t** perso);
 void affich_stats(character_t*); /*fonction d'affichage des details du joueur*/
+void afficher_sorts(character_t*);
+
+
 /*--*/
 character_t* monster_creation();
 
 /*--*/
+void apply_auto_spell(character_t*);
 int taking_potion(void);
 void apply_state_modifier(character_t **, int );
 /*--*/
 void attribution_sort(int,character_t*);
 
 /*sauvegarde*/
-character_t* charger_partie(char *);
-void sauvegarde_partie(character_t *,char *);
+character_t* charger_partie();
+void sauvegarde_partie();
 
 #endif
