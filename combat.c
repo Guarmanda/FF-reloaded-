@@ -1,7 +1,6 @@
 #include <combat.h>
 
 
-EVASION = 15;
 /*fonction principale du combat qui gère tous les interventants et leurs attributs*/
 
 int combat_on(character_t **player, inventory_t *inventory){
@@ -27,10 +26,11 @@ int combat_on(character_t **player, inventory_t *inventory){
       for( i = 0; i < monster_number;i++){
         printf("\tAdversaire %d : %s (vie: %d/%d ; niveau : %d)\n",i+1, monster[i]->name,monster[i]->health, monster[i]->max_health, monster[i]->level);
       }
-      printf("\n\tJoueur: %s (vie: %d/%d ; niveau : %d)\n",Personnage->name,Personnage->health, Personnage->max_health, Personnage->level);
+      printf("\n\tJoueur: %s (vie: %d/%d ; niveau : %d)\n\n",Personnage->name,Personnage->health, Personnage->max_health, Personnage->level);
       choix_j= affich_choix();
       retour_menu= tour_joueur(choix_j,monster,monster_number);
-      if(retour_menu != 0 ){
+
+      if(retour_menu != 0 && retour_menu != END_OF_GAME ){
 
 
          for( i = 0; i < monster_number; i++){
@@ -50,7 +50,7 @@ int combat_on(character_t **player, inventory_t *inventory){
 
       }
 
-   }while( retour_menu != FUITE && monster_number >0 && !is_dead(Personnage) );
+   }while( retour_menu != END_OF_GAME && retour_menu != FUITE && monster_number >0 && !is_dead(Personnage) );
 
    if(!monster_number){
 
@@ -71,9 +71,9 @@ int combat_on(character_t **player, inventory_t *inventory){
    for(i =0; i <monster_number ; i++){
 
      delete_player(&monster[i]);
-     printf("on delete le monstre %d\n",i+1 );
+
    }
-   printf("on va sortir\n" );
+
    return etat_jeu;
 
 }
@@ -171,7 +171,7 @@ int tour_joueur( int choix_j, character_t* tab_monstre[], int nb_monstre){
 
               };break;
       case 4: retour_menu = running_away();break; /*renvoie FUITE (-10 )si on s echappe*/
-      case 5: exit(1);
+      case 5: retour_menu = END_OF_GAME;
    }
    if(retour_menu == 0){
         printf("Retour au menu précédent...\n");
@@ -200,7 +200,6 @@ int affich_choix(){
 void update_tab_monster(character_t *monster_array[],int index, int nb_monstre){
 
     int i;
-    affich_stats(monster_array[index]);
     delete_player(&monster_array[index]);
     for( i = index; i <  nb_monstre-1 ; i++){
       monster_array[i] = monster_array[i+1];
@@ -278,7 +277,7 @@ void apply_state_modifier(character_t ** target, int indice){
 int running_away(){ /* true => successful*/
   /* 15% chance to flee */
   int chance=entier_aleatoire(1,100);
-  printf("%d chance\n",chance );
+
   if(  chance < EVASION ){
     printf("Vous arrivez à vous échapper...(-10 xp)\n" );
     Personnage->xp-=10;
