@@ -69,7 +69,7 @@ void apply_state_modifier(character_t **, int , int );
 void attribution_sort(int,character_t*);
 
 /*sauvegarde*/
-character_t* charger_partie(char *);
-void sauvegarde_partie(character_t *,char *);
+character_t* charger_partie();
+void sauvegarde_partie();
 
 #endif
