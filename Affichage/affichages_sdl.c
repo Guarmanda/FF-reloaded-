@@ -3,28 +3,28 @@
 #include <quete.h>
 #include <fonctions_affichage.h>
 #include <SDL2/SDL.h>
-#include <commun_perso.h>
-#include <creationPerso.h>
+#include <perso_commun.h>
 #include <map_menace.h>
 
 void afficher_combat(character_t* monster[], int nb_monstres){
-  //printf("image\n");
+  printf("image\n");
   drawImage(0,0, "interface_combat", SCREEN_WIDTH, SCREEN_HEIGHT);
   char sprite[30] = "";
-	strcat(sprite, PLAYER->class_char);
+	strcat(sprite, Personnage->class_char);
 	strcat(sprite, "_");
-	strcat(sprite, PLAYER->gender);
+	strcat(sprite, Personnage->gender);
 	strcat(sprite, "_right");
   char niveau[20];
-  sprintf(niveau, "Niveau: %d", PLAYER->level);
+  sprintf(niveau, "Niveau: %d", Personnage->level);
   char vie[20];
-  sprintf(vie, "Vie: %d/%d", PLAYER->health, PLAYER->max_health);
+  sprintf(vie, "Vie: %d/%d", Personnage->health, Personnage->max_health);
   char mana[20];
-  sprintf(mana, "Mana: %d/%d", PLAYER->mana, PLAYER->max_mana);
+  sprintf(mana, "Mana: %d/%d", Personnage->mana, Personnage->max_mana);
   drawText(SCREEN_WIDTH/100*15, SCREEN_HEIGHT/100*(25-10),niveau ,25,9);
   drawText(SCREEN_WIDTH/100*15, SCREEN_HEIGHT/100*(25-7),vie ,25,9);
   drawText(SCREEN_WIDTH/100*15, SCREEN_HEIGHT/100*(25-4),mana ,25,9);
   drawImage(SCREEN_WIDTH/100*15, SCREEN_HEIGHT/100*25, sprite,60,60);
+  printf("monstres\n");
   for(int i=0; i<nb_monstres; i++){
     char niveau[20];
     sprintf(niveau, "Niveau: %d", monster[i]->level);
@@ -32,19 +32,23 @@ void afficher_combat(character_t* monster[], int nb_monstres){
     sprintf(vie, "Vie: %d/%d", monster[i]->health, monster[i]->max_health);
     char mana[20];
     sprintf(mana, "Mana: %d/%d", monster[i]->mana, monster[i]->max_mana);
+    printf("voila, ensuite\n");
     drawText(SCREEN_WIDTH/100*85, SCREEN_HEIGHT/100*(25*(i+1)-10),niveau ,25,9);
     drawText(SCREEN_WIDTH/100*85, SCREEN_HEIGHT/100*(25*(i+1)-7),vie ,25,9);
     drawText(SCREEN_WIDTH/100*85, SCREEN_HEIGHT/100*(25*(i+1)-4),mana ,25,9);
+    printf("son nom\n");
     drawImage(SCREEN_WIDTH/100*85, SCREEN_HEIGHT/100*(25*(i+1)), monster[i]->name,120,120);
+    printf("voila\n");
   }
-  faire_rendu();
 
 }
 
 
-int affich_choix(){
+int affich_choix(character_t * monster[], int nb_monster){
+          faire_rendu();
          int player_choice = 0; /* voir plus tard pour que le joueur puisse selectionner dans le menu */
-
+         char desc_choix[5][30] = {"Attaquer l'adversaire", "prendre une potion", "Appliquer un sort", "S'évader", "Quitter le jeu (rageux!)"};
+         int selection_choix = 0; //permet de recharger l'écran à intervales moins réguliers, réduit donc la consommation de ressources et les bugs
          do{
            SDL_Event e;
            while(SDL_PollEvent(&e)) {
@@ -55,37 +59,51 @@ int affich_choix(){
                {
                  int mouse_x, mouse_y;
                  SDL_GetMouseState(&mouse_x, &mouse_y);
-                 //si on est dans le sélecteur
-                 if(mouse_y>SCREEN_HEIGHT-150){
-                   printf("%d, %d\n", mouse_x, mouse_y);
                    //si on est à la hauteur d'une case du sélecteur
-                   if(mouse_y>SCREEN_HEIGHT-100 && mouse_y<SCREEN_HEIGHT){
-                     //la position de x sur l'image
-                     int pos = mouse_x;
-                     for(int j=20.7*SCREEN_WIDTH/100,i = 1; j<pos+6.7*SCREEN_WIDTH/100 ;i++, j+=6.7*SCREEN_WIDTH/100){
-                       if(pos >= j && pos <= j+8.27*SCREEN_WIDTH/100){
-                         //i corresponds au numéro de la case du sprite sélectionné,
-                         printf("%d\n", i);
-                         player_choice = i;
-                       }
+                 if(mouse_y>SCREEN_HEIGHT-100 && mouse_y<SCREEN_HEIGHT){
+                   //la position de x sur l'image
+                   int pos = mouse_x;
+                   for(int j=20.7*SCREEN_WIDTH/100,i = 1; j<pos+6.7*SCREEN_WIDTH/100 ;i++, j+=8.27*SCREEN_WIDTH/100){
+                     if(pos >= j && pos <= j+6.7*SCREEN_WIDTH/100){
+                       //i corresponds au numéro de la case du sprite sélectionné,
+                       player_choice = i;
                      }
                    }
                  }
                break;
               }
+              case SDL_MOUSEMOTION:
+              //quand on clique, si on clique au dessus du sélecteur, on va choisir un monstre.
+              //Sinon, on regarde si on a cliqué dans une case du sélecteur.
+              {
+                int mouse_x, mouse_y;
+                SDL_GetMouseState(&mouse_x, &mouse_y);
+                  //si on est à la hauteur d'une case du sélecteur
+                if(mouse_y>SCREEN_HEIGHT-100 && mouse_y<SCREEN_HEIGHT){
+                  //la position de x sur l'image
+                  int pos = mouse_x;
+                  for(int j=20.7*SCREEN_WIDTH/100,i = 1; j<pos+6.7*SCREEN_WIDTH/100 ;i++, j+=8.27*SCREEN_WIDTH/100){
+                    if(pos >= j && pos <= j+6.7*SCREEN_WIDTH/100){
+                      //i corresponds au numéro de la case du sprite sélectionné,
+                      if(i<=5 && selection_choix != i){
+                        selection_choix = i;
+                        afficher_combat(monster, nb_monster);
+                        drawText((j+3.35*SCREEN_WIDTH/100)-15*(strlen(desc_choix[i-1])/2), SCREEN_HEIGHT-SCREEN_HEIGHT/100*25, desc_choix[i-1], 35, 15);
+                        faire_rendu();
+                      }
+                    }
+                  }
+                }
+                else if(selection_choix !=0){
+                  selection_choix = 0;
+                  afficher_combat(monster, nb_monster);
+                  faire_rendu();
+                }
+              break;
+             }
              }
            }
            SDL_Delay(5);
-            /*  printf("Vous êtes en combat, choisir entre les actions ci-dessous:\n" );
-              printf(" 1 - Attaquer l'adversaire\n");
-              printf(" 2 - Prendre une potion\n");
-              printf(" 3 - Appliquer un sort (à faire)\n");
-              printf(" 4 - S'évader\n");
-              printf(" 5 - Quitter le jeu\n");
-              printf("Votre choix : ");
-              scanf("%d\n",&player_choice);
-              printf("choix %d\n", player_choice);
-              viderBuffer();*/
          }while(player_choice > 5 || player_choice <1);
          return player_choice;
   }
@@ -171,8 +189,8 @@ void afficher_inv(int PH, int PW, int H, int W, int PSH, int PSW, int partie_ite
 
   float pixels = ((SCREEN_WIDTH/100)*95/100*8.54);
   //calcul du nombre d'xp du niveau actuel:
-  //int actual_xp = 100-PLAYER->level*100-PLAYER->xp;
-  int actual_xp=PLAYER->xp;
+  //int actual_xp = 100-Personnage->level*100-Personnage->xp;
+  int actual_xp=Personnage->xp;
 
   //le calcul du nombre de pixels pour afficher le texte suis la même logique que les pixels
 
@@ -182,15 +200,15 @@ void afficher_inv(int PH, int PW, int H, int W, int PSH, int PSW, int partie_ite
   int textW = 35;
 
   //affichage des barres
-  drawImage( (PLAYER->health*pixels/100)-pixels+PSW, PSH, "life_bar.png", W, H);
+  drawImage( (Personnage->health*pixels/100)-pixels+PSW, PSH, "life_bar.png", W, H);
   drawImage( actual_xp*pixels/100-pixels+PSW, PSH, "xp_bar.png", W, H);
-  drawImage( PLAYER->mana*pixels/100-pixels+PSW, PSH, "mana_bar.png", W, H);
+  drawImage( Personnage->mana*pixels/100-pixels+PSW, PSH, "mana_bar.png", W, H);
   drawImage( PSW, PSH, "inventory.png", W, H);
 
   //affichage du level
   float PxTextXlevel = ((SCREEN_WIDTH/100)*47);
   float PxTextYlevel = ((SCREEN_WIDTH/100)*2.8);
-  sprintf(num,"%d",PLAYER->level);
+  sprintf(num,"%d",Personnage->level);
   drawText( PxTextXlevel, PxTextYlevel, num, textH, textW);
 
 
@@ -200,11 +218,11 @@ void afficher_inv(int PH, int PW, int H, int W, int PSH, int PSW, int partie_ite
   float PxTextYMana = ((SCREEN_WIDTH/100)*15.2);
 
   //affichage des valeurs des barres
-  sprintf(num,"%d",PLAYER->health);
+  sprintf(num,"%d",Personnage->health);
   drawText( PxTextXActuel, PxTextYVie, num, textH, textW);
   sprintf(num,"%d",actual_xp);
   drawText( PxTextXActuel, PxTextYXP, num, textH, textW);
-  sprintf(num,"%d",PLAYER->mana);
+  sprintf(num,"%d",Personnage->mana);
   drawText( PxTextXActuel, PxTextYMana, num, textH, textW);
 
   PxTextXActuel = ((SCREEN_WIDTH/100)*47); //on redéfinit X pour les 3 autres nombres, y ne change pas
@@ -217,14 +235,14 @@ void afficher_inv(int PH, int PW, int H, int W, int PSH, int PSW, int partie_ite
   //affichage des items équipés
   //Les images des items ont les mêmes noms que les items eux-même, cela facilite leur affichage graçe à la fonction
   //display_object dans perso.c
-  drawImage( (SCREEN_WIDTH/100)*75.75, (SCREEN_HEIGHT/100)*37, PLAYER->char_armor->name_object, 110, 110);
-  drawImage( (SCREEN_WIDTH/100)*60.75, (SCREEN_HEIGHT/100)*37, PLAYER->char_weapon->name_object, 110, 110);
+  drawImage( (SCREEN_WIDTH/100)*75.75, (SCREEN_HEIGHT/100)*37, Personnage->char_armor->name_object, 110, 110);
+  drawImage( (SCREEN_WIDTH/100)*60.75, (SCREEN_HEIGHT/100)*37, Personnage->char_weapon->name_object, 110, 110);
 
   //affichage de l'accessoire
   char accessory[20];
-  if(PLAYER->accessory==green_amulet) sprintf(accessory, "%s", "green amulet");
-  if(PLAYER->accessory==ruby_ring) sprintf(accessory, "%s", "ruby ring");
-  if(PLAYER->accessory==crystal_ring) sprintf(accessory, "%s", "crystal ring");
+  if(Personnage->accessory==green_amulet) sprintf(accessory, "%s", "green amulet");
+  if(Personnage->accessory==ruby_ring) sprintf(accessory, "%s", "ruby ring");
+  if(Personnage->accessory==crystal_ring) sprintf(accessory, "%s", "crystal ring");
   drawImage( (SCREEN_WIDTH/100)*60.75, (SCREEN_HEIGHT/100)*9, accessory, 110, 110);
 
 
@@ -324,9 +342,9 @@ void afficher_Map(float x, float y){
 
   //on veux savoir quelle sprite de joueur afficher
   char sprite[30] = "";
-	strcat(sprite, PLAYER->class_char);
+	strcat(sprite, Personnage->class_char);
 	strcat(sprite, "_");
-	strcat(sprite, PLAYER->gender);
+	strcat(sprite, Personnage->gender);
 	strcat(sprite, "_");
   if (X>x) strcat(sprite, "left");
   else if (X<x) strcat(sprite, "right");
@@ -401,9 +419,13 @@ void afficher_Map(float x, float y){
       }
       //on gère les biomes
       if(!est_dans_village(j, i)){
-        if(i>500 && j<500){
-           strcat(sprite1, "_snow");
+        if(i>=500 && j<500){
+            if(strcmp(sprite1, "map_path.png") !=0) strcat(sprite1, "_snow");
            if(sprite2[0]) strcat(sprite2, "_snow");
+        }
+        if(i<500 && j>=500){
+           if(strcmp(sprite1, "map_path.png") !=0) strcat(sprite1, "_fire");
+           if(sprite2[0]) strcat(sprite2, "_fire");
         }
       }
 
@@ -462,104 +484,6 @@ int afficher_menu(char menu[4][30]){
     //SDL_Delay(80);
   }
   return running;
-}
-
-/**
- * \fn void afficher_menu_perso()
- * \brief Fonction d'affichage du menu d'édition de personnage
- */
-void afficher_menu_perso(char*name, char*class_char, char*gender){
-	fond_blanc();
-	for(int i=100; i<=550; i+=150){
-		drawImage( 700, i, "button.png", 130, 100);
-	}
-
-	drawText( 725, 125, "Warrior", 25, 12);
-	drawText( 725, 275, "Wizard", 25, 12);
-	drawText( 725, 425, "Hunter", 25, 12);
-	drawText( 725, 575, "Priest", 25, 12);
-	drawText( 500, 650, "Appuyez su entrée pour continuer", 25, 12);
-	drawImage( 300, 550, "button.png", 130, 100);
-	drawImage( 500, 550, "button.png", 130, 100);
-
-	drawText( 325, 575, "Male", 25, 12);
-	drawText( 525, 575, "Female", 25, 12);
-	char perso[30];
-	//on définit le nom de l'image du perso en fonction de ses caractéristiques
-	sprintf(perso, "%s_%s_back", class_char, gender);
-	drawImage( 350, 125, perso, 200, 200);
-	drawText( 375, 375, "Name :", 25, 12);
-	drawText( 450, 375, name, 25, 12);
-	faire_rendu();
-}
-
-void afficher_creation(char*name, char*class_char, char*gender){
-  int running;
-  SDL_StartTextInput();
-  running = 1;
-  char in[50]="";
-  afficher_menu_perso(name, class_char, gender);
-  while ( running ==1 ) {
-    SDL_Event ev;
-    while ( SDL_PollEvent( &ev ) ) {
-      if ( ev.type == SDL_TEXTINPUT  ) {
-        strcat(in, ev.text.text);
-        strcpy(name, in);
-        afficher_menu_perso(name, class_char, gender);
-      } else if ( ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_BACKSPACE && strlen(in)) {
-        in[strlen(in)-1]='\0';
-        strcpy(name, in);
-        afficher_menu_perso(name, class_char, gender);
-      } else if ( ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_ESCAPE ) {
-        running = 2;
-      } else if ( ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_RETURN ) {
-        running = 3;
-      }
-      if(ev.type== SDL_MOUSEBUTTONDOWN)
-      {
-        int mouse_x, mouse_y;
-        SDL_GetMouseState(&mouse_x, &mouse_y);
-        //si on est dans la largeur du menu
-        if(mouse_x>700 && mouse_x<830){
-          //si on est à la hauteur d'une case du sélecteur
-            int pos = mouse_y-100;
-            int i=1;
-            for(int j=0; j<pos+150 ;i++, j+=150){
-              if(pos >= j && pos <= j+150) break;
-            }
-            switch(i){
-              case 1:
-                strcpy(class_char, "warrior");
-                afficher_menu_perso(name, class_char, gender);
-                break;
-              case 2:
-                strcpy(class_char, "wizard");
-                afficher_menu_perso(name, class_char, gender);
-                break;
-              case 3:
-                strcpy(class_char, "hunter");
-                afficher_menu_perso(name, class_char, gender);
-                break;
-              case 4:
-                strcpy(class_char, "priest");
-                afficher_menu_perso(name, class_char, gender);
-                break;
-            }
-        }
-        if(mouse_x>300 && mouse_x<430 && mouse_y>550 && mouse_y<650){
-            strcpy(gender, "man");
-            afficher_menu_perso(name, class_char, gender);
-        }
-        if(mouse_x>500 && mouse_x<630 && mouse_y>550 && mouse_y<650){
-            strcpy(gender, "woman");
-            afficher_menu_perso(name, class_char, gender);
-        }
-
-      }
-    }
-    SDL_Delay(20);
-  }
-  SDL_StopTextInput();
 }
 
 void afficher_quete(float x, float y, int id, char etat){

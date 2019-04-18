@@ -1,4 +1,4 @@
-#include <commun_perso.h>
+#include <perso_commun.h>
 int afficher_menu(char menu[4][30]);
 void afficher_Map(float, float);
 void afficher_quete(float x, float y, int i, char etat);
@@ -8,6 +8,6 @@ void showInventory();
 int detecter_mouvement(float*x, float*y);
 void detecter_touches(int*);
 void gestion_editeur(float*, float*, int*, int*);
-int affich_choix();
+int affich_choix(character_t * monster[], int nb_monster);
 void afficher_combat(character_t* monster[], int nb_monstres);
 int choisir_ennemi(character_t * monster[], int nb_monster);

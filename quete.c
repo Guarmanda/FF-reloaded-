@@ -13,7 +13,6 @@
 #include <affichage.h>
 #include <fonctions_affichage.h>
 #include <string.h>
-#include <creationPerso.h>
 
 //chargement des objets/personnages de quêtes sur la map s'il y en a
 /**
@@ -52,10 +51,10 @@ void afficher_quetes(){
       else {
         if(quetes[i]->statut == 2){
            quetes[i]->statut = 3;
-           PLAYER->xp += quetes[i]->xp;
-           if(PLAYER->xp >=100){
-             PLAYER->level++;
-             PLAYER->xp -= 100;
+           Personnage->xp += quetes[i]->xp;
+           if(Personnage->xp >=100){
+             Personnage->level++;
+             Personnage->xp -= 100;
            }
         }
         afficher_quete(pnj_x, pnj_y, i, 'F');

@@ -9,8 +9,8 @@
  */
 #include <affichage.h>
 #include <level_editor.h>
-#include <creationPerso.h>
 #include <fonctions_affichage.h>
+#include <game.h>
 
 /**
  * \fn void showMenu()
@@ -22,11 +22,15 @@ void showMenu(){
 	char list[4][30] = { "Nouvelle partie", "Charger une partie", "Editeur de niveaux", "Quitter" };
 	running = afficher_menu(list);
 	if(running==0){
-		creerPerso();
+		init_menaces();
+	  init_tab_sort();
+		startGame( 500.0, 500.0);
 	}
 	if(running==1){}
 	if(running==2) showEditor(500, 500);
 	if(running==3){
+		delete_player(&Personnage);
+	  suppr_tab_sort();
 		quitter_affichage();
 	}
 }

@@ -27,7 +27,7 @@ int position_y;
 #define TAILLE_STR 50 /*taille par défaut des chaines de char */
 #define TAILLE_TAB_SORT 23
 
-#define MAX_ETATS 8
+#define MAX_ETATS 7
 
 
 int entier_aleatoire(int min, int max);
@@ -49,6 +49,8 @@ typedef enum booleen_s { FAUX , VRAI } booleen_t ;
 
 int etat_jeu;/*variable globale qui vérifie qu on est bien dans le jeu*/
 #define EN_COMBAT VRAI /*pdt le jeu*/
+#define HORS_COMBAT FAUX /*pdt le jeu*/
 #define END_OF_GAME 666 /*fin du jeu*/
+
 
 #endif

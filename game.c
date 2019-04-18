@@ -30,7 +30,6 @@
  */
 void startGame(float x, float y){
   etat_jeu = VRAI;
-  init_menaces();
   //si on est à des coordonnées trop petites pour l'écran, on adapte
   int nbSpriteX = SCREEN_WIDTH/125;
   int nbSpriteY = SCREEN_HEIGHT/125;

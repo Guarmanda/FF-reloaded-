@@ -3,10 +3,11 @@
 
 #include <commun.h>
 
+/*-------------------------------------------------------------*/
 enum etatPerso{Stunt=0,Bleed,Slow,Silence,Poison,Blind,Speed,Sleep};
-enum type_obj { armor=0, weapon, potion , tente};
+enum type_obj {armor=0, weapon, potion , tente};
 /*evite_combats sert à baisser les chances de tomber sur des monstres lorsqu le joueur se balade sur la carte*/
-enum accessories_e{est_monstre,evite_combats, green_amulet=10,ruby_ring=20,crystal_ring=30}; /*est_monstre indique c est un monstre => il n a pas d accessoire*/
+enum accessories_e{est_monstre=0,evite_combats, green_amulet=10,ruby_ring=20,crystal_ring=30}; /*est_monstre indique c est un monstre => il n a pas d accessoire*/
 enum adv_armure {contre_fire=0, contre_thunder, contre_terre,contre_ice,resistance=20,resistance2=40};
 
 /*structure objet qui possède trois champs, le type_object va de 0 à */

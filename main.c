@@ -11,9 +11,9 @@
 #include <menu_principal.h>
 #include <map.h>
 #include <fonctions_affichage.h>
-#include <creationPerso.h>
 #include <quete.h>
 #include <inventaire.h>
+#include <perso_commun.h>
 #include <unistd.h>
 
 
@@ -47,7 +47,7 @@ int main(int argc, char** argv)
 	fill_up_inventory(create_loot(3));
 	fill_up_inventory(create_loot(4));
 	//on créer le joueur, il choisira certaines de ses statistiques au début de la partie
-	PLAYER = creation_char();
+	Personnage = creation_char();
 	init_affichage();
 	charger_quetes();
 	loadMap("Map.txt");

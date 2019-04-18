@@ -2,12 +2,15 @@
 #define _COMBAT_H_
 
 #include <commun.h>
-#include <commun_perso.h>
+#include <perso_commun.h>
 
+#define MAX_NB_MONSTRE 4
+/*définit juste l'état du combat*/
+#define FUITE -10
+int EVASION; /*taux de chance de pouvoir prendre fuite, il peut changer selon l endroit de la carte (par exemple, contre un boss, il sera de 0)*/
 
 /*-------------------------------------------------------------*/
-int tour_joueur(character_t*,character_t* [] , int, void (*)(character_t* ,character_t **));
-void casting_spell(character_t* wizard,character_t **target);  /*à implémenter */
+int tour_joueur(int ,character_t* [], int );
 void attack(character_t* attacker,character_t **target); /*fonction auxiliaire pour l attaque*/
 
 /*Modifier etat du joueur

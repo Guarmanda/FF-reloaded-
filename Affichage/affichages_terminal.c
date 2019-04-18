@@ -2,15 +2,35 @@
 #include <map.h>
 #include <quete.h>
 #include <fonctions_affichage.h>
+#include <perso_commun.h>
 #include <ncurses.h>
 #include <math.h>
 #include <inventaire.h>
 #include <creationPerso.h>
 #include <unistd.h>
 
-void afficher_combat(character_t* monster[], int nb_monstres){}
+void afficher_combat(character_t* monster[], int nb_monstres){
+  for( i = 0; i < monster_number;i++){
+    printf("\tAdversaire %d : %s (vie: %d/%d ; niveau : %d)\n",i+1, monster[i]->name,monster[i]->health, monster[i]->max_health, monster[i]->level);
+  }
+  printf("\n\tJoueur: %s (vie: %d/%d ; niveau : %d)\n\n",Personnage->name,Personnage->health, Personnage->max_health, Personnage->level);
 
-int affich_choix(){
+}
+
+int affich_choix(character_t * monster[], int nb_monster){
+
+  /*int player_choice = 0;
+
+  do{
+
+       sleep(1);
+       printf("Choisir entre les actions ci-dessous:\n\t1 - Attaquer l'adversaire\n\t2 - Prendre une potion\n\t3 - Appliquer un sort\n\t4 - S'évader\n\t5 - Quitter le jeu\nVotre choix : ");
+       scanf("%d",&player_choice);
+       viderBuffer();
+  }while(player_choice > 5 || player_choice <1);
+
+  return player_choice;*/
+
 
          char player_choice = '9'; /* voir plus tard pour que le joueur puisse selectionner dans le menu */
          do{
@@ -33,17 +53,19 @@ int affich_choix(){
          return player_choice;
 }
 int choisir_ennemi(character_t * monstre[], int nb_monster){
-  int choix = -1;
+  int choix_j;
+  int i;
   do{
      printf("Quel adversaire choisissez-vous? [0 pour retourner au menu précédent]\n");
-     for( int i = 0; i < nb_monster;i++){
-        printf("\tAdversaire %d : %s (vie: %d/%d)\n",i+1, monstre[i]->name,monstre[i]->health, monstre[i]->max_health);
+     for( i = 0; i < nb_monstre; i++){
+        printf("\tAdversaire %d : %s (vie: %d/%d)\n",i+1, tab_adv[i]->name,tab_adv[i]->health, tab_adv[i]->max_health);
 
      }
-     scanf("%d",&choix);
+     printf("Votre choix: " );
+     scanf("%d",&choix_j);
      viderBuffer();
-  }while (choix > nb_monster || choix< 0);
-  return choix;
+  }while (choix_j > nb_monstre || choix_j< 0);
+  return choix_j;
 }
 
 void gestion_editeur(float* x, float* y, int *selected, int *running){}
@@ -236,9 +258,9 @@ void showInventory(){
           wattroff( fenetre, A_STANDOUT );
       mvwprintw( fenetre, i+12, 30, "%s", classe[i] );
   }
-  mvwprintw( fenetre, 12, 10, "Nom: %s        ", PLAYER->name);
-  mvwprintw( fenetre, 13, 10, "Classe: %s     ", PLAYER->class_char);
-  mvwprintw( fenetre, 14, 10, "Genre: %s      ", PLAYER->gender);
+  mvwprintw( fenetre, 12, 10, "Nom: %s        ", Personnage->name);
+  mvwprintw( fenetre, 13, 10, "Classe: %s     ", Personnage->class_char);
+  mvwprintw( fenetre, 14, 10, "Genre: %s      ", Personnage->gender);
   wrefresh( fenetre ); //mise à jour de l'écran
   int classe_ind = 0;
 
@@ -262,9 +284,9 @@ void showInventory(){
           wattron( fenetre, A_STANDOUT );
           mvwprintw( fenetre, classe_ind+12, 30, "%s", classe[classe_ind]);
           wattroff( fenetre, A_STANDOUT );
-          mvwprintw( fenetre, 12, 10, "Nom: %s        ", PLAYER->name);
-          mvwprintw( fenetre, 13, 10, "Classe: %s     ", PLAYER->class_char);
-          mvwprintw( fenetre, 14, 10, "Genre: %s      ", PLAYER->gender);
+          mvwprintw( fenetre, 12, 10, "Nom: %s        ", Personnage->name);
+          mvwprintw( fenetre, 13, 10, "Classe: %s     ", Personnage->class_char);
+          mvwprintw( fenetre, 14, 10, "Genre: %s      ", Personnage->gender);
     }
 }
 

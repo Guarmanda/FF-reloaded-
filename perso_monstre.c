@@ -1,43 +1,35 @@
-#include <commun_perso.h>
+#include <perso_commun.h>
 #include <map.h>
 
 static void creer_dragon(character_t** monstre){
    creer_string(&(*monstre)->name,"Dragon");
-   attribution_sort(4,(*monstre));  /*deferencement du sort*/
 
+   EVASION = 0;
 }
 static void creer_wolf(character_t** monstre){
-  creer_string(&(*monstre)->name,"Wolf");
-  attribution_sort(9,(*monstre));
+    creer_string(&(*monstre)->name,"Wolf");
 
 
 }
 static void creer_snake(character_t** monstre){
-  creer_string(&(*monstre)->name,"Snake");
-  attribution_sort(17,(*monstre));
-  attribution_sort(10,(*monstre));
+    creer_string(&(*monstre)->name,"Snake");
 
 }
 static void creer_skeleton(character_t** monstre){
-  creer_string(&(*monstre)->name,"Skeleton");
-  attribution_sort(18,(*monstre));
-  attribution_sort(10,(*monstre));
+    creer_string(&(*monstre)->name,"Skeleton");
 
 }
 static void creer_goblin(character_t** monstre){
 
-  creer_string(&(*monstre)->name,"Goblin");
-  attribution_sort(10,(*monstre));
-
+    creer_string(&(*monstre)->name,"Goblin");
 
 }
+
 static void creer_thief(character_t** monstre){
     creer_string(&(*monstre)->name,"Thief");
-    attribution_sort(7,(*monstre));
-
 }
 
-static int name_and_details(character_t** monstre){
+static void name_and_details(character_t** monstre){
    int i;
 
    int chance_vs_advers= entier_aleatoire(1,100); /*pourcentage de chance de tomber sur un monstre spécifique*/
@@ -71,18 +63,16 @@ static int name_and_details(character_t** monstre){
    }else{
 
        if(chance_vs_advers > 80)
-           creer_snake(monstre);
+           creer_skeleton(monstre);
        else if(chance_vs_advers > 60)
-           creer_snake(monstre);
+           creer_goblin(monstre);
        else if(chance_vs_advers > 40)
            creer_snake(monstre);
        else if  (chance_vs_advers > 20)
-           creer_snake(monstre);
+           creer_wolf(monstre);
        else
-           creer_snake(monstre);
+           creer_thief(monstre);
     }
-
-      return 1;
 
 }
 void delete_adversaire(character_t** player){
@@ -107,9 +97,9 @@ static void init_stats_monstre(character_t** monstre){
       (*monstre)->state[i] = FAUX;
     }
 
-    (*monstre)->stat_intelligence = 3*niveau;
-    (*monstre)->stat_stamina = 3*niveau;
-    (*monstre)->stat_strength = 3*niveau;
+    (*monstre)->stat_intelligence = 2*niveau;
+    (*monstre)->stat_stamina = 2*niveau;
+    (*monstre)->stat_strength = 2*niveau;
 
     (*monstre)->char_armor=malloc(sizeof(object_t));
     (*monstre)->char_armor->type_object = armor;   /*armure*/
@@ -160,18 +150,19 @@ static void bestiaire_terre(character_t** monster){
 }
 
 character_t* monster_creation(){
-
+    EVASION = 15;
    character_t* monster=NULL;
    monster = malloc(sizeof(character_t));
-   monster->liste_spell= malloc(sizeof(liste_sort_t));
-      if (est_dans__biome_terre(Y, X)){  /*en bas à droite*/
-        bestiaire_terre(&monster);
-      }else if(est_dans__biome_feu(Y, X)){
-        bestiaire_feu(&monster);
-      }else if(est_dans__biome_foudre(Y, X)){
-       bestiaire_foudre(&monster);
-      }else
-        bestiaire_neige(&monster);
+   monster->liste_spell= NULL;
+
+   if (est_dans__biome_terre(Y, X)){  /*en bas à droite*/
+     bestiaire_terre(&monster);
+   }else if(est_dans__biome_feu(Y, X)){
+     bestiaire_feu(&monster);
+   }else if(est_dans__biome_foudre(Y, X)){
+    bestiaire_foudre(&monster);
+   }else
+    bestiaire_neige(&monster);
 
       return monster;
 }
