@@ -50,7 +50,7 @@ Chronologie du projet
 6) dernières séances
 - Nathalie => amélioration du combat.c, sorts implémentés, affichage peaufiné.
 - Alexandre => changements dans sauvegarde.c pour suivre les changements des fichiers perso_joueur.c
-- Valentin => implémentation combat en SDL.
+- Valentin => implémentation combat en SDL + ncurses implémenté.
 
 
 
