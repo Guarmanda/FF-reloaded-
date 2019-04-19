@@ -181,7 +181,7 @@ int en_jeu(){
 int main (int argc, char**argv){
 	srand(time(NULL));
 	position_x = 0;
-	position_y =40;	/*probleme de 0à 39*/
+	position_y =40;	
 
 	int choix = menu();
 
@@ -193,14 +193,6 @@ int main (int argc, char**argv){
 
 	afficher_inventaire();
 	en_jeu();
-
-	/*
-	object_t *obj1= create_object(3);
-	fill_up_inventory(Inventaire,obj1);
-	display_object(*obj1);
-	sauvegarde_partie(Personnage,"caca.txt");
-	*/
-
 
 	return EXIT_SUCCESS;
 
