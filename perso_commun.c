@@ -1,49 +1,20 @@
-#include <perso_commun.h>
+/**
+ * \file      perso_commun.c
+ * \author    Nathalie Karman, Alexandre Papot
+ * \version   1.0
+ * \date     Mars 2019
+ * \brief    Module qui gère les personnages et leurs attributs en combat
+ *
+ * \details  On met en commun les fonctions qui sont utiles aux personnages (joueur ou adversaire)
+ *            et on oublie pas les fonctions qui seront mises en oeuvre dans combat.c
+ */
+ #include <perso_commun.h>
 
-
-/*manipulation du tableau global de sorts*/
-
-void debut_liste(character_t** perso){
-   (*perso)->liste_spell=(*perso)->liste_spell->debut_liste;
-}
-
-void attribution_sort(int indice,character_t* perso){
-
-   if(perso->liste_spell->debut_liste == NULL){
-      perso->liste_spell->debut_liste = perso->liste_spell;
-      perso->liste_spell->indice_tab_sorts= indice;
-
-    }else{
-      liste_sort_t* new= malloc(sizeof(liste_sort_t));
-      new->debut_liste = perso->liste_spell->debut_liste;
-      while(perso->liste_spell->sort_suivant!= NULL){
-         perso->liste_spell= perso->liste_spell->sort_suivant;
-      }
-      new->indice_tab_sorts=indice;
-      new->sort_suivant= NULL;
-      perso->liste_spell->sort_suivant= new;
-
-   }
-   debut_liste(&perso);
-
-}
-
-void supprimer_sorts(character_t** perso){
-
-   liste_sort_t* temp;
-
-   if((*perso)->liste_spell != NULL){
-      do{
-
-         temp = (*perso)->liste_spell->sort_suivant;
-         free((*perso)->liste_spell);
-         (*perso)->liste_spell=temp;
-      }while( (*perso)->liste_spell != NULL);
-   }
-
-}
-/*initialisation du tableau statique  = tableau global de sorts
+/**
+ * \fn void init_tab_sort(void)
+ * \brief Fonction qui initialise le tableau global de sorts
 */
+
 void init_tab_sort(){ /*à initialiser au début de la partie*/
    int i;
 
@@ -111,8 +82,11 @@ void init_tab_sort(){ /*à initialiser au début de la partie*/
 
 
 }
-/*uniquement pour jeux de tests dans test_combat.c*/
-void affich_tab_sort(){
+/**
+ * \fn void affich_tab_sort(void)
+ * \brief Fonction qui est utile dans les jeux de tests
+ */
+void affich_tab_sort(){   /*uniquement pour jeux de tests dans test_combat.c*/
    int i;
    char* etat;
 
@@ -129,16 +103,84 @@ void affich_tab_sort(){
    }
 
 }
-
+/**
+ * \fn err_t suppr_tab_sort(void)
+ * \brief Fonction qui supprime le tableau de sort
+ * \return OK_state après avoir tout supprimé ou KO_state si erreur lors de la suppression
+ */
 err_t suppr_tab_sort(){
   int i;
 
   for (i = 0; i< TAILLE_TAB_SORT ; i++){
-      supprimer_string(&tab_sort[i].nom_sort);
+      if( supprimer_string(&tab_sort[i].nom_sort) == KO_state )
+        return KO_state;
   }
   return OK_state;
 }
 
+/**
+ * \fn void debut_liste(character_t** perso)
+ * \brief Fonction qui gère le début de la liste chaînée des sorts d'un personnage donné
+ * \details va juste positionner l'élément courant comme étant le début de la liste
+ * \param perso est un pointeur sur le personnage
+ */
+void debut_liste(character_t** perso){
+  (*perso)->liste_spell=(*perso)->liste_spell->debut_liste;
+}
+/**
+ * \fn  void attribution_sort(int indice,character_t* perso)
+ * \brief Fonction qui affecte un nouveau sort à la liste chainée des sorts du personnage
+ * \details est une fonction qui alloue dynamiquement l'espace nécessaire pour un int qui est l'indice du tableau de sorts
+ *
+ * \param indice est l'indice du tableau global des sorts
+ * \param perso est le personnage qui aura le nouveau sort attribué
+ */
+void attribution_sort(int indice,character_t* perso){
+
+  if(perso->liste_spell->debut_liste == NULL){
+     perso->liste_spell->debut_liste = perso->liste_spell;
+     perso->liste_spell->indice_tab_sorts= indice;     /*on garde l'indice du tableau global*/
+
+   }else{
+     liste_sort_t* new= malloc(sizeof(liste_sort_t));
+     new->debut_liste = perso->liste_spell->debut_liste;
+     while(perso->liste_spell->sort_suivant!= NULL){
+        perso->liste_spell= perso->liste_spell->sort_suivant;
+     }
+     new->indice_tab_sorts=indice;     /*on garde l'indice du tableau global*/
+     new->sort_suivant= NULL;
+     perso->liste_spell->sort_suivant= new;
+
+  }
+  debut_liste(&perso);
+
+}
+/**
+* \fn  void supprimer_sorts(character_t** perso)
+* \brief Fonction qui supprime tous les sorts du personnage
+* \details utile lorsque le joueur quitte le jeu
+* \param perso est un pointeur sur le personnage qui aura ses sorts supprimés
+*/
+void supprimer_sorts(character_t** perso){
+
+  liste_sort_t* temp;
+
+  if((*perso)->liste_spell != NULL){
+     do{
+
+        temp = (*perso)->liste_spell->sort_suivant;
+        free((*perso)->liste_spell);
+        (*perso)->liste_spell=temp;
+     }while( (*perso)->liste_spell != NULL);
+  }
+
+}
+
+/**
+ * \fn void delete_player(character_t** player)
+ * \brief Fonction qui supprime n'importe quel personnage du jeu
+ * \param player est le personnage qui va être supprimé
+ */
 void delete_player(character_t** player){
 
     if(*player != NULL){
@@ -157,12 +199,18 @@ void delete_player(character_t** player){
 
 }
 
-
+/**
+ * \fn void afficher_sorts(character_t* perso)
+ * \brief Fonction qui affiche la liste des sorts d'un personnage
+ * \details fonction utile si joueur a 4 perso par ex ou encore si on veut afficher les sorts du bestiaire lors d'un combat
+ * \param perso est le personnage qui va avoir ses sorts affichés
+*/
 void afficher_sorts(character_t* perso){
 
   liste_sort_t* temp;
 
   if(perso->liste_spell->debut_liste != NULL){
+      printf("Voici les sorts de %s :\n", perso->name );
       int cpt =1;
       temp=perso->liste_spell;
       do{
@@ -171,21 +219,22 @@ void afficher_sorts(character_t* perso){
         temp=temp->sort_suivant;
         cpt++;
       }while(temp != NULL);
+  }else{
+    printf("%s ne possède pas de sorts\n",perso->name );
   }
   debut_liste(&perso);
 
 }
 
-
-int chercher_sort(char* nom_sort){
-   int i;
-   for (i = 0; (nom_sort!=tab_sort[i].nom_sort) && i <TAILLE_TAB_SORT; i++);
-
-   return ( i < TAILLE_TAB_SORT)? i : ERR_LISTE_IND_ELEM;
-
-}
-
-static void ia_sort(character_t* adv){
+/**
+ * \fn static void ia_sort(character_t* adv, character_t ** joueur)
+ * \brief Fonction qui servira d'IA pour les monstres de plus haut niveau
+ * \details fonction utile dans module \a combat.c
+ *    fonction incomplète
+ * \param adv est l'adversaire qui veut appliquer le sort offensif
+ * \param joueur est le joueur qui sera affecté
+ */
+static void ia_sort(character_t* adv, character_t ** joueur){
   liste_sort_t* temp;
 
   if(adv->liste_spell != NULL){
@@ -199,42 +248,12 @@ static void ia_sort(character_t* adv){
   }
 }
 
-static int recup_sort(character_t* perso, int compteur){
-      liste_sort_t* temp;
-      temp = perso->liste_spell;
-      int cpt=1;
 
-      while(temp!= NULL && cpt!=compteur){
-          temp=temp->sort_suivant;
-          cpt++;
-      }
-
-      debut_liste(&perso);
-      return (compteur<= cpt && temp != NULL ) ? temp->indice_tab_sorts   : -2;
-}
-
-
-int joueur_sort(character_t* perso){
-
-    if(perso->liste_spell!= NULL){
-        afficher_sorts(perso);
-        int cpt;
-        do{
-          printf("Quel sort voulez-vous? [0 pour retourner au menu précédent]\nVotre choix : " );
-          scanf("%d",&cpt );
-        }while(cpt < 0);
-
-        return cpt == 0? -1 : recup_sort(perso,cpt);
-
-    }else
-      printf("Vous n'avez pas de sort.\n");
-
-    sleep(1);
-    return -1;
-
-}
-
-
+/**
+ * \fn void affich_stats(character_t* perso)
+ * \brief Fonction qui affiche les statistiques d'un personnage donné
+ * \param perso est de type \a character_t et permet d'accéder aux champs à afficher
+ */
 void affich_stats(character_t* perso){
    printf("\tnom du joueur : %s\nPoints d'expérience : %d\nNiveau : %d\nVie : %d/%d\nMana : %d/%d\nForce : %d \nIntelligence : %d\nStamina : %d\n",
    perso->name, perso->xp,perso->level,perso-> health, perso-> max_health,
@@ -243,8 +262,12 @@ void affich_stats(character_t* perso){
 
 }
 
-/*manipulation des sorts des personnages*/
-/*à faire plus tard*/
+/**
+ * \fn void apply_auto_spell(character_t* perso)
+ * \brief Fonction qui applique un sort sur le personnage lui-même
+ * \details la fonction n'est pas terminée
+ * \param perso est le personnage qui veut appliquer le sort
+ */
 void apply_auto_spell(character_t* perso){
 
   int chance=entier_aleatoire(1,6);
