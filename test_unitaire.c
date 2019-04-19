@@ -1,3 +1,13 @@
+/**
+ * \file
+ * \brief Programme de tests sur le combat
+ * \author Karman Nathalie, Papot Alexandre
+ * \version 0.1
+ * \date 6 avril 2019
+ *
+ * Jeux de tests unitaires pour débogage rapide , les fonctions dans le fichier sont des prototypes pour la création de vraies fonctions dans les fichiers du projet
+ *
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

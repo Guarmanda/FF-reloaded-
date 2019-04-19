@@ -6,7 +6,11 @@
  */
 
 #include <perso_commun.h>
-
+/**
+ * \fn character_t* charger_partie(void)
+ * \brief Fonction qui charge une partie à partir d'un fich.txt
+ * \return le personnage et les statistiques/emplacement sur la map attribuées
+*/
 character_t* charger_partie(){
 
     FILE * fichier;
@@ -90,13 +94,9 @@ character_t* charger_partie(){
 }
 
 /**
- * \file sauvegarde.c
- * \brief Fonctions de sauvegarde de la partie
- * \author Karman Nathalie; Papot Alexandre
- * \date 3 avril 2019
- * Ecrit dans un fichier sauvegarde.txt les statistiques du joueur, les objets de l'inventaire et la position du joueur dans le jeu
- */
-
+ * \fn void sauvegarde_partie()
+ * \brief Fonction qui sauvegarde une partie dans un fich.txt
+*/
 void sauvegarde_partie(){
 
     char nom_fichier_sauvegarde[50];
