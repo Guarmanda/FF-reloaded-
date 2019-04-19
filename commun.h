@@ -7,7 +7,20 @@
 #include <string.h>
 #include <time.h>
 
+/**
+ * \def string
+ * \brief définit le type char* en tant que \a string
+ */
+/* Definition du type string */
+typedef char* string;
 
+/* Definition du type erreur */
+typedef int err_t ;
+
+/* Constantes */
+
+const err_t OK_state;
+const err_t KO_state;
 /**
  * \def map_size_x
  * \brief taille de la map coordonnée x
@@ -85,20 +98,7 @@ typedef enum booleen_s { FAUX , VRAI } booleen_t ;
  */
 #define END_OF_GAME 666 /*fin du jeu*/
 
-/**
- * \def string
- * \brief définit le type char* en tant que \a string
- */
-/* Definition du type string */
-typedef char* string;
 
-/* Definition du type erreur */
-typedef int err_t ;
-
-/* Constantes */
-
-const err_t OK_state;
-const err_t KO_state;
 
 
 #endif

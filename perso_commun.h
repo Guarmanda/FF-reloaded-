@@ -8,6 +8,7 @@
 /**
  * \var EVASION
  * \brief variable qui représente le taux de chance de s'enfuir
+ * \details on met cette variable ici puisque elle peut être affectée par la création d'un monstre ou encore, dans \a combat.c
  */
 int EVASION; /*taux de chance de pouvoir prendre fuite, peut changer selon l endroit de la carte (par exemple, contre un boss, il sera de 0)*/
 /**
