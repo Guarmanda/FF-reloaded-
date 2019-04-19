@@ -9,18 +9,53 @@
  */
  #include <map_menace.h>
 
+ /**
+  * \fn int est_dans_village(int x, int y)
+  * \brief vérifie les coordonnées du joueur : si il est dans la zone du village
+  * \param[in] x, coord x
+  * \param[in] y, coord y
+  * \return 1 si c est vrai, sinon 0
+  */
 int est_dans_village(int x, int y) {
    return ( (x >= borne_min_village && x <= borne_max_village) && (y >= borne_min_village &&  y <= borne_max_village) );
 }
+/**
+ * \fn int est_dans__biome_terre(int x, int y)
+ * \brief vérifie les coordonnées du joueur : si il est en bas à droite
+ * \param[in] x, coord x
+ * \param[in] y, coord y
+ * \return 1 si c est vrai, sinon 0
+ */
 int est_dans__biome_terre(int x, int y) {    /* partie en bas à droite */
    return ( x >= 500 &&  y < 500);
 }
+/**
+ * \fn int est_dans__biome_neige(int x, int y)
+ * \brief vérifie les coordonnées du joueur : si il est en bas à gauche
+ * \param[in] x, coord x
+ * \param[in] y, coord y
+ * \return 1 si c est vrai, sinon 0
+ */
 int est_dans__biome_neige(int x, int y){  /* partie en bas à gauche */
    return ( x < 500 &&  y <= 500);
 }
+/**
+ * \fn int est_dans__biome_feu(int x, int y)
+ * \brief vérifie les coordonnées du joueur : si il est en haut à droite
+ * \param[in] x, coord x
+ * \param[in] y, coord y
+ * \return 1 si c est vrai, sinon 0
+ */
 int est_dans__biome_feu(int x, int y) { /*en haut à droite*/
    return ( x >= 500 &&  y >= 500);
 }
+/**
+ * \fn int est_dans__biome_foudre(int x, int y)
+ * \brief vérifie les coordonnées du joueur : si il est en haut à gauche
+ * \param[in] x, coord x
+ * \param[in] y, coord y
+ * \return 1 si c est vrai, sinon 0
+ */
 int est_dans__biome_foudre(int x, int y) {  /*en haute à gauche*/
    return ( x < 500 &&  y > 500);
 }
