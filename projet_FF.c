@@ -1,5 +1,7 @@
 #include <combat.h>
 
+
+
 static void afficher_map(){
 		int y;
 		int x;
@@ -12,13 +14,11 @@ static void afficher_map(){
 		}
 		printf("\n");
 
-		/*i represente l'axe y*/
 		for( y = 0 ; y < 25 ; y++){
 			printf("|");
 
-			/*j represente l'axe x*/
 			for(x = 0; x < 100; x++){
-				if(y == 25 - position_y/40 && x == position_x/10){ /* affichage du personnage x ou y à droite????*/
+				if(y == 25 - position_y/40 && x == position_x/10){ /
 					printf("X");
 				}
 				else if(est_dans_village(x*10,y*40)){
@@ -31,7 +31,6 @@ static void afficher_map(){
 			printf("|\n");
 		}
 
-		/*i represente l'axe x*/
 		for(x = 0; x < 102; x++){
 			printf("-");
 		}
