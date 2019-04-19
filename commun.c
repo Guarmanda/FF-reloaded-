@@ -1,4 +1,11 @@
 
+/**
+ * \file      commun.c
+ * \author    Nathalie Karman, Alexandre Papot
+ * \version   1.0
+ * \date     Mars 2019
+ * \brief    Module qui sert de boîte à outils pour tout le projet
+ */
 #include <commun.h>
 
 const err_t OK_state = 1;
