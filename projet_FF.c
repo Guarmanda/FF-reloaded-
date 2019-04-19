@@ -1,14 +1,23 @@
+/**
+ * \file      projet_FF.c
+ * \author    Nathalie Karman, Alexandre Papot
+ * \version   1.0
+ * \date     Mars 2019
+ * \brief     Module principal du jeu (version beta)
+ */
 #include <combat.h>
 
-
-
+/**
+ * \fn static void afficher_map()
+ * \brief Fonction d'affichage : affiche la map et l'emplacement du joueur
+*/
 static void afficher_map(){
 		int y;
 		int x;
 		printf("X : vous etes ici (x : %d y : %d) : \n", position_x, position_y);
 		printf("village : ...\n");
 
-		/*j represente l'axe x*/
+
 		for(x = 0; x < 102; x++){
 			printf("-");
 		}
@@ -18,7 +27,7 @@ static void afficher_map(){
 			printf("|");
 
 			for(x = 0; x < 100; x++){
-				if(y == 25 - position_y/40 && x == position_x/10){ /
+				if(y == 25 - position_y/40 && x == position_x/10){
 					printf("X");
 				}
 				else if(est_dans_village(x*10,y*40)){
@@ -36,12 +45,14 @@ static void afficher_map(){
 		}
 		printf("\n");
 }
-
+/**
+ * \fn static void deplacement_joueur()
+ * \brief Fonction qui se charge du déplacement du joueur sur la carte
+*/
 static void deplacement_joueur(){
-		srand(time(NULL));
+
 		int x;
 		int y;
-		int i;
 
 		afficher_map();
 		printf("Ou souhaitez vous vous deplacer ?\n");
@@ -56,7 +67,7 @@ static void deplacement_joueur(){
 			viderBuffer();
 		}while(y < 0 || y > 999);
 
-		/*deplacement sur l'axe x*/
+
 
 		while(position_x != x && etat_jeu != END_OF_GAME){
 				system("clear");
@@ -87,37 +98,27 @@ static void deplacement_joueur(){
 			}
 			fight_rand();
 		}
-}
 
-static void quitter_jeu(){
+}
+/**
+ * \fn static int quitter_jeu()
+ * \brief Fonction qui supprime toutes les allocations dynamiques et quitte le programme
+ *\return OK_state qui indique la fin du programme
+ *
+ */
+static int quitter_jeu(){
+		suppr_tab_sort();
 		delete_inventory();
-		exit(1);
+		delete_player(&Personnage);
+		return OK_state;
 }
 
-static void nouvelle_partie(){
-		
-		position_x = 500;
-		position_y = 500;
-		
-		init_menaces();
-		init_tab_sort();
-		Personnage = creation_char();
-		create_inventory();
-		printf("Bienvenue, vous commencez votre aventure, avec deux potions de vie\n");
-		fill_up_inventory(create_object(potion,2));
-		fill_up_inventory(create_object(potion,2));
-		printf("(Une arme et une tente se cache au coordonnees x : 505 et y : 505)\n");
-		en_jeu();
-}
-
-static void continuer_partie(){
-	init_menaces();
-	init_tab_sort();
-	create_inventory();
-	charger_partie();
-	en_jeu();
-}
-
+/**
+ * \fn int menu(void)
+ * \brief Fonction qui affiche le menu qui permet de jouer
+ *
+ * \return choix, le choix de l'utilisateur de 1 à 7
+ */
 int menu_en_jeu(){
 		int choix;
 		printf("Menu :\n");
@@ -137,21 +138,12 @@ int menu_en_jeu(){
 	return choix;
 }
 
-int menu(){
-		int choix;
-		printf("Menu :\n");
-		printf("1 : Lancer une nouvelle partie\n");
-		printf("2 : Charger une partie\n");
-		printf("3 : Quitter le jeu\n");
-
-		do{
-			printf("Votre choix : ");
-			scanf("%i", &choix);
-			viderBuffer();
-		}while(choix < 1 || choix > 3);
-		return choix;
-}
-
+/**
+ * \fn int en_jeu(void)
+ * \brief Fonction qui permet au joueur de jouer sa partie à partir des choix faits dans \a menu_en_jeu()
+ *
+ * \return etat_jeu (macros dans \a commun.h)
+ */
 int en_jeu(){
 
 	int choix_joueur;
@@ -175,24 +167,88 @@ int en_jeu(){
 					Personnage->char_weapon = create_object(weapon,4);
 				}
 	}
-	return 1;
+	return etat_jeu;
+}
+/**
+ * \fn static void nouvelle_partie()
+ * \brief Fonction qui démarre une nouvelle partie (version béta)
+ *
+ */
+static void nouvelle_partie(){
+
+		position_x = 500;
+		position_y = 500;
+
+		init_menaces();
+		init_tab_sort();
+		Personnage = creation_char();
+		create_inventory();
+		clear_screen();
+		printf("Bienvenue, vous commencez votre aventure, avec deux potions de vie en cadeau!\n");
+		fill_up_inventory(create_object(potion,2));
+		fill_up_inventory(create_object(potion,2));
+		sleep(1);
+		printf("\n...(Une arme et une tente se cachent au coordonnees x : 505 et y : 505)\n");
+		sleep(2);
+		en_jeu();
+}
+/**
+ * \fn int menu(void)
+ * \brief Fonction qui affiche le menu principal (premier menu) du jeu
+ *
+ * \return choix, le choix de l'utilisateur 1, 2 ou 3
+ */
+int menu(){
+		int choix;
+		printf("Menu :\n");
+		printf("1 : Lancer une nouvelle partie\n");
+		printf("2 : Charger une partie\n");
+		printf("3 : Quitter le jeu\n");
+
+		do{
+			printf("Votre choix : ");
+			scanf("%i", &choix);
+			viderBuffer();
+		}while(choix < 1 || choix > 3);
+		return choix;
 }
 
-int main (int argc, char**argv){
-	srand(time(NULL));
-	position_x = 0;
-	position_y =40;	
-
-	int choix = menu();
-
-	switch(choix){
-				case 1 : nouvelle_partie(); break;
-				case 2 : continuer_partie(); break;
-				case 3 : quitter_jeu(); break;
-	}
-
-	afficher_inventaire();
+/**
+ * \fn static void continuer_partie()
+ * \brief Fonction qui charge les données de Personnage à partir d'un fichier.txt et reprend la partie sauvegardée
+ *
+ */
+static void continuer_partie(){
+	init_menaces();
+	init_tab_sort();
+	create_inventory();
+	charger_partie();		/*fait un create_char pour charger la variable globale Personnage*/
 	en_jeu();
+}
+/**
+ * \fn int main (void)
+ * \brief Entrée du programme.
+ *
+ * \return EXIT_SUCCESS - Arrêt normal du programme.
+ */
+int main (){
+	srand(time(NULL));
+
+	int sortie_prog=0;
+	do{
+			int choix = menu();
+
+			switch(choix){
+						case 1 : nouvelle_partie(); break;
+						case 2 : continuer_partie(); break;
+						case 3 : sortie_prog=quitter_jeu(); break;
+			}
+
+
+			en_jeu();
+			if(etat_jeu == END_OF_GAME)
+				clear_screen();
+	}while(sortie_prog != 1);
 
 	return EXIT_SUCCESS;
 
