@@ -1,5 +1,20 @@
+/**
+ * \file
+ * \brief Programme de tests sur le combat
+ * \author Karman Nathalie, Papot Alexandre
+ * \version 0.1
+ * \date 6 avril 2019
+ *
+ * Jeux de tests pour la simulation d'un combat
+ *
+*/
 #include <combat.h>
-
+/**
+ * \fn int main (void)
+ * \brief Entrée du programme.
+ *
+ * \return EXIT_SUCCESS - Arrêt normal du programme.
+ */
 int main(){
     /*fichier de tests pour la simulation d'un combat dans la map*/
 
@@ -39,6 +54,6 @@ int main(){
 
     delete_player(&Personnage);
 
-    return 0;
+    return EXIT_SUCCESS;
 
 }
