@@ -46,6 +46,18 @@ static void afficher_map(){
 		printf("\n");
 }
 /**
+ * \fn static int quitter_jeu()
+ * \brief Fonction qui supprime toutes les allocations dynamiques et quitte le programme
+ *\return OK_state qui indique la fin du programme
+ *
+ */
+static int quitter_jeu(){
+		suppr_tab_sort();
+		delete_inventory();
+		delete_player(&Personnage);
+		return OK_state;
+}
+/**
  * \fn static void deplacement_joueur()
  * \brief Fonction qui se charge du déplacement du joueur sur la carte
 */
@@ -99,19 +111,9 @@ static void deplacement_joueur(){
 			fight_rand();
 		}
 
+
 }
-/**
- * \fn static int quitter_jeu()
- * \brief Fonction qui supprime toutes les allocations dynamiques et quitte le programme
- *\return OK_state qui indique la fin du programme
- *
- */
-static int quitter_jeu(){
-		suppr_tab_sort();
-		delete_inventory();
-		delete_player(&Personnage);
-		return OK_state;
-}
+
 
 /**
  * \fn int menu(void)
@@ -235,6 +237,7 @@ int main (){
 	srand(time(NULL));
 
 	int sortie_prog=0;
+
 	do{
 			int choix = menu();
 
@@ -243,7 +246,6 @@ int main (){
 						case 2 : continuer_partie(); break;
 						case 3 : sortie_prog=quitter_jeu(); break;
 			}
-
 
 			en_jeu();
 			if(etat_jeu == END_OF_GAME)

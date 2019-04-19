@@ -77,6 +77,7 @@ int combat_on(){
 
    }else if(is_dead(Personnage)){
       printf("GAME OVER...\n");
+      sleep(2);
       etat_jeu=END_OF_GAME;
    }
 
@@ -189,7 +190,7 @@ int tour_joueur(int choix_j, character_t* tab_monstre[], int nb_monstre){
 
               };break;
       case 4: retour_menu = running_away();break; /*renvoie FUITE (-10 )si on s echappe*/
-      case 5: retour_menu = END_OF_GAME;
+      case 5: retour_menu = etat_jeu =END_OF_GAME;
    }
    if(retour_menu == 0){
         printf("Retour au menu précédent...\n");
@@ -211,7 +212,7 @@ int affich_choix(){
          do{
 
               sleep(1);
-              printf("Choisir entre les actions ci-dessous:\n\t1 - Attaquer l'adversaire\n\t2 - Prendre une potion\n\t3 - Appliquer un sort\n\t4 - S'évader\n\t5 - Quitter le jeu\nVotre choix : ");
+              printf("Choisir entre les actions ci-dessous:\n\t1 - Attaquer l'adversaire\n\t2 - Prendre une potion\n\t3 - Appliquer un sort\n\t4 - S'évader\n\t5 - Retour au menu principal\nVotre choix : ");
               scanf("%d",&player_choice);
               viderBuffer();
          }while(player_choice > 5 || player_choice <1);
