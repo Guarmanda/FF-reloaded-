@@ -1,4 +1,4 @@
-#include <quete.h>
+#include <combat.h>
 
 static void afficher_map(){
 		int y;
@@ -39,6 +39,7 @@ static void afficher_map(){
 }
 
 static void deplacement_joueur(){
+		srand(time(NULL));
 		int x;
 		int y;
 		int i;
@@ -58,26 +59,29 @@ static void deplacement_joueur(){
 
 		/*deplacement sur l'axe x*/
 
-		for( i = position_x ; i != x ; i++){
+		while(position_x != x && etat_jeu != END_OF_GAME){
 				system("clear");
 				sleep(0.2);
 				afficher_map();
 
 				if(position_x < x){
 					position_x++;
+
 				}
 				else{
 					position_x--;
 				}
 				fight_rand();
+
 		}
 
-		for(i = position_y;i != y;i++){
+		while(position_y != y && etat_jeu != END_OF_GAME){
 			system("clear");
 			sleep(0.2);
 			afficher_map();
 			if(position_y < y){
 				position_y++;
+				fight_rand();
 			}
 			else{
 				position_y--;
@@ -87,16 +91,29 @@ static void deplacement_joueur(){
 }
 
 static void quitter_jeu(){
+		delete_inventory();
 		exit(1);
 }
 
 static void nouvelle_partie(){
+		
+		position_x = 500;
+		position_y = 500;
+		
+		init_menaces();
+		init_tab_sort();
 		Personnage = creation_char();
 		create_inventory();
+		printf("Bienvenue, vous commencez votre aventure, avec deux potions de vie\n");
+		fill_up_inventory(create_object(potion,2));
+		fill_up_inventory(create_object(potion,2));
+		printf("(Une arme et une tente se cache au coordonnees x : 505 et y : 505)\n");
 		en_jeu();
 }
 
 static void continuer_partie(){
+	init_menaces();
+	init_tab_sort();
 	create_inventory();
 	charger_partie();
 	en_jeu();
@@ -151,12 +168,19 @@ int en_jeu(){
 								case 5 : /*affich_quetes()*/; break;
 								case 6 : afficher_map(); break;
 								case 7 : quitter_jeu(); break;
-		}
+				}
+				if(position_x == 505 && position_y == 505){
+					printf("\nVous trouvez une épée et une tente !\n");
+					fill_up_inventory(create_object(tente,0));
+					delete_object(&Personnage->char_weapon);
+					Personnage->char_weapon = create_object(weapon,4);
+				}
 	}
 	return 1;
 }
 
 int main (int argc, char**argv){
+	srand(time(NULL));
 	position_x = 0;
 	position_y =40;	/*probleme de 0à 39*/
 
