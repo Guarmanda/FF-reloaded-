@@ -28,7 +28,6 @@ endif
 
 ifeq ($(ARCH),linux)
 	LIBMATH=-lm
-   LIBNCURSES= -lncurses
 
 	ifeq ($(DEBUG),yes)
 	      CFLAGS=-Wall -ansi -g -D_DEBUG_ -D_LINUX_
