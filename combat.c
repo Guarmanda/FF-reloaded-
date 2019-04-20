@@ -191,6 +191,7 @@ int tour_joueur(int choix_j, character_t* tab_monstre[], int nb_monstre){
 
                 }else if(sort_choisi == -2){
                    printf("Ce sort n'est pas dans la liste.\n" );
+                   sleep(1);
                    retour_menu = 0;  /*on retourne au menu puisqu il a pas de sort*/
                }
 
@@ -202,7 +203,7 @@ int tour_joueur(int choix_j, character_t* tab_monstre[], int nb_monstre){
    }
    if(retour_menu == 0){
         printf("Retour au menu précédent...\n");
-        sleep(1);
+        sleep(3);
         clear_screen();
    }
    return retour_menu;
