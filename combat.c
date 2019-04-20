@@ -9,7 +9,7 @@
  #include <combat.h>
 
 /**
- * \fn int combat_on(character_t **player, inventory_t *inventory)
+ * \fn int combat_on(void)
  * \brief Fonction qui est responsable pour tout un combat et qui gère tous ses participants
  * \details pas besoin de paramètre puisque l'inventaire et le-s personnage-s sont en global
  * \return l'etat du combat (voir macros définies dans \a perso_commun.h)
@@ -285,7 +285,7 @@ int levelling(character_t* player){
    return 0;
 }
 /**
- * \fn int xp_points(character_t* player, character_t monster)
+ * \fn int xp_points(character_t monster)
  * \brief Fonction qui calcule le nombre de points d'expérience obtenus lors du combat
  * \param[in] monster, pour se servir de ses statistiques
  * \return une valeur entière qui correspond aux points d'expérience
@@ -334,7 +334,7 @@ void apply_state_modifier(character_t ** target, int indice){
 
 /*-------------------------------------------------------------*/
 /**
- * \fn int running_away()
+ * \fn int running_away(void)
  * \brief Fonction qui altère l'état du jeu en essayant de s'enfuir (pseudo-aléatoire)
  * \details on se sert de la variable globale \a EVASION qui est définie dans le fichier \a perso_commun.h
  * \return HORS_COMBAT ou alors renvoie soit 1, soit la macro FUITE
