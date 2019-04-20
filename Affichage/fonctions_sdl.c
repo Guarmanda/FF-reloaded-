@@ -1,8 +1,8 @@
 /**
  * \file fonctions_sdl.c
  * \brief Fonctions de gestion SDL
- * \author Karman Nathalie; Papot Alexandre; Girod Valentin
- * \date 12 mars 2019
+ * \author Girod Valentin
+ * \date mars 2019
  *
  * Contient les fonctions d'affichage et de gestion de fenêtres SDL, ainsi que le chargement/déchargement des images
  *
@@ -59,7 +59,7 @@ void loadImages(){
 }
 
 /**
- * \fn void loadImages()
+ * \fn void setcolor()
  * \brief Fonction seulement utile en terminal, mais doit être définie également ici pour permettre la compilation
  */
 void setcolor(int fg, int bg);
@@ -93,8 +93,8 @@ void fond_blanc(){
 }
 
 /**
- * \fn void quitter_sdl()
- * \brief QUitte totallement la SDL
+ * \fn void quitter_affichage()
+ * \brief Quitte totallement la SDL
  */
 void quitter_affichage(){
 	unloadImages();
@@ -160,7 +160,7 @@ void drawImage (int x, int y, char * nom, int w, int h){
 }
 
 /**
- * \fn void showWindow()
+ * \fn void init_affichage()
  * \brief Affiche la fenêtre du jeu en fonction de la taille de l'écran, création du renderer; les dimensions de l'écran, le renderer et la fenêtre sont des variables globales
  */
 void init_affichage(){

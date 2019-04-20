@@ -1,14 +1,13 @@
 /**
  * \file map.c
  * \brief Affichage de la carte autour du joueur
- * \author Girod Valentin Nathalie Karman Alexandre Papot
+ * \author Girod Valentin
  * \date 12 mars 2019
  *
  * Contient la fonction de chargement de la carte
  *
  */
 #include <stdio.h>
-#include <stdlib.h>
 #include <map.h>
 //#include <affichage.h>
 

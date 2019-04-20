@@ -1,11 +1,24 @@
+/**
+ * \file      combat.c
+ * \author    Nathalie Karman, Alexandre Papot
+ * \version   1.0
+ * \date     Mars 2019
+ * \brief     Module contenant les fonctions principales qui s'imbriquent pour qu'un combat ait lieu
+ * \details    Module contenant les fonctions principales qui s'imbriquent pour qu'un combat ait lieu
+ */
 #include <combat.h>
 #include <affichage.h>
 #include <map.h>
 
 
-/*fonction principale du combat qui gère tous les interventants et leurs attributs*/
-
-int combat_on(character_t **player, inventory_t *inventory){
+/**
+ * \fn int combat_on(character_t **player, inventory_t *inventory)
+ * \brief Fonction qui est responsable pour tout un combat et qui gère tous ses participants
+ * \details pas besoin de paramètre puisque l'inventaire et le-s personnage-s sont en global
+ * \return l'etat du combat (voir macros définies dans \a perso_commun.h)
+*/
+/*fonction principale du combat qui gère tous les participants et leurs attributs/etats*/
+int combat_on(){
    int choix_j=1; /*variable qui récupère l option choisie par le joueur lorsqu'il est tombé en combat */
    int xp_temp=0; /*les xp qui sont récupérés lors du combat si le joueur a gagné*/
    int retour_menu=1;  /*retour_menu sert à revenir au début du menu si le joueur a mal fait son choix*/
@@ -39,7 +52,7 @@ int combat_on(character_t **player, inventory_t *inventory){
 
             if(is_dead (monster[i]) ){
                printf("\n\t%s %d meurt...", monster[i]->name,i+1);
-               int check_xp= xp_points(Personnage,*monster[i]);
+               int check_xp= xp_points(*monster[i]);
                /*ajout des points d experience au joueur = effectif QUE si on gagne le combat*/
                xp_temp += check_xp;
                update_tab_monster(monster ,i , monster_number);
@@ -81,29 +94,24 @@ int combat_on(character_t **player, inventory_t *inventory){
 
 }
 
+/**
+ * \fn static void maj_mana(character_t* perso, int val_sort)
+ * \brief Fonction qui met à jour le points de magie du joueur
+ * \param[in] perso, le personnage qui vient d'appliquer un sort
+ * \param[in] val_sort, la valeur du sort en points de magie
+*/
 static void maj_mana(character_t* perso, int val_sort){
     perso->mana -= val_sort;
 }
-/*à faire*/
-static void apply_auto_spell(character_t* perso){
 
-  int chance=entier_aleatoire(1,6);
-  int i;
-  for(i = 0 ; i <chance;i++ )
-     perso->state[i]=FAUX;
-}
-static void affich_changement_etat(character_t* perso, int valeur_etat){
 
-    switch (valeur_etat) {
-      case 0: printf("%s est étourdi...\n",perso->name ); break;
-      case 1: printf("%s saigne...\n",perso->name ); break;
-      case 2: printf("%s est un peut lent...\n",perso->name ); break;
-      case 3: printf("%s est privé d'utiliser ses sorts\n",perso->name ); break;
-      case 4: printf("%s s'est fait empoisonné\n",perso->name ); break;
-      case 5: printf("%s est aveugle... \n",perso->name ); break;
-      case 6: printf("%s dort...\n",perso->name ); break;
-    }
-}
+/**
+ * \fn void apply_spell(character_t* attacker,character_t **target, int sort_choisi)
+ * \brief Fonction qui applique un sort à un personnage spécifique
+ * \param[in] attacker, le personnage qui attaque
+ * \param[in] target, le personnage qui reçoit un coup
+ * \param[in] sort_choisi, l'indice du sort choisi par celui qui attaque
+*/
 void apply_spell(character_t* attacker,character_t **target, int sort_choisi){
 
     printf("\n\n\t<> %s <> ==============> %s ...\n",tab_sort[sort_choisi].nom_sort,(*target)->name);
@@ -111,22 +119,29 @@ void apply_spell(character_t* attacker,character_t **target, int sort_choisi){
 
     if(tab_sort[sort_choisi].type_sort == modifie_etat){
       apply_state_modifier(&(*target),tab_sort[sort_choisi].valeur_sort);
-      affich_changement_etat((*target),tab_sort[sort_choisi].valeur_sort);
 
     }else{
 
-      int degat = (attacker->stat_intelligence) * tab_sort[sort_choisi].valeur_sort;
+        int degat = (attacker->stat_intelligence) * tab_sort[sort_choisi].valeur_sort;
 
-      ((*target)->health) -= degat + (*target)->accessory ;
+        ((*target)->health) -= degat + (*target)->accessory ;
 
-      if(is_dead(*target)){
-         ((*target)->health)=0;
-      }
-      printf("\t%d de dégats causés à %s (%d/%d)\n\n", degat,(*target)->name,(*target)->health, (*target)->max_health );
+        if(is_dead(*target)){
+           ((*target)->health)=0;
+        }
+        printf("\t%d de dégats causés à %s (%d/%d)\n\n", degat,(*target)->name,(*target)->health, (*target)->max_health );
     }
-    maj_mana(attacker, tab_sort[sort_choisi].valeur_sort);
+    maj_mana(attacker, tab_sort[sort_choisi].valeur_sort);  /*mise à jour des points de magie du perso*/
 }
 
+/**
+ * \fn int tour_joueur(int choix_j, character_t* tab_monstre[], int nb_monstre)
+ * \brief Fonction qui traite les choix de l'utilisateur et le retour au menu de combat
+ * \param[in] choix_j, le choix saisi préalablement, déclanche une des actions de la fonction \a tour_joueur
+ * \param[in] tab_monstre[], le tableau avec le-s monstre-s
+ * \param[in] nb_monstre, la quantité d'adversaire
+ * \return 0 pour retour au menu de combat ou autre valeur (indique qu'une action s'est produite)
+*/
 int tour_joueur( int choix_j, character_t* tab_monstre[], int nb_monstre){
 
    int retour_menu=1;
@@ -157,7 +172,7 @@ int tour_joueur( int choix_j, character_t* tab_monstre[], int nb_monstre){
 
               };break;
       case 4: retour_menu = running_away();break; /*renvoie FUITE (-10 )si on s echappe*/
-      case 5: retour_menu = END_OF_GAME;
+      case 5: retour_menu = etat_jeu = END_OF_GAME;
    }
    if(retour_menu == 0){
         printf("Retour au menu précédent...\n");
@@ -168,6 +183,13 @@ int tour_joueur( int choix_j, character_t* tab_monstre[], int nb_monstre){
 
 }
 
+/**
+ * \fn void update_tab_monster(character_t *monster_array[],int index, int nb_monstre)
+ * \brief Fonction qui met à jour le tableau d'adversaire lorsque l'un d'eux est mort
+ * \param[in] monster_array[], tableau des adversaires
+ * \param[in] index, monstre mort
+ * \param[in] nb_monstre, quantité d'adversaires
+*/
 /*si un monstre est mort pendant le combat, on va devoir faire en sorte qu il soit supprimé du tableau*/
 void update_tab_monster(character_t *monster_array[],int index, int nb_monstre){
 
@@ -179,6 +201,12 @@ void update_tab_monster(character_t *monster_array[],int index, int nb_monstre){
 
 }
 
+/**
+ * \fn void attack(character_t* attacker,character_t **target)
+ * \brief Fonction qui permet à un personnage d'attaquer un autre personnage
+ * \param[in] attacker, celui qui attaque
+ * \param[in] target, la cible
+*/
 void attack(character_t* attacker,character_t **target){
 
    printf("\n\t%s ATTAQUE ==============> %s ...\n",attacker->name,(*target)->name);
@@ -195,12 +223,24 @@ void attack(character_t* attacker,character_t **target){
 
 }
 
+/**
+ * \fn int is_dead(character_t *target)
+ * \brief Fonction qui permet de voir si un personnage est mort
+ * \param[in] target, la cible
+ * \return 0 si il est encore en vie
+*/
 int is_dead(character_t *target){ /* rip :(*/
 
   return (target->health <= 0); /*retourne 0 = il est vivant*/
 
 }
 
+/**
+ * \fn int levelling(character_t* player)
+ * \brief Fonction qui regarde si le joueur monte de niveau
+ * \param[in] player, le personnage (version finale => 4 personnages)
+ * \return 1 si il a atteint un autre niveau, sinon 0
+*/
 int levelling(character_t* player){
 
    int changement_niv = 50;
@@ -212,13 +252,23 @@ int levelling(character_t* player){
    return 0;
 }
 
-int xp_points(character_t* player, character_t monster){
+/**
+ * \fn int xp_points(character_t* player, character_t monster)
+ * \brief Fonction qui calcule le nombre de points d'expérience obtenus lors du combat
+ * \param[in] monster, pour se servir de ses statistiques
+ * \return une valeur entière qui correspond aux points d'expérience
+*/
+int xp_points(character_t monster){
 
       int xp_par_niveau = 10; /*variable qui peut definir l evolution du perso dans tout le jeu ou monstre.stat_strength*/
       return (xp_par_niveau * monster.level);
 
 }
 
+/**
+ * \fn void fight_rand(void)
+ * \brief Fonction qui se sert du pseudo-aléatoire et de la map_menace pour déclancher un combat
+*/
 void fight_rand(){
    int trap=0;
    if (Personnage->accessory != evite_combats){
@@ -229,12 +279,20 @@ void fight_rand(){
    int chances= map_threat[(int)Y][(int)X];
    if(trap <= chances){
       etat_jeu = EN_COMBAT;
-      combat_on(&Personnage,Inventaire);
+      combat_on();
    }
 
 }
 
 
+/**
+ * \fn void apply_state_modifier(character_t ** target, int indice)
+ * \brief Fonction qui change un des etats du personnage entré en paramètre
+ * \param[in] target est le personnage qui aura son etat affecté (dans les deux sens)
+ * \param[in] indice est l'entier qui permet d'acceder à l'état Stunt (0) par exemple
+ * \details  est la valeur symbolique (voir enuération dans \a inventaire.h) qui correspond à l'indice du dictionnaire de l'état qu on veut affecter
+ *      on mettra soit à VRAI si il l'état est FAUX , soit l'inverse
+*/
 /*marche inversement aussi, si on met un Antidote on va juste inverser l etat*/
 void apply_state_modifier(character_t ** target, int indice){
 
@@ -243,7 +301,12 @@ void apply_state_modifier(character_t ** target, int indice){
 }
 
 /*-------------------------------------------------------------*/
-
+/**
+ * \fn int running_away()
+ * \brief Fonction qui altère l'état du jeu en essayant de s'enfuir (pseudo-aléatoire)
+ * \details on se sert de la variable globale \a EVASION qui est définie dans le fichier \a perso_commun.h
+ * \return HORS_COMBAT ou alors renvoie soit 1, soit la macro FUITE
+*/
 int running_away(){ /* true => successful*/
   /* 15% chance to flee */
   int chance=entier_aleatoire(1,100);

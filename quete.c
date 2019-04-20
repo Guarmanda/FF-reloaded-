@@ -1,7 +1,7 @@
 /**
  * \file quetes.c
  * \brief Chargement, gestion et affichage des quêtes
- * \author Karman Nathalie; Papot Alexandre; Girod Valentin
+ * \author Girod Valentin
  * \date 12 mars 2019
  *
  * Contient les fonctions de chargement, gestion des quêtes
@@ -30,13 +30,13 @@ void afficher_quetes(){
       //on reprends le calcul de la map pour les coordonnées du pnj en pixels
       int pnj_x = (quetes[i]->pnj_x-(X-nbSpriteX))*SPRITE_W;
       int pnj_y = (quetes[i]->pnj_y-(Y-nbSpriteY))*SPRITE_W;
-      afficher_quete(pnj_x, pnj_y, i, 'P');
+      afficher_quete(pnj_x, pnj_y, NULL, quetes[i]->pnj_img, 'P');
     }
     //meme chose pour le but d'une quête, mais le statut de la quête doit être 1
     if(abs((int)(quetes[i]->but_x-X)) <= nbSpriteX && abs((int)(quetes[i]->but_y-Y)) <= nbSpriteY && quetes[i]->statut ==1){
       int but_x = (quetes[i]->but_x-(X-nbSpriteX))*SPRITE_W;
       int but_y = (quetes[i]->but_y-(Y-nbSpriteY))*SPRITE_W;
-      afficher_quete(but_x, but_y, i, 'B');
+      afficher_quete(but_x, but_y, NULL, quetes[i]->nom_img, 'B');
     }
     //si un joueur croise un pnj (si la distance entre les deux est inférieure à 1)
     if(fabs(quetes[i]->pnj_x-X) <= 1 && fabs(quetes[i]->pnj_y-Y) <= 1 ){
@@ -45,7 +45,7 @@ void afficher_quetes(){
       //si la quête commence, on affiche le message de début
       if(quetes[i]->statut < 2){
         if(quetes[i]->statut == 0) quetes[i]->statut = 1;
-        afficher_quete(pnj_x, pnj_y, i, 'D');
+        afficher_quete(pnj_x, pnj_y, quetes[i]->phrase_debut, quetes[i]->pnj_nom, 'D');
       }
       //sinon on affiche le message de fin et on donne l'xp au joueur
       else {
@@ -57,7 +57,7 @@ void afficher_quetes(){
              Personnage->xp -= 100;
            }
         }
-        afficher_quete(pnj_x, pnj_y, i, 'F');
+        afficher_quete(pnj_x, pnj_y, quetes[i]->phrase_fin, quetes[i]->pnj_nom, 'F');
       }
     }
     //si on croise un but

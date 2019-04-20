@@ -1,7 +1,7 @@
 /**
  * \file game.c
  * \brief Fonction principale du jeu
- * \author Karman Nathalie; Papot Alexandre; Girod Valentin
+ * \author Girod Valentin
  * \date 12 mars 2019
  *
  * Contient le loop du jeu
@@ -38,13 +38,10 @@ void startGame(float x, float y){
   if(y+nbSpriteY/2+2>1000) y=999-(nbSpriteY/2+2);
   if(x+nbSpriteX/2+2>1000) x=999-(nbSpriteX/2+2);
   afficher_Map( x, y);
-  //x_select: les coordonées du seleteur de façon à le centrer sur l'écran
-  int x_select = (SCREEN_WIDTH-1200)/2;
   faire_rendu();
   int running = 1;
-  int selected = 1;
 
-  while(running) {
+  while(running && etat_jeu!=END_OF_GAME) {
     //Au départ la gestion du clavier se faisait avec un event qui détectait l'appuis d'une touche
     //mais dès que j'ai mis cette partie du code ici sans utiliser l'event, les déplacements sont devenus bien
     //plus fluides, rapides, et surtout la latence au moment de l'appuis sur une touche a disparue
@@ -56,9 +53,6 @@ void startGame(float x, float y){
       //On peut donc voir si le joueur a changé de case, et vérifier s'il rencontre un monstres
       if(fabs(floor(X)-floor(x)) > 0 || fabs(floor(Y)-floor(y)) > 0){ //si le joueur change de case
         fight_rand();
-        if(etat_jeu == END_OF_GAME){
-          running = 0;
-        }
       }
       //chargement de la map
       afficher_Map( x, y);

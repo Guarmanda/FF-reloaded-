@@ -1,3 +1,10 @@
+/**
+ * \file      affichages_terminal.c
+ * \author    Girod Valentin
+ * \version   1.0
+ * \date     Mars 2019
+ * \brief    Contient toutes les fonctions d'affichage du jeu en ncurses
+ */
 #include <affichage.h>
 #include <map.h>
 #include <quete.h>

@@ -1,10 +1,10 @@
 /**
  * \file level_editor.c
  * \brief Editeur de carte
- * \author Karman Nathalie; Papot Alexandre; Girod Valentin
+ * \author Girod Valentin
  * \date 12 mars 2019
  *
- * Contient l'éditeur de carte'
+ * Contient l'éditeur de carte
  *
  */
 #include <stdio.h>
@@ -33,8 +33,6 @@ void showEditor(float x, float y){
   if(x-nbSpriteX/2<0) x=nbSpriteX/2;
   if(y+nbSpriteY/2+2>1000) y=999-(nbSpriteY/2+2);
   if(x+nbSpriteX/2+2>1000) x=999-(nbSpriteX/2+2);
-  //x_select: les coordonées du seleteur de façon à le centrer sur l'écran
-  int x_select = (SCREEN_WIDTH-1200)/2;
   afficher_selecteur(x, y);
   int running = 1;
   int selected = 1;

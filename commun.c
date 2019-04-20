@@ -1,3 +1,11 @@
+/**
+ * \file      commun.c
+ * \author    Nathalie Karman, Alexandre Papot
+ * \version   1.0
+ * \date     Mars 2019
+ * \brief    Module qui sert de boîte à outils pour tout le projet
+ */
+
 #include <commun.h>
 
 const err_t OK_state = 1;
@@ -8,9 +16,8 @@ const err_t KO_state = 0;
  * \brief Renvoie un entier aléatoire borné par deux valeurs
  * \param[in] int, valeur minimum de l'entier aléatoire (borne min)
  * \param[in] int, valeur maximum de l'entier aléatoire (borne max)
- * \return (int) ou ERR_RAND (-110)
- */
-
+ * \return l'entier aléatoire ou l'entier représenté par ERR_RAND (-110)
+*/
 int entier_aleatoire(int min, int max){
 	if(min >= max){
 		return ERR_RAND;	/*retourne -110 si erreur */
@@ -24,7 +31,7 @@ int entier_aleatoire(int min, int max){
  * \brief Creer une chaine de caractere dynamiquement
  * \param[in]	chaine à allouer et affecter
  * \param[in] chaine de caractere à copier selon sa taille
- * \return un code d erreur ou de validation
+ * \return un code d erreur ou OK_state
  */
 err_t creer_string(string* chaine_a_affecter, string chaine_a_copier){
 	/* on alloue en memoire les caracteres de la chaine +1*/
@@ -39,10 +46,10 @@ err_t creer_string(string* chaine_a_affecter, string chaine_a_copier){
 }
 
 /**
-* \fn int supprimer_string(string *string_param)
+* \fn err_t supprimer_string(string *string_param)
 * \brief Supprime une chaine de caractere
-* \param[in] pointeur de pointeur chaine de caractere (string* AKA char**)
-* \return err_t OK/KO (1/0)
+* \param[in] pointeur sur chaine de caractere  char * (le type \a string = char *)
+* \return OK_state ou KO_state (1/0)
 */
 
 err_t supprimer_string(string *string_param){
@@ -57,19 +64,6 @@ err_t supprimer_string(string *string_param){
 	}
 }
 
-/**
- * \fn void modifier_string(string *string_old, string string_new)
- * \brief Modifie un string
- * \param[in] pointeur de pointeur chaine de caractere (string* AKA char**)
- * \param[in] la nouvelle chaine de caractere
- */
-/*
- on free l'ancienne chaine
-void modifier_string(string *string_old, string string_new){
-	supprimer_string(string_old);
-	*string_old = creer_string(&string_new,);
-}
-*/
 
 /**
  * \fn void viderBuffer(void)
@@ -84,9 +78,10 @@ void viderBuffer(){	/*si depassement  */
 }
 /**
  * \fn void lire(char *chaine, int longueur)
- * \brief pour lecture correcte via clavier en faisant appel à la fonction viderBuffer()
- * \param[in] pointeur sur une chaine de caractere
- * \param[in] longueur de la chaine qui servira à limiter la saisie de l'utilisateur
+ * \brief Fonction qui fait une saisie de manière sécure en faisant appel à la fonction \a viderBuffer()
+ * \param[in] chaine la chaîne de caractère qui sera allouée
+ * \param[in] longueur est la longueur limite que la chaine peut avoir
+ * \return 1 si l'utilisateur n'a pas dépassé la taille maximum, sinon 0
 */
 int lire(char *chaine, int longueur){	/*pour lecture correcte via clavier*/
 
@@ -119,4 +114,4 @@ void clear_screen(){
   #else
      system ( "clear" );
   #endif
-}
+ }

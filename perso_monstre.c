@@ -1,36 +1,83 @@
+/**
+ * \file perso_monstre.c
+ * \brief Fonctions qui sont rattachées aux adversaires/bestiaire
+ * \author Karman Nathalie; Papot Alexandre
+ * \date 3 avril 2019
+ * \ Ce fichier englobe les fonctions propres à la création des monstres et dans leur biome
+*/
+
 #include <perso_commun.h>
 #include <map.h>
 
+/**
+ * \fn static void creer_dragon(character_t** monstre)
+ * \brief Fonction qui crée un dragon et lui affecte son nom
+ * \details on définit que l' \a EVASION =0 puisque c'est un BOSS
+ * \param[in] monstre est un pointeur sur character_t*, on lui affectera les stats imaginées
+ */
 static void creer_dragon(character_t** monstre){
    creer_string(&(*monstre)->name,"Dragon");
 
-   EVASION = 0;
+   EVASION = 0; /*boss*/
 }
+/**
+ * \fn static void creer_wolf(character_t** monstre)
+ * \brief Fonction qui crée un wolf et lui affecte son nom
+ * \details les fonctions des bestiaires sont à améliorer/finir
+ * \param[in] monstre est un pointeur sur character_t*, on lui affectera les stats imaginées
+ */
 static void creer_wolf(character_t** monstre){
     creer_string(&(*monstre)->name,"Wolf");
 
-
 }
+/**
+ * \fn static void creer_snake(character_t** monstre)
+ * \brief Fonction qui crée un snake et lui affecte un nom
+ * \details les fonctions des bestiaires sont à améliorer/finir
+ * \param[in] monstre est un pointeur sur character_t*, on lui affectera les stats imaginées
+ */
 static void creer_snake(character_t** monstre){
     creer_string(&(*monstre)->name,"Snake");
 
 }
+/**
+ * \fn static void creer_skeleton(character_t** monstre)
+ * \brief Fonction qui crée un skeleton et lui affecte un nom
+ * \details les fonctions des bestiaires sont à améliorer/finir
+ * \param[in] monstre est un pointeur sur character_t*, on lui affectera les stats imaginées
+ */
 static void creer_skeleton(character_t** monstre){
     creer_string(&(*monstre)->name,"Skeleton");
 
 }
+/**
+ * \fn static void creer_goblin(character_t** monstre)
+ * \brief Fonction qui crée un goblin
+ * \details les fonctions des bestiaires sont à améliorer/finir
+ * \param[in] monstre est un pointeur sur character_t*, on lui affectera les stats imaginées
+ */
 static void creer_goblin(character_t** monstre){
 
     creer_string(&(*monstre)->name,"Goblin");
 
 }
-
+/**
+ * \fn static void creer_thief(character_t** monstre)
+ * \brief Fonction qui crée un thief
+ * \details les fonctions des bestiaires sont à améliorer/finir
+ * \param[in] monstre est un pointeur sur character_t*, on lui affectera les stats imaginées
+ */
 static void creer_thief(character_t** monstre){
     creer_string(&(*monstre)->name,"Thief");
 }
 
+/**
+ * \fn static void name_and_details(character_t** monstre)
+ * \brief Fonction qui va regarder le niveau du monstre à créer et lancer la création du monstre
+ * \details pseudo-aléatoire et taux de chance de tomber contre quelques monstres spécifiques selon le niveau
+ * \param[in] monstre est un pointeur sur character_t*, on lui affectera les stats imaginées
+ */
 static void name_and_details(character_t** monstre){
-   int i;
 
    int chance_vs_advers= entier_aleatoire(1,100); /*pourcentage de chance de tomber sur un monstre spécifique*/
 
@@ -75,14 +122,12 @@ static void name_and_details(character_t** monstre){
     }
 
 }
-void delete_adversaire(character_t** player){
-
-    if(*player != NULL){
-      supprimer_string(&(*player)->name);
-      free(*player);
-      *player=NULL;
-   }
-}
+/**
+ * \fn static void init_stats_monstre(character_t** monstre)
+ * \brief Fonction qui initialise les stats générales d'un monstre
+ * \details fera appel à des fonctions locales
+ * \param[in] monstre est un pointeur sur character_t*, on lui affectera les stats imaginées
+ */
 static void init_stats_monstre(character_t** monstre){
 
     int i;
@@ -117,7 +162,11 @@ static void init_stats_monstre(character_t** monstre){
     name_and_details(monstre);
 
 }
-
+/**
+ * \fn static void bestiaire_foudre(character_t** monster)
+ * \brief Fonction qui affecte le niveau prévu au monstre en paramètre
+ * \param[in] monstre est un pointeur sur character_t*, on lui affectera les stats imaginées
+ */
 static void bestiaire_foudre(character_t** monster){
 
     (*monster)->level= entier_aleatoire(7,10); /**/
@@ -125,22 +174,33 @@ static void bestiaire_foudre(character_t** monster){
     init_stats_monstre(monster);
 
 }
-
-
+/**
+ * \fn static void bestiaire_feu(character_t** monster)
+ * \brief Fonction qui affecte le niveau prévu au monstre en paramètre
+ * \param[in] monstre est un pointeur sur character_t*, on lui affectera les stats imaginées
+ */
 static void bestiaire_feu(character_t** monster){
 
     (*monster)->level= entier_aleatoire(5,7); /*en haut à droite*/
     (*monster)->accessory=est_monstre;
     init_stats_monstre(monster);
-
 }
-
+/**
+ * \fn static void bestiaire_neige(character_t** monster)
+ * \brief Fonction qui affecte le niveau prévu au monstre en paramètre
+ * \param[in] monstre est un pointeur sur character_t*, on lui affectera les stats imaginées
+ */
 static void bestiaire_neige(character_t** monster){
     (*monster)->level= entier_aleatoire(5,7); /**/
     (*monster)->accessory=est_monstre;  /*espace neige en bas à gauche*/
     init_stats_monstre(monster);
 }
 
+/**
+ * \fn static void bestiaire_terre(character_t** monster)
+ * \brief Fonction qui affecte le niveau prévu au monstre en paramètre
+ * \param[in] monstre est un pointeur sur character_t*, on lui affectera les stats imaginées
+ */
 static void bestiaire_terre(character_t** monster){
 
   (*monster)->level= entier_aleatoire(1,4); /**/
@@ -148,20 +208,24 @@ static void bestiaire_terre(character_t** monster){
   init_stats_monstre(monster);
 
 }
-
+/**
+*	\fn character_t* monster_creation(void)
+*	\brief Fonction qui crée le ou les adversaires du jeu
+* \details bestiaire à completer
+* \return character_t* pointeur sur le character_t créé
+*/
 character_t* monster_creation(){
-    EVASION = 15;
+   EVASION = 15;
    character_t* monster=NULL;
    monster = malloc(sizeof(character_t));
-   monster->liste_spell= NULL;
 
-   if (est_dans__biome_terre(Y, X)){  /*en bas à droite*/
-     bestiaire_terre(&monster);
-   }else if(est_dans__biome_feu(Y, X)){
-     bestiaire_feu(&monster);
-   }else if(est_dans__biome_foudre(Y, X)){
+  if (est_dans__biome_terre(Y, X)){  /*en bas à droite*/
+    bestiaire_terre(&monster);
+  }else if(est_dans__biome_feu(Y, X)){
+    bestiaire_feu(&monster);
+  }else if(est_dans__biome_foudre(Y, X)){
     bestiaire_foudre(&monster);
-   }else
+  }else
     bestiaire_neige(&monster);
 
       return monster;

@@ -1,7 +1,7 @@
 /**
  * \file menu_principal.c
  * \brief Menu principal du jeu
- * \author Karman Nathalie; Papot Alexandre; Girod Valentin
+ * \author Girod Valentin
  * \date 12 mars 2019
  *
  * Menu principal
@@ -24,6 +24,7 @@ void showMenu(){
 	if(running==0){
 		init_menaces();
 	  init_tab_sort();
+		afficher_creation(Personnage->name, Personnage->class_char, Personnage->gender);
 		startGame( 500.0, 500.0);
 	}
 	if(running==1){}

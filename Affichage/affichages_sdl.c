@@ -1,11 +1,21 @@
+/**
+ * \file      affichages_sdl.c
+ * \author    Girod Valentin
+ * \version   1.0
+ * \date     Mars 2019
+ * \brief    Contient toutes les fonctions d'affichage du jeu en sdl
+ */
 #include <affichage.h>
 #include <map.h>
-#include <quete.h>
 #include <fonctions_affichage.h>
 #include <SDL2/SDL.h>
-#include <perso_commun.h>
-#include <map_menace.h>
 
+/**
+ * \fn void afficher_combat(character_t * monster[], int nb_monster)
+ * \brief affiche les monstres et leur statistiques pendant le combat
+ * \param[in] tableau des monstres du combat
+ * \param[in] nombre de monstres
+*/
 void afficher_combat(character_t* monster[], int nb_monstres){
   printf("image\n");
   drawImage(0,0, "interface_combat", SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -43,7 +53,13 @@ void afficher_combat(character_t* monster[], int nb_monstres){
 
 }
 
-
+/**
+ * \fn int affich_choix(character_t * monster[], int nb_monster)
+ * \brief Gère l'affichage des choix à faire pendant le tour du joueur dans un combat
+ * \param[in] tableau des monstres du combat
+ * \param[in] nombre de monstres
+ * \return un int qui représente le choix fait
+*/
 int affich_choix(character_t * monster[], int nb_monster){
           faire_rendu();
          int player_choice = 0; /* voir plus tard pour que le joueur puisse selectionner dans le menu */
@@ -108,6 +124,13 @@ int affich_choix(character_t * monster[], int nb_monster){
          return player_choice;
   }
 
+/**
+ * \fn int choisir_ennemi(character_t * monster[], int nb_monster)
+ * \brief Gère l'affichage de la sélection d'un monstre à attaquer
+ * \param[in] tableau des monstres du combat
+ * \param[in] nombre de monstres
+ * \return l'index du monstre sélectionné
+*/
 int choisir_ennemi(character_t * monster[], int nb_monster){
   int choix = 0;
   do{
@@ -177,8 +200,15 @@ int choisir_ennemi(character_t * monster[], int nb_monster){
 
 
 /**
- * \fn void showInventory()
- * \brief Affichage de l'inventaire du joueur
+ * \fn void afficher_inv(int PH, int PW, int H, int W, int PSH, int PSW, int partie_items)
+ * \brief Gère l'affichage de l'inventaire
+ * \param[in] 1% de la largeur de l'image d'inventaire en pixels
+ * \param[in] 1% de la hauteur de l'image d'inventaire en pixels
+ * \param[in] pixels en largeur de l'image
+ * \param[in] pixels en hauteur de l'image
+ * \param[in] abscisse de l'image sur l'écran
+ * \param[in] ordonnée de l'image sur l'écran
+ * \param[in] un entier qui représente la partie de l'inventaire qui est affichée, comme tous les items ne peuvent être affichés en meme temps
  */
 void afficher_inv(int PH, int PW, int H, int W, int PSH, int PSW, int partie_items){
   //la longueur des barres de vie/mana/xp est de 8.54% de l'image, suivie d'une autre barre de 8.54% de l'image d'une autre couleur pour la barre vide
@@ -247,7 +277,6 @@ void afficher_inv(int PH, int PW, int H, int W, int PSH, int PSW, int partie_ite
 
 
   //affichage des items de l'inventaire
-  char item[Inventaire->nb_objects][30];
   for(int i=15*partie_items, j=0, k=0; i<Inventaire->nb_objects && i < partie_items+15; i++, j++){
     if(i%5==0 && i!=0 && i!=15){
       j=0;
@@ -259,6 +288,10 @@ void afficher_inv(int PH, int PW, int H, int W, int PSH, int PSW, int partie_ite
   faire_rendu();
 }
 
+/**
+ * \fn void showInventory()
+ * \brief Gère les interractions avec l'inventaire
+ */
 void showInventory(){
   //les pixels de l'image
   int W = 95*SCREEN_WIDTH/100;
@@ -276,7 +309,6 @@ void showInventory(){
   int partie_items = 0;
   afficher_inv(PH, PW, H, W, PSH, PSW, partie_items);
   int running = 1;
-  int selected = 1;
   while(running) {
   	SDL_Event e;
   	while(SDL_PollEvent(&e)) {
@@ -322,6 +354,12 @@ void showInventory(){
 
 }
 
+/**
+ * \fn void afficher_selecteur(int x, int y)
+ * \brief Gère l'affichage du sélecteur de sprite dans l'éditeur de map
+ * \param[in] Abscisse du joueur
+ * \param[in] Ordonnée du joueur
+ */
 void afficher_selecteur(int x, int y){
   int x_select = (SCREEN_WIDTH-1200)/2;
   afficher_Map( x, y);
@@ -330,7 +368,7 @@ void afficher_selecteur(int x, int y){
 }
 
 /**
- * \fn void showMap(float x, float y)
+ * \fn void afficher_Map(float x, float y)
  * \brief Gère l'affichage de la map et du joueur en SDL
  * \param[in] Abscisse du joueur
  * \param[in] Ordonnée du joueur
@@ -418,7 +456,7 @@ void afficher_Map(float x, float y){
                 break;
       }
       //on gère les biomes
-      if(!est_dans_village(j, i)){
+      if(!(x >= borne_min_village && x <= borne_max_village) && (y >= borne_min_village &&  y <= borne_max_village)){
         if(i>=500 && j<500){
             if(strcmp(sprite1, "map_path.png") !=0) strcat(sprite1, "_snow");
            if(sprite2[0]) strcat(sprite2, "_snow");
@@ -443,6 +481,120 @@ void afficher_Map(float x, float y){
 }
 
 
+/**
+ * \fn void afficher_menu_perso(char*name, char*class_char, char*gender)
+ * \brief Gère l'affichage du menu de création de personnage
+ * \param[in] nom du perso
+ * \param[in] classe du perso
+ * \param[in] genre du perso
+ */
+void afficher_menu_perso(char*name, char*class_char, char*gender){
+	fond_blanc();
+	for(int i=100; i<=550; i+=150){
+		drawImage( 700, i, "button.png", 130, 100);
+	}
+
+	drawText( 725, 125, "Warrior", 25, 12);
+	drawText( 725, 275, "Wizard", 25, 12);
+	drawText( 725, 425, "Hunter", 25, 12);
+	drawText( 725, 575, "Priest", 25, 12);
+	drawText( 500, 650, "Appuyez su entrée pour continuer", 25, 12);
+	drawImage( 300, 550, "button.png", 130, 100);
+	drawImage( 500, 550, "button.png", 130, 100);
+
+	drawText( 325, 575, "Male", 25, 12);
+	drawText( 525, 575, "Female", 25, 12);
+	char perso[30];
+	//on définit le nom de l'image du perso en fonction de ses caractéristiques
+	sprintf(perso, "%s_%s_back", class_char, gender);
+	drawImage( 350, 125, perso, 200, 200);
+	drawText( 375, 375, "Name :", 25, 12);
+	drawText( 450, 375, name, 25, 12);
+	faire_rendu();
+}
+
+/**
+ * \fn void afficher_menu_perso(char*name, char*class_char, char*gender)
+ * \brief Gère les interractions avec le menu de création de personnage
+ * \param[in] nom du perso
+ * \param[in] classe du perso
+ * \param[in] genre du perso
+ */
+void afficher_creation(char*name, char*class_char, char*gender){
+  int running;
+  SDL_StartTextInput();
+  running = 1;
+  char in[50]="";
+  afficher_menu_perso(name, class_char, gender);
+  while ( running ==1 ) {
+    SDL_Event ev;
+    while ( SDL_PollEvent( &ev ) ) {
+      if ( ev.type == SDL_TEXTINPUT  ) {
+        strcat(in, ev.text.text);
+        strcpy(name, in);
+        afficher_menu_perso(name, class_char, gender);
+      } else if ( ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_BACKSPACE && strlen(in)) {
+        in[strlen(in)-1]='\0';
+        strcpy(name, in);
+        afficher_menu_perso(name, class_char, gender);
+      } else if ( ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_ESCAPE ) {
+        running = 2;
+      } else if ( ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_RETURN ) {
+        running = 3;
+      }
+      if(ev.type== SDL_MOUSEBUTTONDOWN)
+      {
+        int mouse_x, mouse_y;
+        SDL_GetMouseState(&mouse_x, &mouse_y);
+        //si on est dans la largeur du menu
+        if(mouse_x>700 && mouse_x<830){
+          //si on est à la hauteur d'une case du sélecteur
+            int pos = mouse_y-100;
+            int i=1;
+            for(int j=0; j<pos+150 ;i++, j+=150){
+              if(pos >= j && pos <= j+150) break;
+            }
+            switch(i){
+              case 1:
+                strcpy(class_char, "warrior");
+                afficher_menu_perso(name, class_char, gender);
+                break;
+              case 2:
+                strcpy(class_char, "wizard");
+                afficher_menu_perso(name, class_char, gender);
+                break;
+              case 3:
+                strcpy(class_char, "hunter");
+                afficher_menu_perso(name, class_char, gender);
+                break;
+              case 4:
+                strcpy(class_char, "priest");
+                afficher_menu_perso(name, class_char, gender);
+                break;
+            }
+        }
+        if(mouse_x>300 && mouse_x<430 && mouse_y>550 && mouse_y<650){
+            strcpy(gender, "man");
+            afficher_menu_perso(name, class_char, gender);
+        }
+        if(mouse_x>500 && mouse_x<630 && mouse_y>550 && mouse_y<650){
+            strcpy(gender, "woman");
+            afficher_menu_perso(name, class_char, gender);
+        }
+
+      }
+    }
+    SDL_Delay(20);
+  }
+  SDL_StopTextInput();
+}
+
+/**
+ * \fn int afficher_menu(char menu[4][30])
+ * \brief Gère l'affichage du menu pricipal
+ * \param[in] tableau de chaines de caractères qui seront affichées sur les boutons du menu
+ * \return l'action choisie par le joueur dans le menu
+ */
 int afficher_menu(char menu[4][30]){
   fond_blanc();
   for(int i = 0, y=100; i<4; i++, y+=150){
@@ -486,7 +638,16 @@ int afficher_menu(char menu[4][30]){
   return running;
 }
 
-void afficher_quete(float x, float y, int id, char etat){
+/**
+ * \fn void afficher_quete(float x, float y, char * phrase, char*image, char etat)
+ * \brief Gère l'affichage des quêtes
+ * \param[in] abscisse de l'objet à afficher
+ * \param[in] ordonnée de l'objet à afficher
+ * \param[in] phrase de début/fin de quête à afficher si besoin
+ * \param[in] nom de l'image ou du pnj à afficher
+ * \param[in] etat de la quête (D = début (on affiche la phrase de début), F = fin, P = pnj (pour afficher le pnj) B = but (on vois l'objectif))
+ */
+void afficher_quete(float x, float y, char * phrase, char*image, char etat){
   int Tw = 9;
   int long_message;
   int char_par_ligne = 90;
@@ -495,10 +656,10 @@ void afficher_quete(float x, float y, int id, char etat){
   char nom[30];
   switch(etat){
     case 'P':
-      drawImage( x, y, quetes[id]->pnj_img, 60, 60);
+      drawImage( x, y, image, 60, 60);
       break;
     case 'F':
-      long_message = strlen(quetes[id]->phrase_fin);
+      long_message = strlen(phrase);
       //le numéro de lignes est égal à la taille du texte divisé, + 1 ligne pour le nom du pnj
       num_lignes = (long_message/char_par_ligne)+2;
 
@@ -506,7 +667,7 @@ void afficher_quete(float x, float y, int id, char etat){
       if(num_lignes == 2){
         pixels_bulle = long_message*Tw;
         drawImage( x-pixels_bulle/4, y-110, "bulle.png", pixels_bulle+40, 120);
-        drawText(x-pixels_bulle/4+20, y-70, quetes[id]->phrase_fin, 25, Tw);
+        drawText(x-pixels_bulle/4+20, y-70, phrase, 25, Tw);
       }else{ //sinon elle fait la longueur d'une ligne, et on affiche le texte ligne par ligne
         pixels_bulle = 90*Tw;
         drawImage( x-pixels_bulle/4, y-(60*num_lignes-10), "bulle.png", char_par_ligne*Tw+40, 60*num_lignes);
@@ -514,19 +675,19 @@ void afficher_quete(float x, float y, int id, char etat){
           char ligne[91];
           int k;
           for(k=0; j<i*90 && j<long_message; j++, k++){
-            ligne[k] = quetes[id]->phrase_fin[j];
+            ligne[k] = phrase[j];
             ligne[k+1] = '\0';
           }
           int pixel_y = y-(25*(num_lignes-i))-25*num_lignes;
           drawText(x-pixels_bulle/4+20, pixel_y, ligne, 25, Tw);
         }
       }
-      sprintf(nom, "%s", quetes[id]->pnj_nom);
+      sprintf(nom, "%s", image);
       strcat(nom, " :");
       drawText(x-pixels_bulle/4+20, y-60*num_lignes+30, nom, 25, Tw);
       break;
     case 'D':
-      long_message = strlen(quetes[id]->phrase_debut);
+      long_message = strlen(phrase);
       //le numéro de lignes est égal à la taille du texte divisé, + 1 ligne pour le nom du pnj
       num_lignes = (long_message/char_par_ligne)+2;
 
@@ -534,7 +695,7 @@ void afficher_quete(float x, float y, int id, char etat){
       if(num_lignes == 2){
         pixels_bulle = long_message*Tw;
         drawImage( x-pixels_bulle/4, y-110, "bulle.png", pixels_bulle+40, 120);
-        drawText(x-pixels_bulle/4+20, y-70, quetes[id]->phrase_debut, 25, Tw);
+        drawText(x-pixels_bulle/4+20, y-70, phrase, 25, Tw);
       }else{ //sinon elle fait la longueur d'une ligne, et on affiche le texte ligne par ligne
         pixels_bulle = 90*Tw;
         drawImage( x-pixels_bulle/4, y-(60*num_lignes-10), "bulle.png", char_par_ligne*Tw+40, 60*num_lignes);
@@ -542,24 +703,31 @@ void afficher_quete(float x, float y, int id, char etat){
           char ligne[91];
           int k;
           for(k=0; j<i*90 && j<long_message; j++, k++){
-            ligne[k] = quetes[id]->phrase_debut[j];
+            ligne[k] = phrase[j];
             ligne[k+1] = '\0';
           }
           int pixel_y = y-(25*(num_lignes-i))-25*num_lignes;
           drawText(x-pixels_bulle/4+20, pixel_y, ligne, 25, Tw);
         }
       }
-      sprintf(nom, "%s", quetes[id]->pnj_nom);
+      sprintf(nom, "%s", image);
       strcat(nom, " :");
       drawText(x-pixels_bulle/4+20, y-60*num_lignes+30, nom, 25, Tw);
       break;
     case 'B':
-      drawImage( x, y, quetes[id]->nom_img, 60, 60);
+      drawImage( x, y, image, 60, 60);
       break;
 
   }
 }
 
+/**
+ * \fn int detecter_mouvement(float * x, float * y)
+ * \brief Gère le mouvement du personnage
+ * \param[in] abscisse du perso
+ * \param[in] ordonnée du perso
+ * \return 1 si le personnage a bougé, 0 sinon
+ */
 int detecter_mouvement(float * x, float * y){
   //l'état du clavier à l'instant actuel
   const Uint8 *state = SDL_GetKeyboardState(NULL); //en sdl
@@ -581,6 +749,11 @@ int detecter_mouvement(float * x, float * y){
   return 0;
 }
 
+/**
+ * \fn void detecter_touches(int * running)
+ * \brief Gère les touche échap pour le menu et i pour l'inventaire
+ * \param[in] l'état du jeu à modifier si le joueur appuis sur échap
+ */
 void detecter_touches(int * running){
   SDL_Event e;
   while(SDL_PollEvent(&e)) {
@@ -611,7 +784,14 @@ void detecter_touches(int * running){
   SDL_Delay(5);
 }
 
-
+/**
+ * \fn void gestion_editeur(float * x, float * y, int* selected, int *running)
+ * \brief Gère l'éditeur de map
+ * \param[in] abscisse du joueur
+ * \param[in] ordonnée du joueur
+ * \param[in] sprite sélectionné
+ * \param[in] état de l'éditeur à changer si le joueur appuis sur échap
+ */
 void gestion_editeur(float * x, float * y, int* selected, int *running){
   const Uint8 *state = SDL_GetKeyboardState(NULL);
 
