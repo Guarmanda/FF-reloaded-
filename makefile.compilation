@@ -1,0 +1,38 @@
+#
+# Option compilation
+#
+
+CCOBJ=gcc -c
+CCLNK=gcc
+
+# Valeurs possibles : yes , no
+DEBUG=yes
+# Valeurs possibles : apple , linux
+ARCH=linux
+
+ifeq ($(DEBUG),yes)
+	 CFLAGS=-Wall -ansi -g -D_DEBUG_ -std=c99
+else
+	 CFLAGS=-Wall -ansi -std=c99
+endif
+
+
+ifeq ($(ARCH),apple)
+
+	ifeq ($(DEBUG),yes)
+	      CFLAGS=-Wall -ansi -g -D_DEBUG_ -D_APPLE_ -std=c99
+	else
+	      CFLAGS=-Wall -ansi -D_APPLE_ -std=c99
+	endif
+endif
+
+ifeq ($(ARCH),linux)
+	LIBMATH=-lm
+   LIBNCURSES= -lncurses
+
+	ifeq ($(DEBUG),yes)
+	      CFLAGS=-Wall -ansi -g -D_DEBUG_ -D_LINUX_ -std=c99
+	else
+	      CFLAGS=-Wall -ansi -D_LINUX_ -std=c99
+	endif
+endif
