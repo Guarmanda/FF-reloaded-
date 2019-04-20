@@ -6,6 +6,7 @@
  * \brief     Module contenant les fonctions principales qui s'imbriquent pour qu'un combat ait lieu
  * \details    Module contenant les fonctions principales qui s'imbriquent pour qu'un combat ait lieu
  */
+
  #include <combat.h>
 
 /**
@@ -35,6 +36,7 @@ int combat_on(){
 
    /*début des actions qui s'enchaîneront*/
    do{
+
       for( i = 0; i < monster_number;i++){
         printf("\tAdversaire %d : %s (vie: %d/%d ; niveau : %d)\n",i+1, monster[i]->name,monster[i]->health, monster[i]->max_health, monster[i]->level);
       }
@@ -48,7 +50,9 @@ int combat_on(){
          for( i = 0; i < monster_number; i++){
 
             if(is_dead (monster[i]) ){
-               printf("\n\t%s %d meurt...", monster[i]->name,i+1);
+               sleep(1);
+               printf("\t%s meurt...\n\n", monster[i]->name);
+               sleep(1);
                int check_xp= xp_points(*monster[i]);
                /*ajout des points d experience au joueur = effectif QUE si on gagne le combat*/
                xp_temp += check_xp;
@@ -59,8 +63,8 @@ int combat_on(){
           /*à changer pour faire en sorte que il y ait une fonction qui fasse jouer le monstre*/
          for( i = 0; i < monster_number;i++)
             attack(monster[i], &Personnage);
-
       }
+      sleep(1);
 
    }while( retour_menu != END_OF_GAME && retour_menu != FUITE && monster_number >0 && !is_dead(Personnage) );
 
@@ -72,9 +76,11 @@ int combat_on(){
       if(levelling(Personnage)){
          sleep(1);
          clear_screen();
-         printf("Vous avez atteint le niveau %d \n",Personnage->level);
+         printf("!! Vous avez atteint le niveau %d !!\n",Personnage->level);
       }
-
+      sleep(5);
+      printf("On continue notre chemin...");
+      sleep(2);
    }else if(is_dead(Personnage)){
       printf("GAME OVER...\n");
       sleep(2);
@@ -111,7 +117,7 @@ static int choisir_monstre(character_t* tab_adv[], int nb_monstre){
         viderBuffer();
      }while (choix_j > nb_monstre || choix_j< 0);
      return choix_j;
-     printf("apres leeee choix\n" );
+
 }
 /**
  * \fn static void maj_mana(character_t* perso, int val_sort)
@@ -183,10 +189,12 @@ int tour_joueur(int choix_j, character_t* tab_monstre[], int nb_monstre){
                     }else
                         apply_auto_spell(Personnage);
 
-                }else if(sort_choisi == -2)
-                  printf("Ce sort n'est pas dans la liste.\n" );
+                }else if(sort_choisi == -2){
+                   printf("Ce sort n'est pas dans la liste.\n" );
+                   retour_menu = 0;  /*on retourne au menu puisqu il a pas de sort*/
+               }
 
-                retour_menu = 0;  /*on retourne au menu puisqu il a pas de sort*/
+
 
               };break;
       case 4: retour_menu = running_away();break; /*renvoie FUITE (-10 )si on s echappe*/
@@ -212,7 +220,7 @@ int affich_choix(){
          do{
 
               sleep(1);
-              printf("Choisir entre les actions ci-dessous:\n\t1 - Attaquer l'adversaire\n\t2 - Prendre une potion\n\t3 - Appliquer un sort\n\t4 - S'évader\n\t5 - Retour au menu principal\nVotre choix : ");
+              printf("Choisir entre les actions ci-dessous:\n\t1 - Attaquer l'adversaire\n\t2 - Prendre une potion\n\t3 - Appliquer un sort\n\t4 - S'évader\n\t5 - Quitter\nVotre choix : ");
               scanf("%d",&player_choice);
               viderBuffer();
          }while(player_choice > 5 || player_choice <1);

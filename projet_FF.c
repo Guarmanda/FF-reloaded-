@@ -7,6 +7,7 @@
  */
 #include <combat.h>
 
+
 /**
  * \fn static void afficher_map()
  * \brief Fonction d'affichage : affiche la map et l'emplacement du joueur
@@ -158,15 +159,18 @@ int en_jeu(){
 								case 2 : sauvegarde_partie(Personnage); break;
 								case 3 : afficher_inventaire(); break;
 								case 4 : affich_stats(Personnage); break;
-								case 5 : /*affich_quetes()*/; break;
+								case 5 : /*affich_quetes()*/ printf("Désolé, il n'y a pas encore de quête disponible\n" ); clear_screen(); break;
 								case 6 : afficher_map(); break;
-								case 7 : quitter_jeu(); break;
+								case 7 : quitter_jeu(); etat_jeu=END_OF_GAME;break;
 				}
-				if(position_x == 505 && position_y == 505){
-					printf("\nVous trouvez une épée et une tente !\n");
+
+				if(position_x == 505 && position_y == 505 && recompense_debut_j ==0){
+
+					printf("\n\n\n\tOMG! Vous trouvez une [épée] et une [tente] !! ^^\n\n\n");
 					fill_up_inventory(create_object(tente,0));
 					delete_object(&Personnage->char_weapon);
 					Personnage->char_weapon = create_object(weapon,4);
+					recompense_debut_j =1;
 				}
 	}
 	return etat_jeu;
@@ -209,7 +213,7 @@ int menu(){
 
 		do{
 			printf("Votre choix : ");
-			scanf("%i", &choix);
+			scanf("%d", &choix);
 			viderBuffer();
 		}while(choix < 1 || choix > 3);
 		return choix;
@@ -236,21 +240,20 @@ static void continuer_partie(){
 int main (){
 	srand(time(NULL));
 
-	int sortie_prog=0;
 
+	recompense_debut_j =0;
 	do{
 			int choix = menu();
 
 			switch(choix){
 						case 1 : nouvelle_partie(); break;
 						case 2 : continuer_partie(); break;
-						case 3 : sortie_prog=quitter_jeu(); break;
+						case 3 : quitter_jeu(); break;
 			}
 
 			en_jeu();
-			if(etat_jeu == END_OF_GAME)
-				clear_screen();
-	}while(sortie_prog != 1);
+
+	}while(etat_jeu != END_OF_GAME);
 
 	return EXIT_SUCCESS;
 
