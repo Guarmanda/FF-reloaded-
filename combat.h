@@ -17,6 +17,7 @@
 /*définit juste l'état du combat*/
 #define FUITE -10
 
+int recompense_debut_j; /*variable qui fait partie de la version béta, pour qu'on puisse se balader sur la map sans activer de "quete" déjà faite*/
 /*---------------------------- fonctions utilisateur---------------------*/
 int tour_joueur(int ,character_t* [], int );
 /*Essaie d'eviter le combat*/
