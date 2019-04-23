@@ -5,7 +5,7 @@ git config --add user.email "addresse@domaine.fr"
 
 git commit -m "Suppression des fichiers SDL"
 
-Installation: download everything, execute the command "export  LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./SDL2/lib", execute "make" if needed, then run that game.
+
 
 A final-fantasy-like 2d game by Nathalie Karman, Alexandre Papot, Valentin Girod
 
