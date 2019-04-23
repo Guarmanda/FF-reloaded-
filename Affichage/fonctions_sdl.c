@@ -187,5 +187,5 @@ void init_affichage(){
 	SDL_SetWindowFullscreen(fenetre, SDL_WINDOW_FULLSCREEN);
 	loadImages();
 	SPRITE_W = 125;
-	VITESSE_PERSO = 0.025; //on est en sdl, le perso sera plus lent qu'en terminal
+	VITESSE_PERSO = 0.03; //on est en sdl, le perso sera plus lent qu'en terminal
 }

@@ -9,6 +9,7 @@
 #include <map.h>
 #include <fonctions_affichage.h>
 #include <SDL2/SDL.h>
+#include <map_menace.h>
 
 /**
  * \fn void afficher_combat(character_t * monster[], int nb_monster)
@@ -456,12 +457,12 @@ void afficher_Map(float x, float y){
                 break;
       }
       //on gère les biomes
-      if(!(x >= borne_min_village && x <= borne_max_village) && (y >= borne_min_village &&  y <= borne_max_village)){
-        if(i>=500 && j<500){
+      if(!est_dans_village(j, i)){
+        if(est_dans__biome_neige(j,i)){
             if(strcmp(sprite1, "map_path.png") !=0) strcat(sprite1, "_snow");
            if(sprite2[0]) strcat(sprite2, "_snow");
         }
-        if(i<500 && j>=500){
+        else if(est_dans__biome_feu(j,i)){
            if(strcmp(sprite1, "map_path.png") !=0) strcat(sprite1, "_fire");
            if(sprite2[0]) strcat(sprite2, "_fire");
         }
