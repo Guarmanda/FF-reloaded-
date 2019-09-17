@@ -38,13 +38,9 @@ int combat_on(){
 
    /*début des actions qui s'enchaîneront*/
    do{
-     printf("ca ca va\n");
       afficher_combat(monster, monster_number);
-      printf("ca c'est bon\n");
       choix_j= affich_choix(monster, monster_number);
-      printf("ca aussi\n");
       retour_menu= tour_joueur(choix_j,monster,monster_number);
-
       if(retour_menu != 0 && retour_menu != END_OF_GAME ){
 
 
@@ -61,7 +57,7 @@ int combat_on(){
          }
           /*à changer pour faire en sorte que il y ait une fonction qui fasse jouer le monstre*/
          for( i = 0; i < monster_number;i++)
-            attack(monster[i], &Personnage);
+            attack(monster[i], &Personnage, monster, monster_number);
 
       }
 
@@ -89,7 +85,6 @@ int combat_on(){
 
    }
    if (retour_menu == END_OF_GAME) etat_jeu = END_OF_GAME;
-   printf("on est là\n");
    return etat_jeu;
 
 }
@@ -150,7 +145,7 @@ int tour_joueur( int choix_j, character_t* tab_monstre[], int nb_monstre){
       case 1: {
                 retour_menu = choisir_ennemi(tab_monstre,nb_monstre); /*il n'y a qu'une attaque donc on choisit une cible, si on veut*/
                 if(retour_menu != 0)
-                  attack(Personnage,&tab_monstre[retour_menu-1]);
+                  attack(Personnage,&tab_monstre[retour_menu-1], tab_monstre, nb_monstre);
               }; break;
       case 2: retour_menu = taking_potion(); break;
       case 3: {
@@ -207,20 +202,16 @@ void update_tab_monster(character_t *monster_array[],int index, int nb_monstre){
  * \param[in] attacker, celui qui attaque
  * \param[in] target, la cible
 */
-void attack(character_t* attacker,character_t **target){
-
-   printf("\n\t%s ATTAQUE ==============> %s ...\n",attacker->name,(*target)->name);
-   //sleep(2);
+void attack(character_t* attacker,character_t **target,character_t* monster[], int nb_monstres){
 
    int degat = (attacker->stat_strength) * (attacker->char_weapon->value_object);
-   printf("%d, %d\n", (attacker->stat_strength), (attacker->char_weapon->value_object));
+
    ((*target)->health) -= degat + (*target)->accessory ;
 
    if(is_dead(*target)){
       ((*target)->health)=0;
    }
-   printf("\t%d de dégats causés à %s (%d/%d)\n\n", degat,(*target)->name,(*target)->health, (*target)->max_health );
-
+   afficher_degat(attacker, *target, degat, monster, nb_monstres);
 }
 
 /**

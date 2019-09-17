@@ -16,6 +16,13 @@
 #include <creationPerso.h>
 #include <unistd.h>
 
+void afficher_degat(character_t * attaquant, character_t * cible, int degats, character_t* monster[], int nb_monstres){
+  printf("\n\t%s ATTAQUE ==============> %s ...\n",attacker->name,(*target)->name);
+  sleep(1);
+  printf("\t%d de dégats causés à %s (%d/%d)\n\n", degat,(*target)->name,(*target)->health, (*target)->max_health );
+
+}
+
 void afficher_combat(character_t* monster[], int nb_monstres){
   for( i = 0; i < monster_number;i++){
     printf("\tAdversaire %d : %s (vie: %d/%d ; niveau : %d)\n",i+1, monster[i]->name,monster[i]->health, monster[i]->max_health, monster[i]->level);

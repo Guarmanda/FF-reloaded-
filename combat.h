@@ -31,7 +31,7 @@ void fight_rand(void);
 
 /*--------------------fonctions communes aux personnages------------*/
 int is_dead(character_t *);
-void attack(character_t*,character_t **); /*fonction pour l attaque*/
+void attack(character_t*,character_t **,character_t* monster[], int nb_monstres); /*fonction pour l attaque*/
 
 /*----Creation et manipulation du/des monstre(s)----*/
 char* allocating_monster_name(int );

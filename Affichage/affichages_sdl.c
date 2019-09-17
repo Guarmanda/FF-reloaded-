@@ -11,6 +11,33 @@
 #include <SDL2/SDL.h>
 #include <map_menace.h>
 
+
+/**
+ * \fn void afficher_degat(character_t * attaquant, character_t * cible, int degats, character_t* monster[], int nb_monstres)
+ * \brief affiche les dégats causés lors d'une attaque
+ * \param[in] attaquant
+ * \param[in] cible
+ * \param[in] degats
+ * \param[in] tableau des monstres du combat
+ * \param[in] nombre de monstres
+*/
+void afficher_degat(character_t * attaquant, character_t * cible, int degats, character_t* monster[], int nb_monstres){
+  float colonne;
+  if(strcmp(attaquant->name, Personnage->name) == 0){
+    colonne = SCREEN_WIDTH/100*75;
+  }
+  else{
+    colonne = SCREEN_WIDTH/100*25;
+  }
+  char degat[10];
+  sprintf(degat, "-%d", degats);
+  for(int i=0; i<500; i++){
+    afficher_combat(monster, nb_monstres);
+    drawText(colonne, SCREEN_HEIGHT/2-i,degat ,50,18);
+    faire_rendu();
+  }
+}
+
 /**
  * \fn void afficher_combat(character_t * monster[], int nb_monster)
  * \brief affiche les monstres et leur statistiques pendant le combat
@@ -18,7 +45,6 @@
  * \param[in] nombre de monstres
 */
 void afficher_combat(character_t* monster[], int nb_monstres){
-  printf("image\n");
   drawImage(0,0, "interface_combat", SCREEN_WIDTH, SCREEN_HEIGHT);
   char sprite[30] = "";
 	strcat(sprite, Personnage->class_char);
@@ -35,7 +61,6 @@ void afficher_combat(character_t* monster[], int nb_monstres){
   drawText(SCREEN_WIDTH/100*15, SCREEN_HEIGHT/100*(25-7),vie ,25,9);
   drawText(SCREEN_WIDTH/100*15, SCREEN_HEIGHT/100*(25-4),mana ,25,9);
   drawImage(SCREEN_WIDTH/100*15, SCREEN_HEIGHT/100*25, sprite,60,60);
-  printf("monstres\n");
   for(int i=0; i<nb_monstres; i++){
     char niveau[20];
     sprintf(niveau, "Niveau: %d", monster[i]->level);
@@ -43,13 +68,10 @@ void afficher_combat(character_t* monster[], int nb_monstres){
     sprintf(vie, "Vie: %d/%d", monster[i]->health, monster[i]->max_health);
     char mana[20];
     sprintf(mana, "Mana: %d/%d", monster[i]->mana, monster[i]->max_mana);
-    printf("voila, ensuite\n");
     drawText(SCREEN_WIDTH/100*85, SCREEN_HEIGHT/100*(25*(i+1)-10),niveau ,25,9);
     drawText(SCREEN_WIDTH/100*85, SCREEN_HEIGHT/100*(25*(i+1)-7),vie ,25,9);
     drawText(SCREEN_WIDTH/100*85, SCREEN_HEIGHT/100*(25*(i+1)-4),mana ,25,9);
-    printf("son nom\n");
     drawImage(SCREEN_WIDTH/100*85, SCREEN_HEIGHT/100*(25*(i+1)), monster[i]->name,120,120);
-    printf("voila\n");
   }
 
 }
