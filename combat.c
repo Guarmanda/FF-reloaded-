@@ -19,6 +19,7 @@
 */
 /*fonction principale du combat qui gère tous les participants et leurs attributs/etats*/
 int combat_on(){
+//test
    int choix_j=1; /*variable qui récupère l option choisie par le joueur lorsqu'il est tombé en combat */
    int xp_temp=0; /*les xp qui sont récupérés lors du combat si le joueur a gagné*/
    int retour_menu=1;  /*retour_menu sert à revenir au début du menu si le joueur a mal fait son choix*/
