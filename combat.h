@@ -1,8 +1,6 @@
-#ifndef _COMBAT_H_
-#define _COMBAT_H_
 
-#include <commun.h>
-#include <perso_commun.h>
+#include "commun.h"
+#include "perso_commun.h"
 
 /**
  * \def MAX_NB_MONSTRE
@@ -16,6 +14,9 @@
  */
 /*définit juste l'état du combat*/
 #define FUITE -10
+
+
+
 
 /*---------------------------- fonctions utilisateur---------------------*/
 int tour_joueur(int ,character_t* [], int );
@@ -37,6 +38,7 @@ void attack(character_t*,character_t **,character_t* monster[], int nb_monstres)
 char* allocating_monster_name(int );
 void update_tab_monster(character_t *[],int , int );
 
+int getEtatJeu();
 
+void setEtatJeu(int etat);
 
-#endif

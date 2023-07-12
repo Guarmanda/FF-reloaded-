@@ -8,11 +8,18 @@
  *
  */
 #include <math.h>
-#include <quete.h>
-#include <map.h>
+#include "quete.h"
+#include "map.h"
 #include <affichage.h>
 #include <fonctions_affichage.h>
 #include <string.h>
+
+
+quete_t * quetes[100]; /*!< Tableau de pointeurs de structures quêtes */
+
+quete_t ** getQuetes(){
+  return quetes;
+}
 
 //chargement des objets/personnages de quêtes sur la map s'il y en a
 /**
@@ -20,28 +27,31 @@
  * \brief Affichage des gestion des quêtes sur la map, si le joueur est prêt d'un objectif ou d'un pnj
  */
 void afficher_quetes(){
+     float X = getX();
+   float Y = getY();
+   character_t * Personnage = getPersonnage();
   //on a besoin du nombre de sprites affichables
-  float nbSpriteX = (SCREEN_WIDTH/SPRITE_W)/2;
-  float nbSpriteY = (SCREEN_HEIGHT/SPRITE_W)/2;
+  float nbSpriteX = (getScreenWidth()/getSpriteW())/2;
+  float nbSpriteY = (getScreenHeight()/getSpriteW())/2;
   for(int i=0; i<100 && quetes[i] != NULL; i++){
       //si on peut afficher le perso de début de quête, on le fait
       //printf("x:%.1f y:%.1f\n", quetes[i]->pnj_x-X, nbSpriteX/2);
     if(fabs(quetes[i]->pnj_x-X) <= nbSpriteX && fabs(quetes[i]->pnj_y-Y) <= nbSpriteY ){
       //on reprends le calcul de la map pour les coordonnées du pnj en pixels
-      int pnj_x = (quetes[i]->pnj_x-(X-nbSpriteX))*SPRITE_W;
-      int pnj_y = (quetes[i]->pnj_y-(Y-nbSpriteY))*SPRITE_W;
+      int pnj_x = (quetes[i]->pnj_x-(X-nbSpriteX))*getSpriteW();
+      int pnj_y = (quetes[i]->pnj_y-(Y-nbSpriteY))*getSpriteW();
       afficher_quete(pnj_x, pnj_y, NULL, quetes[i]->pnj_img, 'P');
     }
     //meme chose pour le but d'une quête, mais le statut de la quête doit être 1
     if(abs((int)(quetes[i]->but_x-X)) <= nbSpriteX && abs((int)(quetes[i]->but_y-Y)) <= nbSpriteY && quetes[i]->statut ==1){
-      int but_x = (quetes[i]->but_x-(X-nbSpriteX))*SPRITE_W;
-      int but_y = (quetes[i]->but_y-(Y-nbSpriteY))*SPRITE_W;
+      int but_x = (quetes[i]->but_x-(X-nbSpriteX))*getSpriteW();
+      int but_y = (quetes[i]->but_y-(Y-nbSpriteY))*getSpriteW();
       afficher_quete(but_x, but_y, NULL, quetes[i]->nom_img, 'B');
     }
     //si un joueur croise un pnj (si la distance entre les deux est inférieure à 1)
     if(fabs(quetes[i]->pnj_x-X) <= 1 && fabs(quetes[i]->pnj_y-Y) <= 1 ){
-      int pnj_x = (quetes[i]->pnj_x-(X-nbSpriteX))*SPRITE_W;
-      int pnj_y = (quetes[i]->pnj_y-(Y-nbSpriteY))*SPRITE_W;
+      int pnj_x = (quetes[i]->pnj_x-(X-nbSpriteX))*getSpriteW();
+      int pnj_y = (quetes[i]->pnj_y-(Y-nbSpriteY))*getSpriteW();
       //si la quête commence, on affiche le message de début
       if(quetes[i]->statut < 2){
         if(quetes[i]->statut == 0) quetes[i]->statut = 1;

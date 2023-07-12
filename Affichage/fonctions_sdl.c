@@ -9,10 +9,53 @@
  */
 #include <dirent.h>
 #include <stdio.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_image.h>
+#include "SDL2/include/SDL2/SDL.h"
+#include "SDL2/include/SDL2/SDL_ttf.h"
+#include "SDL2/include/SDL2/SDL_image.h"
 #include <fonctions_affichage.h>
+#include "SDL2/include/SDL2/SDL.h"
+
+
+int SCREEN_HEIGHT; /*!< Hauteur de l'écran en pixels */
+int SCREEN_WIDTH; /*!< Largeur de l'écran en pixels */
+int SPRITE_W; /*!< Largeur d'un sprite */
+SDL_Window*pWindow; /*!< Poiteur sur la fenêtre de jeu */
+SDL_Renderer*renderer; /*!< Pointeur sur l'état du rendu */
+
+void * fenetre; /*!< Poiteur sur la fenêtre de jeu en void: Ce pointeur peut prendre deux types différents selon qu'on est en sdl ou terminal */
+float VITESSE_PERSO; /*!< Vitesse du personnage (plus le jeu est optimisé en mémoire vive, moins il va vite, et plus il faut augmenter cette valeur) */
+
+void setVitessePerso(float vitesse){
+	VITESSE_PERSO = vitesse;
+}
+
+void * getFenetre(){
+	return fenetre;
+}
+
+float getVitessePerso(){
+	return VITESSE_PERSO;
+}
+
+int getScreenHeight(){
+	return SCREEN_HEIGHT;
+}
+
+int getScreenWidth(){
+	return SCREEN_WIDTH;
+}
+
+int getSpriteW(){
+	return SPRITE_W;
+}
+
+SDL_Window* getWindow(){
+	return pWindow;
+}
+
+SDL_Renderer* getRenderer(){
+	return renderer;
+}
 
 SDL_Renderer*renderer; /*!< Pointeur sur l'état du rendu */
 

@@ -8,13 +8,14 @@
  *
  */
 #include <stdio.h>
-#include <menu_principal.h>
-#include <map.h>
+#include "menu_principal.h"
+#include "map.h"
 #include <fonctions_affichage.h>
-#include <quete.h>
-#include <inventaire.h>
-#include <perso_commun.h>
+#include "quete.h"
+#include "inventaire.h"
+#include "perso_commun.h"
 #include <unistd.h>
+
 
 
 /**
@@ -31,6 +32,7 @@ int main(int argc, char** argv)
 	//le programme aura été compilé avec les fonctions correspondantes.
 	create_inventory();
 	//on créer le joueur, il choisira certaines de ses statistiques au début de la partie
+	character_t * Personnage = getPersonnage();
 	Personnage = creation_char();
 	init_affichage();
 	charger_quetes();

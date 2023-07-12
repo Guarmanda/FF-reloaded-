@@ -1,7 +1,7 @@
-#ifndef _INVENTAIRE_H_
-#define _INVENTAIRE_H_
+#ifndef INVENTAIRE_H
+#define INVENTAIRE_H
+#include "commun.h"
 
-#include <commun.h>
 
 /**
  * \def MAX_OBJ
@@ -76,13 +76,6 @@ typedef struct inventory_s{
 
 /*--------------------------------------*/
 
-
-/**
- * \var Inventaire
- * \brief declaration en global de l'inventaire
- */
-inventory_t* Inventaire;
-
 /*creation des objets*/
 object_t* create_loot(int);
 object_t* create_object(int, int);
@@ -94,12 +87,13 @@ void affectation_object(object_t* );
 int value(int type, int state);
 void create_inventory(void);
 int afficher_inventaire(void);
-err_t deleteFrom_inventaire(int );
-err_t delete_inventory(void);
+int deleteFrom_inventaire(int );
+int delete_inventory(void);
 int fill_up_inventory(object_t* object);
 /*variables utiles lors du combat pour modifier l'état des joueurs*/
 int est_mana(object_t*);
 int est_cure(object_t*);
 int est_phoenix(object_t*);
+inventory_t * getInventaire();
 
 #endif

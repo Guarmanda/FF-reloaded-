@@ -5,8 +5,8 @@
  * \date 3 avril 2019
  * \ Ce fichier englobe les fonctions propres au Personnage que le joueur incarne
 */
+#include "perso_commun.h"
 
-#include <perso_commun.h>
 
 /**
  * \fn static void affectation_classe(int choix, character_t* player)
@@ -134,9 +134,9 @@ character_t* creation_char(){
 *	\return 0 pour retourner au menu principal, sinon elle renvoie l'indice de l'objet choisi
 */
 int taking_potion(){
-
+    character_t * Personnage = getPersonnage();
    int choix;
-
+    inventory_t * Inventaire = getInventaire();
    do{
 
       if( afficher_inventaire() != 0){

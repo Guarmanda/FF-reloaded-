@@ -1,16 +1,12 @@
-#ifndef _PERSO_H_
-#define _PERSO_H_
 
-#include <inventaire.h>
-#include <map_menace.h>
-#include <commun.h>
+#ifndef PERSO_COMMUN_H
+#define PERSO_COMMUN_H
+#include "inventaire.h"
+#include "map_menace.h"
+#include "commun.h"
 
-/**
- * \var EVASION
- * \brief variable qui représente le taux de chance de s'enfuir
- * \details on met cette variable ici puisque elle peut être affectée par la création d'un monstre ou encore, dans \a combat.c
- */
-int EVASION; /*taux de chance de pouvoir prendre fuite, peut changer selon l endroit de la carte (par exemple, contre un boss, il sera de 0)*/
+
+
 /**
  * \def TAILLE_TAB_SORT
  * \brief taille du tableau contenant les sorts des personnages
@@ -74,24 +70,12 @@ typedef struct character_s{
   char* gender;
 }character_t;
 
-/*-----------------variables globales-------------------------------------*/
-/**
- * \var Personnage
- * \brief variable globale qui est le personnage du joueur
- */
-character_t* Personnage;
-/**
- * \var tab_sort[]
- * \brief tableau de sorts \a spell_t en global, il est borné par la constante TAILLE_TAB_SORT
- */
-spell_t tab_sort[TAILLE_TAB_SORT]; /*tableau global à usage commun entre les persos*/
-
 /*-----------------manipulation des sorts-------------------------------------*/
 
 void init_tab_sort(void);
 void affich_tab_sort(void);
 int joueur_sort(character_t* );
-err_t suppr_tab_sort();
+int suppr_tab_sort();
 
 /*-------------- manipulation des stats/attributs des personnages ----------------------*/
 
@@ -116,5 +100,10 @@ void attribution_sort(int,character_t*);
 /*sauvegarde*/
 character_t* charger_partie();
 void sauvegarde_partie();
+int getEvasion();
+void setEvasion(int newEvasion);
+character_t* getPersonnage();
+spell_t* getTabSort();
+void setPersonnage(character_t* newPersonnage);
 
 #endif

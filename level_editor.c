@@ -13,9 +13,10 @@
 #include <time.h>
 #include <fonctions_affichage.h>
 #include <affichage.h>
-#include <map.h>
-#include <menu_principal.h>
+#include "map.h"
+#include "menu_principal.h"
 #include <math.h>
+
 
 
 /**
@@ -25,10 +26,10 @@
  * \param[in] Ordonnée du début de l'édition
  */
 void showEditor(float x, float y){
-  VITESSE_PERSO = 0.15; //on sera plus rapide dans l'éditeur
+  setVitessePerso(0.15); //on sera plus rapide dans l'éditeur
   //si on est à des coordonnées trop petites pour l'écran, on adapte
-  int nbSpriteX = SCREEN_WIDTH/125;
-  int nbSpriteY = SCREEN_HEIGHT/125;
+  int nbSpriteX = getScreenWidth()/125;
+  int nbSpriteY = getScreenHeight()/125;
   if(y-nbSpriteY/2<0) y=nbSpriteY/2;
   if(x-nbSpriteX/2<0) x=nbSpriteX/2;
   if(y+nbSpriteY/2+2>1000) y=999-(nbSpriteY/2+2);

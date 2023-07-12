@@ -4,15 +4,15 @@
  * \author Karman Nathalie; Papot Alexandre
  * \date 3 avril 2019
  */
+#include "perso_commun.h"
 
-#include <perso_commun.h>
 /**
  * \fn character_t* charger_partie(void)
  * \brief Fonction qui charge une partie à partir d'un fich.txt
  * \return le personnage et les statistiques/emplacement sur la map attribuées
 */
 character_t* charger_partie(){
-
+    character_t * Personnage = getPersonnage();
     FILE * fichier;
     char nom_fichier_sauvegarde[50];
 
@@ -69,14 +69,15 @@ character_t* charger_partie(){
     int x;
     int y;
 
-    fscanf(fichier, "%i;", &x);
-    fscanf(fichier, "%i;", &y);
+    //fscanf(fichier, "%i;", &x);
+    //fscanf(fichier, "%i;", &y);
 
-    position_x = x;
-    position_y = y;
+    //position_x = x;
+    //position_y = y;
 
 
     object_t *tmp;
+    inventory_t * Inventaire = getInventaire();
     for(i = 0;i<Inventaire->nb_objects;i++){
        printf("%i\n", Inventaire->nb_objects);
        tmp = malloc(sizeof(object_t));
@@ -98,14 +99,14 @@ character_t* charger_partie(){
  * \brief Fonction qui sauvegarde une partie dans un fich.txt
 */
 void sauvegarde_partie(){
-
+    inventory_t * Inventaire = getInventaire();
     char nom_fichier_sauvegarde[50];
     printf("Entrer un nom de fichier de sauvegarde : \n");
     scanf("%s", nom_fichier_sauvegarde);
 
     int i;
     FILE * fichier = fopen(nom_fichier_sauvegarde, "w");
-
+    character_t * Personnage = getPersonnage();
     fprintf(fichier, "%s;",Personnage->name);
     fprintf(fichier, "%i;",Personnage->xp);
     fprintf(fichier, "%i;",Personnage->level);
@@ -128,8 +129,8 @@ void sauvegarde_partie(){
     fprintf(fichier, "%i;",Personnage->char_weapon->state_object);
     fprintf(fichier, "%i;",Personnage->char_weapon->value_object);
     fprintf(fichier,"%s;", Personnage->gender);
-    fprintf(fichier,"%i;", position_x);
-    fprintf(fichier,"%i;", position_y);
+    //fprintf(fichier,"%i;", position_x);
+    //fprintf(fichier,"%i;", position_y);
 
     for (i= 0;i<Inventaire->nb_objects;i++){
        fprintf(fichier, "%i;", Inventaire->object[i]->type_object);

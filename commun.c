@@ -5,11 +5,8 @@
  * \date     Mars 2019
  * \brief    Module qui sert de boîte à outils pour tout le projet
  */
+#include "commun.h"
 
-#include <commun.h>
-
-const err_t OK_state = 1;
-const err_t KO_state = 0;
 
 /**
  * \fn entier_aleatoire(int min, int max)
@@ -33,7 +30,7 @@ int entier_aleatoire(int min, int max){
  * \param[in] chaine de caractere à copier selon sa taille
  * \return un code d erreur ou OK_state
  */
-err_t creer_string(string* chaine_a_affecter, string chaine_a_copier){
+int creer_string(string* chaine_a_affecter, string chaine_a_copier){
 	/* on alloue en memoire les caracteres de la chaine +1*/
 	*chaine_a_affecter= malloc(sizeof(char)*strlen(chaine_a_copier)+1);
 	if(*chaine_a_affecter != NULL){
@@ -46,13 +43,13 @@ err_t creer_string(string* chaine_a_affecter, string chaine_a_copier){
 }
 
 /**
-* \fn err_t supprimer_string(string *string_param)
+* \fn int supprimer_string(string *string_param)
 * \brief Supprime une chaine de caractere
 * \param[in] pointeur sur chaine de caractere  char * (le type \a string = char *)
 * \return OK_state ou KO_state (1/0)
 */
 
-err_t supprimer_string(string *string_param){
+int supprimer_string(string *string_param){
 
 	if(*string_param != NULL){ /*Si le pointeur pointe sur une zone memoire en cours d'occupation*/
 		free(*string_param);

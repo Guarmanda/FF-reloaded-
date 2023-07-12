@@ -2,6 +2,7 @@
  *
  \brief Structure des quêtes: coordonnées du pnj, de l'objectif, phrases de début/fin, xp, statut, nom de l'image d'objectif
 */
+
 typedef struct quete_s{
   int pnj_x; /*!< Abscisse du pnj */
   int pnj_y; /*!< Ordonnée du pnj */
@@ -17,6 +18,9 @@ typedef struct quete_s{
 
 }quete_t;
 
-quete_t * quetes[100]; /*!< Tableau de pointeurs de structures quêtes */
+
 void afficher_quetes();
 void charger_quetes();
+quete_t ** getQuetes();
+
+

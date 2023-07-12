@@ -7,7 +7,13 @@
  *
  *
  */
- #include <map_menace.h>
+ #include "map_menace.h"
+
+ int ** map_threat; /* Matrice de la map, contenant les pourcentages de chance de tomber dans un combat*/
+
+ int** getMapThreat(){
+   return map_threat;
+ }
 
  int est_dans_village(int x, int y) {
     return ( (x >= borne_min_village && x <= borne_max_village) && (y >= borne_min_village &&  y <= borne_max_village));
@@ -31,7 +37,8 @@
  * \param[in] Nom du fichier
  */
  void init_menaces(){
-
+  map_threat =  (int **)malloc(1000 * sizeof(int*));
+  for(int i = 0; i < 1000; i++) map_threat[i] = (int *)malloc(1000 * sizeof(int));
     int i,j;
 
     for(i=0; i<1000; i++){

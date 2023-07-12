@@ -1,6 +1,6 @@
-#ifndef __COMMUN_H__
-#define __COMMUN_H__
 
+#ifndef COMMUN_H
+#define COMMUN_H
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>  /*fonction sleep nécessaire*/
@@ -14,13 +14,11 @@
 /* Definition du type string */
 typedef char* string;
 
-/* Definition du type erreur */
-typedef int err_t ;
-
 /* Constantes */
 
-const err_t OK_state;
-const err_t KO_state;
+#define OK_state 1
+#define KO_state 0
+
 /**
  * \def map_size_x
  * \brief taille de la map coordonnée x
@@ -48,27 +46,19 @@ const err_t KO_state;
  * \var position_x
  * \brief position x du joueur en global
  */
-int position_x;
+//int position_x;
 /**
  * \var position_y
  * \brief position y du joueur en global
  */
-int position_y;
-
-/**
- * \var etat_jeu
- * \brief variable globale qui sert d'horloge
- * \details elle varie entre 3 états \a EN_COMBAT \a HORS_COMBAT ou \a END_OF_GAME
- */
-int etat_jeu;/*variable globale qui vérifie qu on est bien dans le jeu*/
-
+//int position_y;
 
 int entier_aleatoire(int min, int max);
 void clear_screen(void);
 
 /*manipulation des chaines de caractère et saisie au clavier*/
-err_t creer_string(string* , string);
-err_t supprimer_string(string *string_param);
+int creer_string(string* , string);
+int supprimer_string(string *string_param);
 void viderBuffer();
 int lire(char *chaine, int longueur);
 
@@ -97,8 +87,5 @@ typedef enum booleen_s { FAUX , VRAI } booleen_t ;
  * \brief définit la fin du jeu et le retour sur l'écran d'accueil
  */
 #define END_OF_GAME 666 /*fin du jeu*/
-
-
-
 
 #endif

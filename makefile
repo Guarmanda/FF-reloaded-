@@ -4,14 +4,12 @@ all:
 	@read -p "sdl ou terminal? " PARAM; \
 	make $$PARAM;
 
-SDL_DIR=${HOME}/SDL2
-SDLLIB_DIR=${SDL_DIR}/lib
-SDLINC_DIR=${SDL_DIR}/include
+
 AFF_DIR=./Affichage/
-PARAM=${1}
-INCLUDE_SDL=-L${SDLLIB_DIR} -lSDL2 -lSDL2_ttf -lSDL2_image -I${SDLINC_DIR}
+PARAM=$(1)
+INCLUDE_SDL= -lSDL2 -lSDL2_ttf -lSDL2_image
 INCLUDE_NCURSES=-lncurses
-INCLUDES=-I./ -lm -I${AFF_DIR}
+INCLUDES=-I./ -lm -I$(AFF_DIR)
 
 BIN_SDL=fonctions_sdl.o affichages_sdl.o
 BIN_TERMINAL=fonctions_terminal.o affichages_terminal.o
@@ -25,24 +23,24 @@ OBJ_DEP_AFF=combat.o quete.o game.o main.o level_editor.o menu_principal.o
 PROG=programme
 
 sdl: clean $(OBJ) $(BIN_SDL) $(OBJ_DEP_AFF)
-	$(CCLNK) $(CFLAGS) $(OBJ) ${BIN_SDL} $(OBJ_DEP_AFF) -o ${PROG} ${INCLUDES} ${INCLUDE_SDL}
+	$(CCLNK) $(CFLAGS) $(OBJ) $(BIN_SDL) $(OBJ_DEP_AFF) -o $(PROG) $(INCLUDES) $(INCLUDE_SDL)
 
 terminal: clean $(OBJ) $(BIN_TERMINAL) $(OBJ_DEP_AFF)
-	$(CCLNK) $(CFLAGS) $(OBJ) ${BIN_TERMINAL} $(OBJ_DEP_AFF) -o ${PROG} ${INCLUDES} ${INCLUDE_NCURSES}
+	$(CCLNK) $(CFLAGS) $(OBJ) $(BIN_TERMINAL) $(OBJ_DEP_AFF) -o $(PROG) $(INCLUDES) $(INCLUDE_NCURSES)
 
 
 #Affichage
 fonctions_sdl.o:
-	$(CCOBJ) $(CFLAGS) ${AFF_DIR}fonctions_sdl.c -o fonctions_sdl.o ${INCLUDES} ${INCLUDE_SDL}
+	$(CCOBJ) $(CFLAGS) $(AFF_DIR)fonctions_sdl.c -o fonctions_sdl.o $(INCLUDES) $(INCLUDE_SDL)
 
 fonctions_terminal.o:
-	$(CCOBJ) $(CFLAGS) ${AFF_DIR}fonctions_terminal.c -o fonctions_terminal.o ${INCLUDES} ${INCLUDE_NCURSES}
+	$(CCOBJ) $(CFLAGS) $(AFF_DIR)fonctions_terminal.c -o fonctions_terminal.o $(INCLUDES) $(INCLUDE_NCURSES)
 
 affichages_sdl.o:
-	$(CCOBJ) $(CFLAGS) ${AFF_DIR}affichages_sdl.c -o affichages_sdl.o ${INCLUDES} ${INCLUDE_SDL}
+	$(CCOBJ) $(CFLAGS) $(AFF_DIR)affichages_sdl.c -o affichages_sdl.o $(INCLUDES) $(INCLUDE_SDL)
 
 affichages_terminal.o:
-	$(CCOBJ) $(CFLAGS) ${AFF_DIR}affichages_terminal.c -o affichages_terminal.o ${INCLUDES} ${INCLUDE_NCURSES}
+	$(CCOBJ) $(CFLAGS) $(AFF_DIR)affichages_terminal.c -o affichages_terminal.o $(INCLUDES) $(INCLUDE_NCURSES)
 
 #Fichiers indépendants de l'affichage
 map.o:
@@ -91,5 +89,5 @@ menu_principal.o:
 
 
 clean:
-	rm -f ${PROG}
-	rm -f *.o
+	del *.o
+	del programme.exe

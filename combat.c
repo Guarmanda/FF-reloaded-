@@ -6,9 +6,25 @@
  * \brief     Module contenant les fonctions principales qui s'imbriquent pour qu'un combat ait lieu
  * \details    Module contenant les fonctions principales qui s'imbriquent pour qu'un combat ait lieu
  */
-#include <combat.h>
+#include "combat.h"
 #include <affichage.h>
-#include <map.h>
+#include "map.h"
+
+
+/**
+ * \var etat_jeu
+ * \brief variable globale qui sert d'horloge
+ * \details elle varie entre 3 états \a EN_COMBAT \a HORS_COMBAT ou \a END_OF_GAME
+ */
+int etat_jeu;/*variable globale qui vérifie qu on est bien dans le jeu*/
+
+int getEtatJeu(){
+   return etat_jeu;
+}
+
+void setEtatJeu(int etat){
+   etat_jeu=etat;
+}
 
 
 /**
@@ -19,6 +35,7 @@
 */
 /*fonction principale du combat qui gère tous les participants et leurs attributs/etats*/
 int combat_on(){
+   character_t * Personnage = getPersonnage();
 //test
    int choix_j=1; /*variable qui récupère l option choisie par le joueur lorsqu'il est tombé en combat */
    int xp_temp=0; /*les xp qui sont récupérés lors du combat si le joueur a gagné*/
@@ -109,7 +126,7 @@ static void maj_mana(character_t* perso, int val_sort){
  * \param[in] sort_choisi, l'indice du sort choisi par celui qui attaque
 */
 void apply_spell(character_t* attacker,character_t **target, int sort_choisi){
-
+      spell_t * tab_sort = getTabSort();
     printf("\n\n\t<> %s <> ==============> %s ...\n",tab_sort[sort_choisi].nom_sort,(*target)->name);
     sleep(1);
 
@@ -139,7 +156,8 @@ void apply_spell(character_t* attacker,character_t **target, int sort_choisi){
  * \return 0 pour retour au menu de combat ou autre valeur (indique qu'une action s'est produite)
 */
 int tour_joueur( int choix_j, character_t* tab_monstre[], int nb_monstre){
-
+spell_t * tab_sort = getTabSort();
+character_t * Personnage = getPersonnage();
    int retour_menu=1;
 
    switch (choix_j){
@@ -262,13 +280,16 @@ int xp_points(character_t monster){
  * \brief Fonction qui se sert du pseudo-aléatoire et de la map_menace pour déclancher un combat
 */
 void fight_rand(){
+   float X = getX();
+   float Y = getY();
+   character_t * Personnage = getPersonnage();
    int trap=0;
    if (Personnage->accessory != evite_combats){
       trap= entier_aleatoire(1,100);
    }else
       trap= entier_aleatoire(51,100);
 
-   int chances= map_threat[(int)Y][(int)X];
+   int chances= getMapThreat()[(int)Y][(int)X];
    if(trap <= chances){
       etat_jeu = EN_COMBAT;
       combat_on();
@@ -300,10 +321,11 @@ void apply_state_modifier(character_t ** target, int indice){
  * \return HORS_COMBAT ou alors renvoie soit 1, soit la macro FUITE
 */
 int running_away(){ /* true => successful*/
+   character_t * Personnage = getPersonnage();
   /* 15% chance to flee */
   int chance=entier_aleatoire(1,100);
 
-  if(  chance < EVASION ){
+  if(  chance < getEvasion() ){
     printf("Vous arrivez à vous échapper...(-10 xp)\n" );
     Personnage->xp-=10;
     etat_jeu=HORS_COMBAT;
@@ -311,5 +333,5 @@ int running_away(){ /* true => successful*/
   }else
       printf("\n\nSorry, you have to fight...\n" );
 
-   return (chance < EVASION ? FUITE : 1);
+   return (chance < getEvasion() ? FUITE : 1);
 }

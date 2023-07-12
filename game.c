@@ -11,14 +11,13 @@
 #include <stdlib.h>
 #include <time.h>
 #include <fonctions_affichage.h>
-#include <affichage.h>
-#include <map.h>
-#include <menu_principal.h>
+#include "map.h"
+#include "combat.h"
 #include <math.h>
-#include <quete.h>
-#include <combat.h>
-#include <map_menace.h>
-#include <commun.h>
+#include "quete.h"
+#include <affichage.h>
+#include "menu_principal.h"
+
 
 
 
@@ -29,11 +28,11 @@
  * \param[in] Ordonnée du début de partie
  */
 void startGame(float x, float y){
-  etat_jeu = VRAI;
-  VITESSE_PERSO = 0.03;
+  setEtatJeu(VRAI);
+  setVitessePerso(0.03);
   //si on est à des coordonnées trop petites pour l'écran, on adapte
-  int nbSpriteX = SCREEN_WIDTH/125;
-  int nbSpriteY = SCREEN_HEIGHT/125;
+  int nbSpriteX = getScreenWidth()/125;
+  int nbSpriteY = getScreenHeight()/125;
   if(y-nbSpriteY/2<0) y=nbSpriteY/2;
   if(x-nbSpriteX/2<0) x=nbSpriteX/2;
   if(y+nbSpriteY/2+2>1000) y=999-(nbSpriteY/2+2);
@@ -41,8 +40,9 @@ void startGame(float x, float y){
   afficher_Map( x, y);
   faire_rendu();
   int running = 1;
-
-  while(running && etat_jeu!=END_OF_GAME) {
+   float X = getX();
+   float Y = getY();
+  while(running && getEtatJeu()!=END_OF_GAME) {
     //Au départ la gestion du clavier se faisait avec un event qui détectait l'appuis d'une touche
     //mais dès que j'ai mis cette partie du code ici sans utiliser l'event, les déplacements sont devenus bien
     //plus fluides, rapides, et surtout la latence au moment de l'appuis sur une touche a disparue

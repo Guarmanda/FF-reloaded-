@@ -8,7 +8,46 @@
  * \details  On met en commun les fonctions qui sont utiles aux personnages (joueur ou adversaire)
  *            et on oublie pas les fonctions qui seront mises en oeuvre dans combat.c
  */
- #include <perso_commun.h>
+#include "perso_commun.h"
+
+
+/*-----------------variables globales-------------------------------------*/
+/**
+ * \var Personnage
+ * \brief variable globale qui est le personnage du joueur
+ */
+character_t* Personnage;
+/**
+ * \var tab_sort[]
+ * \brief tableau de sorts \a spell_t en global, il est borné par la constante TAILLE_TAB_SORT
+ */
+spell_t tab_sort[TAILLE_TAB_SORT]; /*tableau global à usage commun entre les persos*/
+/**
+ * \var EVASION
+ * \brief variable qui représente le taux de chance de s'enfuir
+ * \details on met cette variable ici puisque elle peut être affectée par la création d'un monstre ou encore, dans \a combat.c
+ */
+int EVASION; /*taux de chance de pouvoir prendre fuite, peut changer selon l endroit de la carte (par exemple, contre un boss, il sera de 0)*/
+
+int getEvasion(){
+  return EVASION;
+}
+
+void setEvasion(int newEvasion){
+  EVASION = newEvasion;
+}
+
+character_t* getPersonnage(){
+  return Personnage;
+}
+
+void setPersonnage(character_t* newPersonnage){
+  Personnage = newPersonnage;
+}
+
+spell_t* getTabSort(){
+  return tab_sort;
+}
 
 /**
  * \fn void init_tab_sort(void)
@@ -104,11 +143,11 @@ void affich_tab_sort(){   /*uniquement pour jeux de tests dans test_combat.c*/
 
 }
 /**
- * \fn err_t suppr_tab_sort(void)
+ * \fn int suppr_tab_sort(void)
  * \brief Fonction qui supprime le tableau de sort
  * \return OK_state après avoir tout supprimé ou KO_state si erreur lors de la suppression
  */
-err_t suppr_tab_sort(){
+int suppr_tab_sort(){
   int i;
 
   for (i = 0; i< TAILLE_TAB_SORT ; i++){

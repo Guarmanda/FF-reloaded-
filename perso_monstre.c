@@ -5,9 +5,10 @@
  * \date 3 avril 2019
  * \ Ce fichier englobe les fonctions propres à la création des monstres et dans leur biome
 */
+#include "perso_commun.h"
 
-#include <perso_commun.h>
-#include <map.h>
+#include "map.h"
+
 
 /**
  * \fn static void creer_dragon(character_t** monstre)
@@ -18,7 +19,7 @@
 static void creer_dragon(character_t** monstre){
    creer_string(&(*monstre)->name,"Dragon");
 
-   EVASION = 0; /*boss*/
+   setEvasion(0); /*boss*/
 }
 /**
  * \fn static void creer_wolf(character_t** monstre)
@@ -215,7 +216,9 @@ static void bestiaire_terre(character_t** monster){
 * \return character_t* pointeur sur le character_t créé
 */
 character_t* monster_creation(){
-   EVASION = 15;
+       float X = getX();
+   float Y = getY();
+   setEvasion(15);
    character_t* monster=NULL;
    monster = malloc(sizeof(character_t));
 

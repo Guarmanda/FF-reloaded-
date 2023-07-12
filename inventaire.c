@@ -8,8 +8,23 @@
  * \details    Module à l'origine du jeu : le joueur crée un ou des personnages, et démarre sa partie avec un inventaire.
  *\ Ce fichier est celui qui définit aussi le type object_t qui est celui qui est stocké dans l'inventaire
  */
+#include "inventaire.h"
 
-#include <inventaire.h>
+
+/**
+ * \var Inventaire
+ * \brief declaration en global de l'inventaire
+ */
+inventory_t* Inventaire;
+
+inventory_t * getInventaire(){
+  return Inventaire;
+}
+
+void setInventaire(inventory_t* inv){
+  Inventaire = inv;
+}
+
 
  /**
   * \fn   int value(int type, int state)
@@ -216,12 +231,12 @@ static int loot_state(int type, int niveau_adversaire){
  }
 
  /**
-  * \fn  err_t delete_inventory(void)
+  * \fn  int delete_inventory(void)
   * \brief Fonction qui supprime l'inventaire et ce qu'il contient
   * \details s'aide de la fonction \a delete_object
   * \return KO_state si l'inventaire n'a pas été initialisé ou OK_state
   */
- err_t delete_inventory(){
+ int delete_inventory(){
    int i;
    if(Inventaire != NULL){
      for( i = 0; i<Inventaire->nb_objects; i++){
@@ -279,12 +294,12 @@ static int loot_state(int type, int niveau_adversaire){
 
  }
  /**
-  * \fn   err_t fill_up_inventory(object_t* object)
+  * \fn   int fill_up_inventory(object_t* object)
   * \brief Fonction qui ajoute un objet dans l inventaire
   * \param[in] object est l'objet qui sera placé dans l'inventaire
   * \return KO_state si l'inventaire est rempli ou OK_state
   */
- err_t fill_up_inventory(object_t* object) {
+ int fill_up_inventory(object_t* object) {
 
     if(Inventaire->nb_objects >= 30){ /*si c est plein, on renvoie 0  car on peut pas faire un overbook*/
            return KO_state;
@@ -294,12 +309,12 @@ static int loot_state(int type, int niveau_adversaire){
     return OK_state;
  }
  /**
-  * \fn  err_t deleteFrom_inventaire(int indice)
+  * \fn  int deleteFrom_inventaire(int indice)
   * \brief Fonction qui supprime un objet de l inventaire
   * \param[in] indice est l'indice de l'objet à supprimer
   * \return OK_state si c est un objet qui existe, sinon KO_state
 */
- err_t deleteFrom_inventaire(int indice){
+ int deleteFrom_inventaire(int indice){
 
     if(indice<30 && indice>0){
       int i;
