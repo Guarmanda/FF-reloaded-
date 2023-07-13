@@ -29,7 +29,7 @@
  */
 void startGame(float x, float y){
   setEtatJeu(VRAI);
-  setVitessePerso(0.03);
+  setVitessePerso(0.09);
   //si on est à des coordonnées trop petites pour l'écran, on adapte
   int nbSpriteX = getScreenWidth()/125;
   int nbSpriteY = getScreenHeight()/125;
